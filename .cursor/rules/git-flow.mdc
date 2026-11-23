@@ -32,9 +32,23 @@ Use laconic kebab-case names (`feature/home-hero`, `hotfix/api-timeout`).
 - `release/*` → `main` (and merge back to `develop`)
 - `hotfix/*` → `main` (and merge back to `develop`)
 
+## Default feature workflow (agreed)
+
+Use this loop for ordinary work unless the user asks otherwise:
+
+1. Start from up-to-date `develop` (`git checkout develop && git pull`).
+2. Create `feature/<name>` from `develop`.
+3. Commit only on the feature branch (never directly on `main` / `develop`).
+4. Push the feature branch and open a PR into `develop`.
+5. After the user asks to merge: merge the PR into `develop`, delete the feature branch, checkout `develop`, pull.
+6. Continue the next task from step 1.
+
+Do not skip the feature branch “for small changes” (rules, config, docs count too).
+
 ## Preferences
 
 - Do not commit feature work directly onto `main` or `develop`.
 - Do not push to `main` unless the user explicitly asks.
 - This rule guides Git Flow when the user requests branch / PR / merge / release work — it does not start git operations on its own.
 - Commit and push only when the user asks; still respect the project's git safety rules.
+- Merge PRs and return to `develop` only when the user asks.
