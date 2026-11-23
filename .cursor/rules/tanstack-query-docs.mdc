@@ -1,0 +1,21 @@
+---
+description: API fetching, mutations, cache, or server state — use TanStack Query (React Query) docs
+alwaysApply: false
+---
+
+# TanStack Query docs
+
+When adding or changing data fetching, mutations, caching, QueryClient setup, or React Query hooks.
+
+## Version source of truth
+
+1. Read `@tanstack/react-query` from `@package.json` before relying on API details.
+2. Use official docs: `https://tanstack.com/query/latest/docs/framework/react/overview` (and linked React Query pages) for the installed major (baseline hint: **5**).
+3. Before non-trivial query/mutation setup, cache keys, invalidation, or upgrades: open the docs — do not invent patterns from older majors.
+4. Cite concrete doc page URLs when recommending hooks, QueryClient options, or cache strategies.
+
+## Preferences
+
+- Prefer current TanStack Query APIs documented for this project's version; do not suggest deprecated APIs from older majors without verifying they still apply.
+- Follow existing QueryClient / query-key conventions in this project when present; extend them instead of introducing a parallel data layer.
+- When docs and training knowledge conflict, the official TanStack Query docs for this major win.

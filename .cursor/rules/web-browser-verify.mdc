@@ -1,0 +1,38 @@
+---
+description: After implementing or changing UI/features — run a local browser smoke check across standard viewports via yarn dev
+alwaysApply: false
+---
+
+# Local browser verification
+
+After implementing features, UI changes, or fixes that affect what the user sees or how the app boots.
+
+This is a **dev smoke check**, not production QA. Still verify locally in the browser before considering the work done.
+
+## When to verify
+
+Run a browser check after changes that affect:
+
+- screens, navigation, layout, text/i18n, animations
+- app entry / providers / Vite config
+- new dependencies that ship into the JS bundle
+
+Skip only for purely non-UI work with no shared JS/UI impact (e.g. docs-only or tooling config that does not affect the rendered app), and say so briefly.
+
+## How to verify
+
+1. From the project root, use `yarn dev` (Vite; default **http://localhost:5173**). Reuse an already running server if healthy.
+2. Smoke-check the changed flow on **all four** standard CSS viewports (DevTools device metrics / responsive mode):
+   - Phone: **375×667**
+   - Tablet: **768×1024**
+   - Laptop: **1366×768**
+   - Desktop: **1920×1080**
+3. Confirm: loads without console/build-blocking errors, and the changed flow/UI behaves as intended on each viewport (layout, overflow, tap/click targets where relevant).
+4. If the page fails to compile or render, fix the issue before finishing — do not leave the app broken for shared UI work.
+5. Keep the check lightweight: one happy path for the change on each viewport, not a full device matrix beyond these four.
+
+## Preferences
+
+- Cover phone, tablet, laptop, and desktop — do not stop at a single width.
+- Prefer verifying the real app path `yarn dev` serves, not inventing a separate demo page.
+- Report briefly what was checked (URL + viewports + what passed/failed).
