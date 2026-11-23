@@ -1,34 +1,60 @@
-# Чешуёво — клиентский лендинг
+# Cheshuevo — client landing
 
-Публичный лендинг проката драконов (MVP). Стек: React + TypeScript + Vite, архитектура Feature-Sliced Design.
+**Language:** [EN](README.md) · [RU](README.ru.md)
 
-## Скрипты
+Client landing for a dragon rental MVP: React, TypeScript, Vite, Feature-Sliced Design.
 
-| Команда            | Назначение                  |
+## Stack
+
+- React + TypeScript + Vite
+- Feature-Sliced Design
+- Vitest, Playwright
+
+## Requirements
+
+- Node.js 20+
+- Yarn
+
+## Quick start
+
+```bash
+cp .env.example .env
+# optionally set VITE_API_BASE_URL
+yarn
+yarn dev
+```
+
+## Scripts
+
+| Command            | Purpose                     |
 | ------------------ | --------------------------- |
-| `yarn dev`         | Dev-сервер                  |
-| `yarn build`       | Production-сборка           |
-| `yarn preview`     | Превью сборки               |
+| `yarn dev`         | Dev server                  |
+| `yarn build`       | Production build            |
+| `yarn preview`     | Preview production build    |
 | `yarn lint`        | ESLint                      |
-| `yarn lint:fix`    | ESLint с автофиксом         |
-| `yarn lint:fsd`    | Steiger (FSD)               |
+| `yarn lint:fix`    | ESLint with autofix         |
+| `yarn lint:fsd`    | Steiger (Feature-Sliced Design) |
 | `yarn format`      | Prettier                    |
-| `yarn typecheck`   | Проверка TypeScript         |
+| `yarn typecheck`   | TypeScript check            |
 | `yarn check`       | lint + lint:fsd + typecheck |
-| `yarn test`        | Unit-тесты (Vitest)         |
-| `yarn test:watch`  | Unit-тесты в watch          |
+| `yarn test`        | Unit tests (Vitest)         |
+| `yarn test:watch`  | Unit tests in watch mode    |
 | `yarn test:e2e`    | E2E (Playwright)            |
 | `yarn test:e2e:ui` | Playwright UI               |
 
-## Окружение
+## Environment
 
-Скопируйте `.env.example` в `.env` и при необходимости укажите `VITE_API_BASE_URL`.
+Copy `.env.example` to `.env` and set `VITE_API_BASE_URL` if needed.
 
-## Структура (FSD)
+## Project structure
 
 ```text
 src/
   app/        # entry, providers, routes, global styles
-  pages/      # страницы (home)
+  pages/      # pages (home)
   shared/     # api, config/i18n, model
 ```
+
+## License
+
+MIT
