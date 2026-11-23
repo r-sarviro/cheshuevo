@@ -1,0 +1,68 @@
+.root {
+  display: inline-flex;
+  margin: var(--px-sm);
+  box-shadow: var(--frame-sm-control);
+  background: var(--c-surface);
+}
+
+.item {
+  min-width: 44px;
+  min-height: 36px;
+  padding: 6px 12px;
+  border: 0;
+  border-radius: 0;
+  background: none;
+  color: var(--c-ink);
+  font: 700 var(--fs-label-sm) / 1 var(--font-display);
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  cursor: pointer;
+}
+
+.item + .item {
+  box-shadow: calc(-1 * var(--px-sm)) 0 0 0 var(--c-line-control);
+}
+
+.item:hover,
+.item.isHover {
+  background: var(--c-highlight);
+  color: var(--c-ink-strong);
+}
+
+.item[aria-pressed='true'],
+.item[aria-current='true'],
+.item[aria-selected='true'] {
+  background: var(--c-accent);
+  color: var(--c-ink-strong);
+}
+
+.item:focus-visible,
+.item.isFocus {
+  outline: none;
+  filter: var(--focus-ring);
+  position: relative;
+  z-index: 1;
+}
+
+.item:focus-visible:not(
+    [aria-pressed='true'],
+    [aria-current='true'],
+    [aria-selected='true'],
+    :hover,
+    .isHover
+  ),
+.item.isFocus:not(
+    [aria-pressed='true'],
+    [aria-current='true'],
+    [aria-selected='true'],
+    :hover,
+    .isHover
+  ) {
+  background: var(--c-surface);
+}
+
+@media (forced-colors: active) {
+  .root {
+    outline: 2px solid CanvasText;
+  }
+}

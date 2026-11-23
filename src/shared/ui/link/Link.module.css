@@ -1,0 +1,20 @@
+.root {
+  color: var(--c-accent-ink);
+  text-decoration: underline;
+  text-decoration-thickness: 2px;
+  text-underline-offset: 3px;
+}
+
+.root:hover,
+.root.isHover {
+  color: var(--c-ink);
+  text-decoration-color: var(--c-fire);
+}
+
+.root:focus-visible,
+.root.isFocus {
+  outline: var(--px-sm) solid var(--c-highlight);
+  outline-offset: 0;
+  background: var(--c-highlight);
+  color: var(--c-ink-strong);
+}

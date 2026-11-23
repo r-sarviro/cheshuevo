@@ -1,0 +1,56 @@
+.root {
+  display: flex;
+  flex-direction: column;
+  margin: var(--px) var(--px) calc(var(--px) + var(--block));
+  background: var(--c-surface);
+  box-shadow: var(--frame), var(--shadow-block);
+}
+
+.pic {
+  display: grid;
+  place-items: center;
+  background: var(--tile, var(--c-tile-mint));
+  box-shadow: 0 var(--px) 0 0 var(--c-line);
+  overflow: hidden;
+}
+
+.body {
+  padding: 16px 18px 20px;
+}
+
+.facts {
+  display: grid;
+  gap: 0;
+  margin: 0;
+}
+
+.facts > div {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 4px 16px;
+  padding: 10px 0;
+  border-bottom: 2px dashed var(--c-line-soft);
+}
+
+.facts > div:last-child {
+  border-bottom: 0;
+}
+
+.facts dt {
+  color: var(--c-ink-muted);
+  font: 400 var(--fs-small) / 1.4 var(--font-text);
+}
+
+.facts dd {
+  margin: 0;
+  font: 500 var(--fs-ui) / 1.4 var(--font-text);
+  text-align: right;
+}
+
+@media (forced-colors: active) {
+  .root {
+    outline: 2px solid CanvasText;
+  }
+}
