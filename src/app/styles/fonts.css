@@ -1,0 +1,21 @@
+/* Handjet + Rubik variable — SIL OFL 1.1 (see /fonts/OFL.txt) */
+
+@font-face {
+  font-family: 'Handjet';
+  font-style: normal;
+  font-weight: 400 900;
+  font-display: swap;
+  src:
+    url('/fonts/Handjet-Variable.woff2') format('woff2-variations'),
+    url('/fonts/Handjet-Variable.woff2') format('woff2');
+}
+
+@font-face {
+  font-family: 'Rubik';
+  font-style: normal;
+  font-weight: 400 700;
+  font-display: swap;
+  src:
+    url('/fonts/Rubik-Variable.woff2') format('woff2-variations'),
+    url('/fonts/Rubik-Variable.woff2') format('woff2');
+}

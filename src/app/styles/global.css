@@ -1,6 +1,7 @@
+@import './fonts.css';
 @import './tokens.css';
 
-/* Шрифты как в витрине: Handjet + Rubik, SIL OFL 1.1 */
+/* Шрифты как в витрине: Handjet + Rubik, self-host, SIL OFL 1.1 */
 
 *,
 *::before,
