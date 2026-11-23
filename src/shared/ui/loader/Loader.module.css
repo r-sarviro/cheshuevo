@@ -1,0 +1,50 @@
+.root {
+  position: relative;
+  display: inline-block;
+  width: 18px;
+  height: 18px;
+  flex: none;
+}
+
+.root::before {
+  content: '';
+  position: absolute;
+  left: 6px;
+  top: 0;
+  width: 6px;
+  height: 6px;
+  background: var(--c-highlight);
+  box-shadow: 0 0 0 2px var(--c-ink-strong);
+  animation: orbit 0.64s var(--step-1) infinite;
+}
+
+:global([data-theme='night']) .root::before {
+  box-shadow: 0 0 0 2px var(--c-line);
+}
+
+@keyframes orbit {
+  0% {
+    transform: translate(0, 0);
+  }
+  12.5% {
+    transform: translate(5px, 2px);
+  }
+  25% {
+    transform: translate(6px, 6px);
+  }
+  37.5% {
+    transform: translate(5px, 10px);
+  }
+  50% {
+    transform: translate(0, 12px);
+  }
+  62.5% {
+    transform: translate(-5px, 10px);
+  }
+  75% {
+    transform: translate(-6px, 6px);
+  }
+  87.5% {
+    transform: translate(-5px, 2px);
+  }
+}

@@ -1,0 +1,167 @@
+.btn {
+  --btn-bg: var(--c-accent);
+  --btn-ink: var(--c-ink-strong);
+  --btn-key: var(--c-accent-deep);
+  --btn-line: var(--c-line);
+  --btn-drop: calc(var(--px) + var(--key));
+
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  min-height: 44px;
+  margin: var(--px) var(--px) calc(var(--px) * 2 + var(--key));
+  padding: 10px 16px;
+  border: 0;
+  border-radius: 0;
+  background: var(--btn-bg);
+  color: var(--btn-ink);
+  font: 700 var(--fs-label) / 1 var(--font-display);
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  text-decoration: none;
+  text-align: center;
+  cursor: pointer;
+  box-shadow:
+    0 calc(-1 * var(--px)) 0 0 var(--btn-line),
+    0 var(--px) 0 0 var(--btn-line),
+    calc(-1 * var(--px)) 0 0 0 var(--btn-line),
+    var(--px) 0 0 0 var(--btn-line),
+    0 var(--btn-drop) 0 0 var(--btn-key),
+    calc(-1 * var(--px)) var(--btn-drop) 0 0 var(--btn-line),
+    var(--px) var(--btn-drop) 0 0 var(--btn-line),
+    0 calc(var(--btn-drop) + var(--px)) 0 0 var(--btn-line);
+  transition:
+    transform var(--t-press) var(--step-1),
+    box-shadow var(--t-press) var(--step-1),
+    background-color var(--t-fast) var(--step-2);
+  -webkit-tap-highlight-color: transparent;
+}
+
+.btn:hover,
+.btn.isHover {
+  background: var(--c-highlight);
+  color: var(--c-ink-strong);
+}
+
+.btn:active,
+.btn.isPressed,
+.btn.isLoading,
+.btn[aria-busy='true'] {
+  transform: translateY(var(--key));
+  box-shadow:
+    0 calc(-1 * var(--px)) 0 0 var(--btn-line),
+    0 var(--px) 0 0 var(--btn-line),
+    calc(-1 * var(--px)) 0 0 0 var(--btn-line),
+    var(--px) 0 0 0 var(--btn-line),
+    0 calc(var(--px) * 2) 0 0 var(--btn-line);
+}
+
+.ghost {
+  --btn-bg: var(--c-surface);
+  --btn-ink: var(--c-ink);
+  --btn-key: var(--c-shadow);
+  --btn-line: var(--c-line-control);
+}
+
+.danger {
+  --btn-bg: var(--c-fire);
+  --btn-key: var(--c-fire-deep);
+}
+
+.sm {
+  min-height: 36px;
+  padding: 6px 12px;
+  font-size: var(--fs-label-sm);
+}
+
+.block {
+  display: flex;
+  width: calc(100% - var(--px) * 2);
+}
+
+.iconOnly {
+  width: 44px;
+  padding: 0;
+}
+
+.iconOnly.sm {
+  width: 36px;
+}
+
+.btn:disabled,
+.btn[aria-disabled='true'] {
+  transform: translateY(var(--key));
+  background: var(--c-sunk);
+  color: var(--c-ink-muted);
+  cursor: not-allowed;
+  box-shadow:
+    0 calc(-1 * var(--px)) 0 0 var(--c-line-soft),
+    0 var(--px) 0 0 var(--c-line-soft),
+    calc(-1 * var(--px)) 0 0 0 var(--c-line-soft),
+    var(--px) 0 0 0 var(--c-line-soft);
+}
+
+.btn.isLoading,
+.btn[aria-busy='true'] {
+  cursor: progress;
+  pointer-events: none;
+}
+
+/* loader pearl stays dark-ringed on accent buttons */
+.btn :global([class*='Loader_root'])::before,
+.btn .loaderPearl::before {
+  box-shadow: 0 0 0 2px var(--c-ink-strong);
+}
+
+.btn:focus-visible,
+.btn.isFocus {
+  outline: none;
+  filter: var(--focus-ring);
+}
+
+.text {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  min-height: 44px;
+  padding: 0 4px;
+  border: 0;
+  background: none;
+  color: var(--c-accent-ink);
+  font: 700 var(--fs-label) / 1 var(--font-display);
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  text-decoration: underline;
+  text-decoration-thickness: var(--px);
+  text-underline-offset: 5px;
+  text-decoration-color: transparent;
+  cursor: pointer;
+}
+
+.text:hover,
+.text.isHover {
+  color: var(--c-ink);
+  text-decoration-color: var(--c-fire);
+}
+
+.text:disabled {
+  color: var(--c-ink-muted);
+  cursor: not-allowed;
+  text-decoration-color: transparent;
+}
+
+.text:focus-visible,
+.text.isFocus {
+  outline: var(--px-sm) solid var(--c-highlight);
+  outline-offset: 0;
+  background: var(--c-highlight);
+  color: var(--c-ink-strong);
+}
+
+@media (forced-colors: active) {
+  .btn {
+    outline: 2px solid CanvasText;
+  }
+}

@@ -1,0 +1,79 @@
+/* Status / message tones from osnova */
+.jade {
+  --tone-bg: var(--t-jade-bg);
+  --tone-ink: var(--t-jade-ink);
+}
+.sky {
+  --tone-bg: var(--t-sky-bg);
+  --tone-ink: var(--t-sky-ink);
+}
+.lavender {
+  --tone-bg: var(--t-lavender-bg);
+  --tone-ink: var(--t-lavender-ink);
+}
+.neutral {
+  --tone-bg: var(--t-neutral-bg);
+  --tone-ink: var(--t-neutral-ink);
+}
+.peach {
+  --tone-bg: var(--t-peach-bg);
+  --tone-ink: var(--t-peach-ink);
+}
+.butter {
+  --tone-bg: var(--t-butter-bg);
+  --tone-ink: var(--t-butter-ink);
+}
+.moss {
+  --tone-bg: var(--t-moss-bg);
+  --tone-ink: var(--t-moss-ink);
+}
+.sand {
+  --tone-bg: var(--t-sand-bg);
+  --tone-ink: var(--t-sand-ink);
+}
+.ember {
+  --tone-bg: var(--t-ember-bg);
+  --tone-ink: var(--t-ember-ink);
+}
+
+/* data-status → tone (attribute stays unhashed) */
+:global([data-status='confirmed']),
+:global([data-status='active']),
+:global([data-status='booked']) {
+  --tone-bg: var(--t-jade-bg);
+  --tone-ink: var(--t-jade-ink);
+}
+:global([data-status='in_rent']) {
+  --tone-bg: var(--t-sky-bg);
+  --tone-ink: var(--t-sky-ink);
+}
+:global([data-status='completed']) {
+  --tone-bg: var(--t-lavender-bg);
+  --tone-ink: var(--t-lavender-ink);
+}
+:global([data-status='cancelled']),
+:global([data-status='inactive']) {
+  --tone-bg: var(--t-neutral-bg);
+  --tone-ink: var(--t-neutral-ink);
+}
+:global([data-status='no_show']) {
+  --tone-bg: var(--t-peach-bg);
+  --tone-ink: var(--t-peach-ink);
+}
+:global([data-status='unpaid']) {
+  --tone-bg: var(--t-butter-bg);
+  --tone-ink: var(--t-butter-ink);
+}
+:global([data-status='paid']),
+:global([data-status='free']) {
+  --tone-bg: var(--t-moss-bg);
+  --tone-ink: var(--t-moss-ink);
+}
+:global([data-status='maintenance']) {
+  --tone-bg: var(--t-sand-bg);
+  --tone-ink: var(--t-sand-ink);
+}
+:global([data-status='overdue']) {
+  --tone-bg: var(--t-ember-bg);
+  --tone-ink: var(--t-ember-ink);
+}
