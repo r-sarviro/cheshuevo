@@ -1,6 +1,7 @@
 import type { ReactNode } from 'react'
-import { Link } from 'react-router-dom'
+import { Link, useLocation } from 'react-router-dom'
 
+import { handleInPageHashNav } from '@/shared/lib'
 import { Brand } from '@/shared/ui/brand'
 import { Button } from '@/shared/ui/button'
 import { Icon } from '@/shared/ui/icon'
@@ -48,6 +49,7 @@ const SiteHeader = (props: ISiteHeaderProps) => {
     className,
   } = props
 
+  const location = useLocation()
   const rootClass = [styles.root, className].filter(Boolean).join(' ')
   const night = theme === 'night'
 
@@ -61,6 +63,9 @@ const SiteHeader = (props: ISiteHeaderProps) => {
               key={item.href}
               to={item.href}
               aria-current={item.current ? 'page' : undefined}
+              onClick={(event) => {
+                handleInPageHashNav(event, item.href, location.pathname)
+              }}
             >
               {item.label}
             </Link>

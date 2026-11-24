@@ -1,6 +1,10 @@
+import { useEffect } from 'react'
 import { useTranslation } from 'react-i18next'
+import { useLocation } from 'react-router-dom'
 
 import { DragonCard, useDragonsQuery } from '@/entities/dragon'
+import { CATALOG_HASH, HOME_PATH, dragonPath } from '@/shared/config'
+import { scrollToHashId } from '@/shared/lib'
 import { useDocumentMeta } from '@/shared/lib/document-meta'
 import { Button } from '@/shared/ui/button'
 import { EmptyState } from '@/shared/ui/empty-state'
@@ -17,14 +21,25 @@ import styles from './HomePage.module.css'
 /** Product landing: hero + public catalog (stub data). */
 const HomePage = () => {
   const { t } = useTranslation()
+  const location = useLocation()
   const chrome = useSiteChrome()
   const dragonsQuery = useDragonsQuery()
 
   useDocumentMeta({
     title: t('seo.home.title'),
     description: t('seo.home.description'),
-    canonicalPath: '/',
+    canonicalPath: HOME_PATH,
   })
+
+  // Arrive from another route with /#catalog (RR often skips native hash scroll).
+  useEffect(() => {
+    const id = location.hash.replace(/^#/, '')
+    if (!id) {
+      return
+    }
+    const timer = window.setTimeout(() => scrollToHashId(id), 0)
+    return () => window.clearTimeout(timer)
+  }, [location.hash, location.key, location.pathname])
 
   return (
     <div className={styles.page}>
@@ -48,10 +63,7 @@ const HomePage = () => {
             <Button
               type="button"
               onClick={() => {
-                document.getElementById('catalog')?.scrollIntoView({
-                  behavior: 'smooth',
-                  block: 'start',
-                })
+                scrollToHashId(CATALOG_HASH)
               }}
             >
               {t('landing.heroCta')}
@@ -59,7 +71,7 @@ const HomePage = () => {
           }
         />
 
-        <Section id="catalog" className={styles.catalogSection}>
+        <Section id={CATALOG_HASH} className={styles.catalogSection}>
           <Wrap>
             <SectionHead>
               <Typography as="h2" variant="h2">
@@ -131,8 +143,8 @@ const HomePage = () => {
                   <DragonCatalogItem key={dragon.id}>
                     <DragonCard
                       dragon={dragon}
-                      href={`/dragons/${dragon.id}`}
-                      actionHref={`/dragons/${dragon.id}`}
+                      href={dragonPath(dragon.id)}
+                      actionHref={dragonPath(dragon.id)}
                       priceLabel={t('ds.perHour')}
                       actionLabel={t('catalog.book')}
                     />

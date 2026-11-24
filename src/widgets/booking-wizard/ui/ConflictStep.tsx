@@ -2,6 +2,7 @@ import { useTranslation } from 'react-i18next'
 import { useNavigate } from 'react-router-dom'
 
 import { getDragonCopy, type IDragon } from '@/entities/dragon'
+import { HOME_PATH } from '@/shared/config'
 import { ButtonText } from '@/shared/ui/button'
 import { Note } from '@/shared/ui/note'
 
@@ -39,7 +40,7 @@ const ConflictStep = (props: IConflictStepProps) => {
               type="button"
               onClick={() => {
                 clearSession()
-                void navigate('/')
+                void navigate(HOME_PATH)
               }}
             >
               {t('booking.otherDragon')}

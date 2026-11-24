@@ -1,6 +1,7 @@
 import { useEffect, useRef, type ReactNode } from 'react'
-import { Link } from 'react-router-dom'
+import { Link, useLocation } from 'react-router-dom'
 
+import { handleInPageHashNav } from '@/shared/lib'
 import { useUiStore } from '@/shared/model'
 import { Brand } from '@/shared/ui/brand'
 import { Button } from '@/shared/ui/button'
@@ -62,6 +63,7 @@ const Hero = (props: IHeroProps) => {
   } = props
 
   const rootRef = useRef<HTMLElement>(null)
+  const location = useLocation()
   const storeTheme = useUiStore((state) => state.theme)
   const theme = themeProp ?? storeTheme
   const night = theme === 'night'
@@ -112,6 +114,9 @@ const Hero = (props: IHeroProps) => {
                 key={item.href}
                 to={item.href}
                 aria-current={item.current ? 'page' : undefined}
+                onClick={(event) => {
+                  handleInPageHashNav(event, item.href, location.pathname)
+                }}
               >
                 {item.label}
               </Link>
