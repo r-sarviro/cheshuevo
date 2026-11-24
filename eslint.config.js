@@ -14,6 +14,8 @@ export default tseslint.config(
       'playwright-report',
       'test-results',
       '.yarn',
+      // Ported vitrina generator; linted as opaque browser script.
+      'src/shared/ui/sprite/engine/pixelSprites.js',
     ],
   },
   js.configs.recommended,

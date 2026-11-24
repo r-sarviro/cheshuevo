@@ -11,6 +11,7 @@ import { useUiStore } from '@/shared/model'
 import {
   Button,
   ButtonText,
+  DragonSprite,
   Icon,
   Note,
   Panel,
@@ -24,6 +25,7 @@ import {
 import { EmptyState } from '@/shared/ui/empty-state'
 import { Link as TextLink } from '@/shared/ui/link'
 import { DragonCatalog, DragonCatalogItem } from '@/widgets/dragon-catalog'
+import { Hero } from '@/widgets/hero'
 import { SiteFooter } from '@/widgets/site-footer'
 import { SiteHeader } from '@/widgets/site-header'
 
@@ -35,6 +37,7 @@ const DEMO_DRAGONS: IDragonListItem[] = [
     name: 'Чешуйка',
     shortDescription: 'Спокойная, любит облака и чай с чабрецом.',
     tileToken: 'var(--c-tile-mint)',
+    spriteKey: 'korea',
     hourlyRate: 120,
     currency: '₽',
     operationalStatus: 'ACTIVE',
@@ -44,6 +47,7 @@ const DEMO_DRAGONS: IDragonListItem[] = [
     name: 'Лун',
     shortDescription: 'Любит вечерние полёты над рекой.',
     tileToken: 'var(--c-tile-peach)',
+    spriteKey: 'china',
     hourlyRate: 180,
     currency: '₽',
     operationalStatus: 'ACTIVE',
@@ -87,13 +91,20 @@ const ERROR_PERIOD: ISelectPeriodValue = {
   endTime: '10:00',
 }
 
-/** Smoke page mirroring vitrina #sayt samples (no hero/sprites). */
+/** Smoke page mirroring vitrina #sayt samples including hero and sprites. */
 const HomePage = () => {
   const { t } = useTranslation()
   const locale = useUiStore((state) => state.locale)
   const theme = useUiStore((state) => state.theme)
   const setLocale = useUiStore((state) => state.setLocale)
   const toggleTheme = useUiStore((state) => state.toggleTheme)
+
+  const scrollToCatalog = () => {
+    document.getElementById('sayt-catalog')?.scrollIntoView({
+      behavior: 'smooth',
+      block: 'start',
+    })
+  }
 
   const [period, setPeriod] = useState(INITIAL_PERIOD)
   const [periodLoading, setPeriodLoading] = useState(INITIAL_PERIOD)
@@ -133,6 +144,29 @@ const HomePage = () => {
 
   return (
     <div className={styles.page}>
+      <Hero
+        brand={t('app.title')}
+        title={t('blocks.heroTitle')}
+        lead={t('blocks.heroLead')}
+        navItems={[
+          { href: '/#sayt-catalog', label: t('blocks.navCatalog') },
+        ]}
+        navAriaLabel={t('blocks.navPrimary')}
+        locale={locale}
+        locales={locales}
+        onLocaleChange={(code) => setLocale(code as AppLocale)}
+        localeAriaLabel={t('ds.locale')}
+        theme={theme}
+        onThemeToggle={toggleTheme}
+        themeLabel={theme === 'night' ? t('ds.themeDay') : t('ds.themeNight')}
+        themeAriaLabel={t('ds.theme')}
+        actions={
+          <Button type="button" onClick={scrollToCatalog}>
+            {t('blocks.heroCta')}
+          </Button>
+        }
+      />
+
       <SiteHeader
         brand={t('app.title')}
         navItems={[{ href: '/', label: t('blocks.navCatalog'), current: true }]}
@@ -156,7 +190,7 @@ const HomePage = () => {
             </Typography>
           </SectionHead>
 
-          <Section>
+          <Section id="sayt-catalog">
             <Typography variant="h2">{t('blocks.catalog')}</Typography>
             <DragonCatalog aria-label={t('blocks.catalog')}>
               {DEMO_DRAGONS.map((dragon) => (
@@ -167,11 +201,6 @@ const HomePage = () => {
                     actionHref="/"
                     priceLabel={t('ds.perHour')}
                     actionLabel={t('blocks.book')}
-                    picture={
-                      <span className={styles.picPlaceholder}>
-                        <Icon name="dragon" xl />
-                      </span>
-                    }
                   />
                 </DragonCatalogItem>
               ))}
@@ -402,9 +431,10 @@ const HomePage = () => {
               booking={DEMO_BOOKING}
               title={t('blocks.resultTitle')}
               picture={
-                <span className={styles.picPlaceholder}>
-                  <Icon name="dragon" />
-                </span>
+                <DragonSprite
+                  name="mascot"
+                  label={t('blocks.mascotLabel')}
+                />
               }
               factLabels={{
                 dragon: t('blocks.factDragon'),
@@ -449,7 +479,14 @@ const HomePage = () => {
                 {t('ds.noteBody')}
               </Note>
               <EmptyState
-                picture={<Icon name="egg" xl />}
+                picture={
+                  <DragonSprite
+                    name="loader"
+                    width={48}
+                    height={48}
+                    label={t('blocks.emptyLoadingLabel')}
+                  />
+                }
                 heading={
                   <Typography variant="h3">{t('blocks.emptyTitle')}</Typography>
                 }

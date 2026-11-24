@@ -6,6 +6,7 @@ import buttonStyles from '@/shared/ui/button/Button.module.css'
 import { Card, CardBody, CardPic } from '@/shared/ui/card'
 import { Icon } from '@/shared/ui/icon'
 import skeletonStyles from '@/shared/ui/skeleton/Skeleton.module.css'
+import { DragonSprite } from '@/shared/ui/sprite'
 
 import type { IDragonListItem } from '../model/types'
 import styles from './DragonCard.module.css'
@@ -120,7 +121,14 @@ const DragonCard = (props: IDragonCardProps) => {
   )
 
   const picContent =
-    picture ?? (imageFailed ? <Icon name="egg" xl /> : null)
+    picture ??
+    (imageFailed ? (
+      <Icon name="egg" xl />
+    ) : dragon.spriteKey ? (
+      <DragonSprite name={dragon.spriteKey} fit label={dragon.name} />
+    ) : dragon.imageUrl ? (
+      <img src={dragon.imageUrl} alt="" />
+    ) : null)
 
   return (
     <Card as="article" className={rootClass}>

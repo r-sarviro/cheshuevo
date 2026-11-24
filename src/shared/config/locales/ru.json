@@ -43,7 +43,12 @@
   },
   "blocks": {
     "title": "Блоки для лендинга",
-    "lead": "Страница сверки с витриной «Лендинг»: widgets, entities и features без hero и спрайтов.",
+    "lead": "Страница сверки с витриной «Лендинг»: hero, спрайты, widgets, entities и features.",
+    "heroTitle": "Прокат драконов",
+    "heroLead": "Выберите дракона и удобное время.",
+    "heroCta": "Выбрать дракона",
+    "mascotLabel": "Маскот Чешуйка",
+    "emptyLoadingLabel": "Загрузка",
     "navCatalog": "Каталог",
     "navPrimary": "Основная навигация",
     "navFooter": "Навигация в подвале",

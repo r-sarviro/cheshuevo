@@ -1,0 +1,169 @@
+/* Port of .px-hero and hero-top overrides from sayt (vitrina) */
+
+.root {
+  --hero-h: clamp(460px, 76vh, 680px);
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  min-height: var(--hero-h);
+  overflow: hidden;
+  background: #ffe9a6;
+  box-shadow: 0 var(--px) 0 0 var(--c-line);
+}
+
+:global([data-theme='night']) .root:not([data-sky-now]),
+.root[data-sky-now='night'] {
+  background: #382d69;
+}
+
+.root[data-sky-now='day'] {
+  background: #b7e1f0;
+}
+
+.layer {
+  position: absolute;
+  left: 0;
+  top: 0;
+  image-rendering: pixelated;
+  image-rendering: crisp-edges;
+}
+
+.mid {
+  z-index: 1;
+  pointer-events: none;
+}
+
+.fly {
+  z-index: 3;
+  pointer-events: none;
+}
+
+.header {
+  position: relative;
+  z-index: var(--z-sticky);
+  display: flex;
+  align-items: center;
+  gap: 8px 12px;
+  padding: 12px var(--page-gutter);
+}
+
+.nav {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 4px 16px;
+  margin-left: auto;
+}
+
+.nav a {
+  display: inline-flex;
+  align-items: center;
+  min-height: 44px;
+  padding: 0 4px;
+  color: #43365c;
+  font: 700 var(--fs-label) / 1 var(--font-display);
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  text-decoration: underline;
+  text-decoration-thickness: var(--px);
+  text-underline-offset: 6px;
+  text-decoration-color: transparent;
+}
+
+.nav a:hover,
+.nav a[aria-current='page'] {
+  text-decoration-color: var(--c-fire);
+}
+
+:global([data-theme='night']) .root:not([data-sky-now]) .nav a,
+.root[data-sky-now='night'] .nav a {
+  color: #f7eddd;
+}
+
+.nav a:is(:focus-visible) {
+  outline: var(--px-sm) solid var(--c-highlight);
+  outline-offset: 0;
+  background: var(--c-highlight);
+  color: var(--c-ink-strong);
+}
+
+.headerLocale {
+  display: none;
+}
+
+.themeText {
+  display: none;
+}
+
+.themeButton {
+  margin-block: var(--px);
+}
+
+@media (min-width: 640px) {
+  .header {
+    padding-block: 16px;
+    gap: 18px;
+  }
+
+  .headerLocale {
+    display: inline-flex;
+  }
+
+  .themeText {
+    display: inline;
+  }
+}
+
+.copy {
+  position: relative;
+  z-index: 4;
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-end;
+  padding: 24px var(--page-gutter) calc(var(--hero-h) * 0.3 - 22px);
+  text-align: center;
+}
+
+.title,
+.lead {
+  --hero-ink: #43365c;
+  --hero-edge: #fffaf0;
+  color: var(--hero-ink);
+  text-wrap: balance;
+  text-shadow:
+    2px 0 0 var(--hero-edge),
+    -2px 0 0 var(--hero-edge),
+    0 2px 0 var(--hero-edge),
+    0 -2px 0 var(--hero-edge),
+    2px 2px 0 var(--hero-edge),
+    -2px 2px 0 var(--hero-edge),
+    2px -2px 0 var(--hero-edge),
+    -2px -2px 0 var(--hero-edge);
+}
+
+:global([data-theme='night']) .root:not([data-sky-now]) :is(.title, .lead),
+.root[data-sky-now='night'] :is(.title, .lead) {
+  --hero-ink: #fffaf0;
+  --hero-edge: #1b1838;
+}
+
+.title {
+  margin: 0 0 8px;
+  font: 800 clamp(1.75rem, 3.4vw, 2.25rem) / 1 var(--font-display);
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+}
+
+.lead {
+  max-width: 38ch;
+  margin: 0 0 var(--s-5);
+  font: 500 1rem / 1.45 var(--font-text);
+}
+
+.actions {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 8px 16px;
+}

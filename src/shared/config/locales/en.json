@@ -43,7 +43,12 @@
   },
   "blocks": {
     "title": "Landing building blocks",
-    "lead": "Parity page for the Landing showcase: widgets, entities, and features without hero or sprites.",
+    "lead": "Parity page for the Landing showcase: hero, sprites, widgets, entities, and features.",
+    "heroTitle": "Dragon rental",
+    "heroLead": "Pick a dragon and a convenient time.",
+    "heroCta": "Choose a dragon",
+    "mascotLabel": "Mascot Cheshuika",
+    "emptyLoadingLabel": "Loading",
     "navCatalog": "Catalog",
     "navPrimary": "Primary navigation",
     "navFooter": "Footer navigation",

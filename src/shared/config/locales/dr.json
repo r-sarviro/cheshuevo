@@ -43,7 +43,12 @@
   },
   "blocks": {
     "title": "Кубики для гнезда-лендинга",
-    "lead": "Сверка с витриной «Лендинг»: widgets, entities и features без неба и спрайтов.",
+    "lead": "Сверка с витриной «Лендинг»: небо, спрайты, widgets, entities и features.",
+    "heroTitle": "Хрр-прокат огнекрылов",
+    "heroLead": "Выбери дракона и удобное время.",
+    "heroCta": "Выбрать дракона",
+    "mascotLabel": "Маскот Чешуйка",
+    "emptyLoadingLabel": "Крутится жемчужина",
     "navCatalog": "Стая",
     "navPrimary": "Главный путь по гнезду",
     "navFooter": "Путь в хвосте страницы",
