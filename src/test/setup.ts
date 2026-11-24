@@ -44,7 +44,7 @@ vi.mock('@/shared/ui/sprite/engine/pixelSprites.js', () => {
     mount: vi.fn(),
     hero: vi.fn(),
     refresh: vi.fn(),
-    names: ['mascot', 'china', 'korea', 'loader'],
+    names: ['loader', 'flame', 'pearl', 'clouds'],
   }
   return {
     ...api,

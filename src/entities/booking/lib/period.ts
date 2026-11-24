@@ -38,7 +38,7 @@ export function isMinDurationOk(startsAt: string, endsAt: string): boolean {
   )
 }
 
-/** Cheshuika (id 1) demo busy window: 10:00–12:00 on the start date. */
+/** Sakurka (id 1) demo busy window: 10:00–12:00 on the start date. */
 export function overlapsBusyWindow(
   dragonId: number,
   startsAt: string,
