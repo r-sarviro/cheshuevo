@@ -1,26 +1,52 @@
+/* Ghost-button chrome: same pixel frame + key drop as Button size=sm */
+
 .root {
+  --seg-bg: var(--c-surface);
+  --seg-ink: var(--c-ink);
+  --seg-key: var(--c-shadow);
+  --seg-line: var(--c-line-control);
+  --seg-drop: calc(var(--px) + var(--key));
+
+  position: relative;
   display: inline-flex;
-  margin: var(--px-sm);
-  box-shadow: var(--frame-sm-control);
-  background: var(--c-surface);
+  align-items: stretch;
+  margin: var(--px) var(--px) calc(var(--px) * 2 + var(--key));
+  border: 0;
+  border-radius: 0;
+  background: var(--seg-bg);
+  color: var(--seg-ink);
+  box-shadow:
+    0 calc(-1 * var(--px)) 0 0 var(--seg-line),
+    0 var(--px) 0 0 var(--seg-line),
+    calc(-1 * var(--px)) 0 0 0 var(--seg-line),
+    var(--px) 0 0 0 var(--seg-line),
+    0 var(--seg-drop) 0 0 var(--seg-key),
+    calc(-1 * var(--px)) var(--seg-drop) 0 0 var(--seg-line),
+    var(--px) var(--seg-drop) 0 0 var(--seg-line),
+    0 calc(var(--seg-drop) + var(--px)) 0 0 var(--seg-line);
 }
 
 .item {
-  min-width: 44px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 36px;
   min-height: 36px;
   padding: 6px 12px;
   border: 0;
   border-radius: 0;
   background: none;
-  color: var(--c-ink);
+  color: inherit;
   font: 700 var(--fs-label-sm) / 1 var(--font-display);
   letter-spacing: 0.04em;
   text-transform: uppercase;
   cursor: pointer;
+  -webkit-tap-highlight-color: transparent;
+  transition: background-color var(--t-fast) var(--step-2);
 }
 
 .item + .item {
-  box-shadow: calc(-1 * var(--px-sm)) 0 0 0 var(--c-line-control);
+  box-shadow: calc(-1 * var(--px)) 0 0 0 var(--seg-line);
 }
 
 .item:hover,
@@ -58,7 +84,7 @@
     :hover,
     .isHover
   ) {
-  background: var(--c-surface);
+  background: var(--seg-bg);
 }
 
 @media (forced-colors: active) {

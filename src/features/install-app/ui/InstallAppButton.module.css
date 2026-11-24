@@ -1,0 +1,21 @@
+/* Mobile: icon-only like theme toggle; desktop: icon + label */
+
+.root {
+  width: 36px;
+  padding-inline: 0;
+}
+
+.label {
+  display: none;
+}
+
+@media (min-width: 640px) {
+  .root {
+    width: auto;
+    padding-inline: 12px;
+  }
+
+  .label {
+    display: inline;
+  }
+}

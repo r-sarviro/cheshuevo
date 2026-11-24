@@ -4,6 +4,7 @@
   position: relative;
   z-index: var(--z-sticky);
   display: flex;
+  flex-wrap: wrap;
   align-items: center;
   gap: 8px 12px;
   padding: 12px var(--page-gutter);
@@ -13,9 +14,11 @@
 
 .nav {
   display: flex;
+  flex: 1 1 100%;
   flex-wrap: wrap;
+  order: 3;
   gap: 4px 16px;
-  margin-left: auto;
+  margin-left: 0;
 }
 
 .nav a {
@@ -45,7 +48,13 @@
   color: var(--c-ink-strong);
 }
 
-.localeSlot {
+.localeButton {
+  order: 2;
+  margin-block: var(--px);
+  margin-left: auto;
+}
+
+.localeSegment {
   display: none;
 }
 
@@ -54,6 +63,7 @@
 }
 
 .theme {
+  order: 2;
   margin-block: var(--px);
 }
 
@@ -63,8 +73,24 @@
     gap: 18px;
   }
 
-  .localeSlot {
-    display: contents;
+  .nav {
+    flex: 0 1 auto;
+    order: 0;
+    margin-left: auto;
+  }
+
+  .localeButton {
+    display: none;
+  }
+
+  .localeSegment {
+    display: inline-flex;
+    order: 0;
+    margin-block: var(--px);
+  }
+
+  .theme {
+    order: 0;
   }
 
   .themeText {

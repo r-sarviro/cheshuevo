@@ -159,12 +159,14 @@ const HomePage = () => {
       <SiteFooter
         brand={chrome.brand}
         brandHref={chrome.brandHref}
-        navItems={chrome.navItems}
-        navAriaLabel={chrome.footerNavAriaLabel}
         locale={chrome.locale}
         locales={chrome.locales}
         onLocaleChange={chrome.onLocaleChange}
         localeAriaLabel={chrome.footerLocaleAriaLabel}
+        theme={chrome.theme}
+        onThemeToggle={chrome.onThemeToggle}
+        themeLabel={chrome.themeLabel}
+        themeAriaLabel={chrome.themeAriaLabel}
       />
     </div>
   )

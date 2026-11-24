@@ -37,7 +37,6 @@ export function useSiteChrome() {
     onThemeToggle: toggleTheme,
     themeLabel: theme === 'night' ? t('ds.themeDay') : t('ds.themeNight'),
     themeAriaLabel: t('ds.theme'),
-    footerNavAriaLabel: t('landing.navFooter'),
     footerLocaleAriaLabel: t('landing.localeFooter'),
   }
 }
