@@ -1,0 +1,21 @@
+.heading {
+  margin: 0;
+}
+
+.lead {
+  margin: 0;
+  color: var(--c-ink-muted);
+  font: 400 var(--fs-small) / 1.45 var(--font-text);
+}
+
+/* Same rhythm as vitrina .px-panel > * + * (s-5). */
+.stack {
+  display: grid;
+  gap: var(--s-5);
+  min-width: 0;
+}
+
+/* Note brings its own margin; Panel already spaces via gap. */
+.flush > * {
+  margin: 0;
+}

@@ -1,7 +1,7 @@
 /* Port of .px-hero and hero-top overrides from sayt (vitrina) */
 
 .root {
-  --hero-h: clamp(460px, 76vh, 680px);
+  --hero-h: 100dvh;
   position: relative;
   display: flex;
   flex-direction: column;

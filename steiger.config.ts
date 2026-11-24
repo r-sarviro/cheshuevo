@@ -14,7 +14,7 @@ export default defineConfig([
     ],
   },
   {
-    // Слайсы пока только на smoke HomePage; включить после pages каталога/брони.
+    // Product slices still thin (one page each); revisit after more screens.
     rules: {
       'fsd/insignificant-slice': 'off',
     },

@@ -8,6 +8,19 @@
   animation: rise var(--t-appear) var(--step-4) both;
 }
 
+/* Nested in booking Panel: no second frame (Panel gap handles spacing). */
+.embedded {
+  margin: 0;
+  background: transparent;
+  box-shadow: none;
+  animation: none;
+  grid-template-columns: none;
+}
+
+.embedded .body {
+  padding: 0;
+}
+
 .root > * {
   min-width: 0;
 }
@@ -61,15 +74,15 @@
 }
 
 @media (min-width: 768px) {
-  .root {
+  .root:not(.embedded) {
     grid-template-columns: minmax(288px, 0.8fr) minmax(0, 1.4fr);
   }
 
-  .pic {
+  .root:not(.embedded) .pic {
     box-shadow: var(--px) 0 0 0 var(--c-line);
   }
 
-  .body {
+  .root:not(.embedded) .body {
     padding: 28px 30px 32px;
   }
 }

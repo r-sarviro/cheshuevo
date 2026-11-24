@@ -1,15 +1,14 @@
 /* Port of .px-panel */
 
 .root {
+  display: flex;
+  flex-direction: column;
+  gap: var(--s-5);
   min-width: 0;
   margin: var(--px) var(--px) calc(var(--px) + var(--block));
   padding: 18px 16px 22px;
   background: var(--c-surface);
   box-shadow: var(--frame), var(--shadow-block);
-}
-
-.root > * + * {
-  margin-top: var(--s-5);
 }
 
 @media (min-width: 640px) {

@@ -1,4 +1,4 @@
-export const THEME_STORAGE_KEY = 'cheshuevo-theme'
+export const THEME_STORAGE_KEY = 'drakonsk-theme'
 
 export const THEME_MODES = ['day', 'night'] as const
 
