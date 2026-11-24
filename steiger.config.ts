@@ -13,12 +13,10 @@ export default defineConfig([
       '**/dist/**',
     ],
   },
-
   {
-    // Каркас MVP: мало слайсов → ожидаемые срабатывания. Вернуть после entities/features.
+    // Product slices still thin (one page each); revisit after more screens.
     rules: {
       'fsd/insignificant-slice': 'off',
-      'fsd/no-segmentless-slices': 'off',
     },
   },
 ])

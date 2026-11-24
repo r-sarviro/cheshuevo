@@ -1,0 +1,49 @@
+/* Port of .px-foot row without nav — controls match header toggles */
+
+.root {
+  padding: var(--s-6) 0;
+  background: var(--c-sunk);
+  box-shadow: 0 calc(-1 * var(--px)) 0 0 var(--c-line);
+}
+
+.row {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 8px 12px;
+}
+
+.actions {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 8px 12px;
+  margin-left: auto;
+}
+
+.localeSegment {
+  display: none;
+}
+
+.themeText {
+  display: none;
+}
+
+@media (min-width: 640px) {
+  .row,
+  .actions {
+    gap: 18px;
+  }
+
+  .localeButton {
+    display: none;
+  }
+
+  .localeSegment {
+    display: inline-flex;
+  }
+
+  .themeText {
+    display: inline;
+  }
+}

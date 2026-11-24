@@ -1,0 +1,19 @@
+.root {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  margin: var(--px-sm);
+  padding: 5px 10px 5px 6px;
+  background: var(--tone-bg, var(--t-neutral-bg));
+  color: var(--tone-ink, var(--t-neutral-ink));
+  box-shadow: var(--frame-sm);
+  font: 500 var(--fs-small) / 1 var(--font-text);
+  white-space: nowrap;
+  vertical-align: middle;
+}
+
+@media (forced-colors: active) {
+  .root {
+    outline: 2px solid CanvasText;
+  }
+}

@@ -1,0 +1,20 @@
+.stack {
+  display: grid;
+  gap: var(--s-4);
+}
+
+.actions {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 4px 16px;
+}
+
+.timer {
+  font-family: var(--font-text);
+  font-variant-numeric: tabular-nums;
+  text-transform: none;
+  letter-spacing: 0;
+  font-weight: 500;
+  font-size: var(--fs-ui);
+}

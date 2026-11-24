@@ -14,6 +14,8 @@ export default tseslint.config(
       'playwright-report',
       'test-results',
       '.yarn',
+      // Ported vitrina generator; linted as opaque browser script.
+      'src/shared/ui/sprite/engine/pixelSprites.js',
     ],
   },
   js.configs.recommended,
@@ -47,6 +49,15 @@ export default tseslint.config(
     ],
     rules: {
       'react-refresh/only-export-components': 'off',
+    },
+  },
+  {
+    files: ['scripts/**/*.{js,mjs,cjs}'],
+    languageOptions: {
+      ecmaVersion: 2022,
+      globals: {
+        ...globals.node,
+      },
     },
   },
   eslintConfigPrettier,

@@ -1,0 +1,30 @@
+---
+description: Texts, copy, localization, or i18n — use react-i18next docs; never hardcode user-facing strings
+alwaysApply: false
+---
+
+# react-i18next / i18n
+
+When adding or changing UI text, copy, labels, messages, or localization setup.
+
+## Version source of truth
+
+1. Read `react-i18next` and `i18next` from `@package.json`.
+2. Use official docs: `https://react.i18next.com/` (and linked i18next docs when needed) for the installed majors (baseline hint: `react-i18next` **18**, `i18next` **27**).
+3. Before non-trivial i18n setup or API choices: open the docs — do not invent patterns from older majors.
+4. Cite concrete doc page URLs when recommending hooks, providers, or resource structure.
+
+## Localization policy (even with one language)
+
+The app may ship with a single locale for now, but **all user-facing strings must still go through i18n** so new languages can be added without rewriting UI.
+
+- Do not hardcode user-visible text in components (`Text`, buttons, titles, placeholders, alerts, empty states, errors shown to users).
+- Add keys to the locale resource files and render via `useTranslation` / `t(...)` (or project equivalents once set up).
+- Prefer stable, namespaced keys (e.g. `screen.home.title`) over free-form English as keys.
+- Interpolation and plurals: use i18next features from the docs, not string concatenation in components.
+- Developer-only / non-UI strings (logs, analytics event names, test ids) may stay outside i18n.
+
+## Preferences
+
+- Follow existing i18n setup in this project when present; extend it instead of introducing a second library.
+- If docs and memory conflict, the official react-i18next / i18next docs for this major win.

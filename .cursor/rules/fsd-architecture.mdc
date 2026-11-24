@@ -1,0 +1,27 @@
+---
+description: Project structure, layers, slices, or imports — follow Feature-Sliced Design and cite fsd.how
+alwaysApply: false
+---
+
+# Feature-Sliced Design
+
+When creating/moving modules, choosing layers, public APIs, or cross-module imports.
+
+## Source of truth
+
+1. Follow Feature-Sliced Design: `https://fsd.how/`.
+2. Before non-trivial structure decisions (new slice/layer, cross-import, public API shape): open the relevant FSD docs pages — do not invent a parallel architecture.
+3. Cite concrete `fsd.how` URLs when recommending structure or import rules.
+4. Enforcement config lives in `@steiger.config.mjs` (`@feature-sliced/steiger-plugin` recommended). Treat Steiger failures as architecture bugs to fix, not to silence casually.
+
+## Where code lives
+
+- Application feature code belongs under `src` (Steiger is run on `./src`).
+- Root RN/web entry files (`App.tsx`, `index.js`, `index.web.js`, native folders, `web/`) may stay outside slices as bootstrap — keep business UI and domain logic in FSD layers under `src`.
+
+## Core preferences (do not restate the whole handbook)
+
+- Respect FSD layers and import direction: higher layers may import lower; lower must not import higher.
+- Organize by slices/segments per docs; expose a clear public API (`index`) instead of deep cross-slice imports.
+- Prefer extending existing slices over dumping unrelated code into `shared` or a catch-all folder.
+- If FSD docs and memory conflict, the official docs win.

@@ -1,0 +1,24 @@
+---
+description: After changing src structure, layers, slices, or cross-module imports — run Steiger (yarn lint:fsd)
+alwaysApply: false
+---
+
+# FSD Steiger verification
+
+After adding/moving/renaming files under `src`, changing public APIs, or introducing cross-layer/cross-slice imports.
+
+## When to run
+
+Run Steiger after structural or import-boundary changes in `src`. Skip for purely native/config work with no `src` impact, and say so briefly.
+
+## How to verify
+
+1. From the project root, run `yarn lint:fsd` (`steiger ./src`, config `@steiger.config.mjs`).
+2. If Steiger reports violations, fix the architecture/imports to match FSD — do not broaden `ignores` unless the user asks.
+3. Re-run until clean (or until remaining issues are explicitly deferred by the user).
+4. Report briefly what was checked and the result.
+
+## Preferences
+
+- Prefer fixing layer/public-API boundaries over disabling rules.
+- For rule meaning, use FSD docs (`https://fsd.how/`) and Steiger/plugin docs; cite them when explaining a failure.

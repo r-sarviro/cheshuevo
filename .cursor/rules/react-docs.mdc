@@ -1,0 +1,20 @@
+---
+description: Official React docs — use version from package.json
+globs: '**/*.{ts,tsx,js,jsx}'
+alwaysApply: false
+---
+
+# React docs
+
+## Version source of truth
+
+1. Read `react` from `@package.json` before relying on API details.
+2. Use the official reference at `https://react.dev/reference/react` (and related react.dev pages) for the installed major (baseline hint: **19**).
+3. For non-trivial APIs, hooks, concurrent features, or upgrades: open the docs (fetch/search) — do not trust memory of older majors.
+4. Cite concrete doc page URLs in answers when recommending APIs or patterns.
+
+## Preferences
+
+- Prefer current React APIs documented for this project's version; do not suggest deprecated APIs from older majors without verifying they still apply.
+- When docs and training knowledge conflict, the official react.dev docs win.
+- Keep guidance tied to this repo's stack (React DOM + Vite); do not invent unrelated frameworks (e.g. React Native).

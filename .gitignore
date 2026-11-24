@@ -43,3 +43,6 @@ blob-report
 !.yarn/releases
 !.yarn/sdks
 !.yarn/versions
+
+# Local design / product docs (not for the repo)
+.docs/

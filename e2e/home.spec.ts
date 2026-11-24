@@ -1,10 +1,12 @@
 import { expect, test } from '@playwright/test'
 
-test('home page shows Cheshuevo brand', async ({ page }) => {
+test('home page shows landing hero and brand', async ({ page }) => {
   await page.goto('/')
 
-  await expect(page.getByRole('heading', { name: 'Чешуёво' })).toBeVisible()
   await expect(
-    page.getByText('Прокат драконов — выбирай, бронируй, летай'),
+    page.getByRole('heading', { name: 'Прокат драконов' }),
+  ).toBeVisible()
+  await expect(
+    page.getByRole('link', { name: 'Драконск' }).first(),
   ).toBeVisible()
 })

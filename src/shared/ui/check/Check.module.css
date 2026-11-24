@@ -1,0 +1,68 @@
+.root {
+  display: inline-flex;
+  align-items: flex-start;
+  gap: 12px;
+  min-height: 44px;
+  padding: 10px 0;
+  cursor: pointer;
+  font: 400 var(--fs-ui) / 1.4 var(--font-text);
+}
+
+.input {
+  flex: none;
+  width: 20px;
+  height: 20px;
+  margin: var(--px-sm);
+  border: 0;
+  border-radius: 0;
+  appearance: none;
+  background: var(--c-surface);
+  box-shadow: var(--frame-sm-control);
+  cursor: pointer;
+}
+
+.input:checked {
+  --tick: linear-gradient(var(--c-ink-strong), var(--c-ink-strong));
+  background:
+    var(--tick) 3px 8px / 2px 4px no-repeat,
+    var(--tick) 5px 10px / 2px 4px no-repeat,
+    var(--tick) 7px 12px / 2px 4px no-repeat,
+    var(--tick) 9px 10px / 2px 4px no-repeat,
+    var(--tick) 11px 8px / 2px 4px no-repeat,
+    var(--tick) 13px 6px / 2px 4px no-repeat,
+    var(--tick) 15px 4px / 2px 4px no-repeat,
+    var(--c-accent);
+}
+
+.input:disabled {
+  background-color: var(--c-sunk);
+  cursor: not-allowed;
+}
+
+.input:focus-visible,
+.input.isFocus {
+  outline: none;
+  filter: var(--focus-ring);
+  background-color: var(--c-highlight);
+  color: var(--c-ink-strong);
+  color-scheme: light;
+}
+
+.input:checked:focus-visible {
+  --tick: linear-gradient(var(--c-ink-strong), var(--c-ink-strong));
+  background:
+    var(--tick) 3px 8px / 2px 4px no-repeat,
+    var(--tick) 5px 10px / 2px 4px no-repeat,
+    var(--tick) 7px 12px / 2px 4px no-repeat,
+    var(--tick) 9px 10px / 2px 4px no-repeat,
+    var(--tick) 11px 8px / 2px 4px no-repeat,
+    var(--tick) 13px 6px / 2px 4px no-repeat,
+    var(--tick) 15px 4px / 2px 4px no-repeat,
+    var(--c-accent);
+}
+
+@media (forced-colors: active) {
+  .input {
+    outline: 2px solid CanvasText;
+  }
+}

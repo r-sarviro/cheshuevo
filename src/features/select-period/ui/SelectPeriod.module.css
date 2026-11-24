@@ -1,0 +1,87 @@
+/* Port of .px-period / .px-quote / .px-avail / .px-actions */
+
+.root {
+  display: grid;
+  gap: var(--s-4);
+  padding: 0;
+  border: 0;
+  min-width: 0;
+}
+
+.row {
+  display: grid;
+  grid-template-columns: minmax(0, 1.25fr) minmax(0, 1fr);
+  gap: 6px 10px;
+  margin: 0;
+  padding: 0;
+  border: 0;
+  min-width: 0;
+}
+
+.row legend {
+  grid-column: 1 / -1;
+  padding: 0;
+  margin-bottom: 6px;
+  font: 500 var(--fs-ui) / 1.3 var(--font-text);
+}
+
+.control {
+  padding-inline: 8px;
+  font-size: 1rem;
+}
+
+@media (min-width: 400px) {
+  .control {
+    padding-inline: 12px;
+    font-size: var(--fs-body);
+  }
+}
+
+.quote {
+  display: grid;
+  gap: 4px;
+  padding: 14px 16px;
+  background: var(--c-sunk);
+}
+
+.quoteLine {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 4px 16px;
+  margin: 0;
+}
+
+.quoteTotal {
+  font: 500 1.75rem / 1.1 var(--font-text);
+  font-variant-numeric: tabular-nums;
+}
+
+.quoteHint {
+  color: var(--c-ink-muted);
+}
+
+.avail {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  min-height: 28px;
+  margin: 0;
+  font: 500 var(--fs-ui) / 1.4 var(--font-text);
+}
+
+.availFree {
+  color: var(--c-accent-ink);
+}
+
+.availBusy {
+  color: var(--c-fire-ink);
+}
+
+.actions {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 4px 16px;
+}

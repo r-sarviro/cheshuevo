@@ -1,0 +1,22 @@
+.root {
+  background: var(--c-surface);
+  box-shadow: var(--frame), var(--shadow-block);
+}
+
+.flat {
+  box-shadow: var(--frame);
+}
+
+.sm {
+  box-shadow: var(--frame-sm), var(--shadow-block-sm);
+}
+
+.sm.flat {
+  box-shadow: var(--frame-sm);
+}
+
+@media (forced-colors: active) {
+  .root {
+    outline: 2px solid CanvasText;
+  }
+}

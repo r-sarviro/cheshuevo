@@ -1,0 +1,264 @@
+/*
+  Токены дизайн-системы. Один файл на обе поверхности: лендинг и админку.
+  День включён по умолчанию, ночь включается атрибутом data-theme="night" на <html>.
+  Имена ролевые: что цвет делает, а не как называется оттенок.
+  Значения и проверенный контраст описаны в osnovy/cveta.md.
+*/
+
+:root,
+[data-theme='day'] {
+  color-scheme: light;
+
+  /* Поверхности */
+  --c-bg: #fdf1e3; /* фон страницы, "Топлёное молоко" */
+  --c-surface: #fffaf3; /* карточки, поля, "Сливки" */
+  --c-sunk: #f6e4d0; /* углубление: шапка таблицы, дорожка календаря, неактивное поле */
+  --c-overlay: rgba(43, 35, 64, 0.55); /* затемнение под окном и панелью */
+
+  /* Текст */
+  --c-ink: #43365c; /* основной текст, "Чернослив" */
+  --c-ink-muted: #6a5c80; /* второстепенный текст, подсказки */
+  --c-ink-strong: #2b2340; /* текст на цветных заливках: кнопках, статусах */
+
+  /* Линии */
+  --c-line: #4b3f66; /* контур карточек и картинок */
+  --c-line-control: #4b3f66; /* граница полей и контурных кнопок */
+  --c-line-soft: #e6d2bc; /* тонкие разделители в таблицах и списках */
+  --c-shadow: #ebd5bf; /* тень-блок под карточкой */
+
+  /* Главный акцент: нефрит */
+  --c-accent: #4fb09b; /* заливка главной кнопки, выбранное */
+  --c-accent-deep: #2f8279; /* торец кнопки */
+  --c-accent-ink: #236a62; /* акцент текстом: ссылки, выбранная вкладка */
+  --c-accent-soft: #bfe6db; /* мягкая подложка акцента */
+  --c-highlight: #ffdf87; /* наведение на кнопку, текущая ячейка, "Масло" */
+
+  /* Огонь: ошибки и редкий акцент */
+  --c-fire: #f0764a; /* заливка, значок, черта "Сейчас" */
+  --c-fire-deep: #b8431b; /* торец опасной кнопки */
+  --c-fire-ink: #9e3511; /* текст ошибки */
+  --c-fire-soft: #ffd3b8; /* подложка ошибки и конфликта */
+  --c-focus: #4b3f66; /* фокус: цвет рамки, рамка в фокусе становится толще */
+
+  /* Краски для картинок и подложек. Текстом не набираются */
+  --c-peach: #ffc7a1;
+  --c-butter: #ffdf87;
+  --c-sky: #a3d8ef;
+  --c-moss: #9ccb7c;
+  --c-lavender: #b9a7e8;
+  --c-blush: #f59bb0; /* только щёки спрайтов */
+
+  /* Плитки под спрайтами в каталоге */
+  --c-tile-mint: #ddf3ee;
+  --c-tile-peach: #ffe3d3;
+  --c-tile-sky: #dcebfa;
+  --c-tile-butter: #fff0c9;
+  --c-tile-moss: #e2f3d8;
+  --c-tile-lavender: #e4dcf7;
+
+  /* Сетка-миллиметровка на фоне лендинга */
+  --c-grid: rgba(240, 118, 74, 0.07);
+  --c-grid-strong: rgba(240, 118, 74, 0.12);
+
+  /* Тона статусов и сообщений: подложка и текст на ней */
+  --t-jade-bg: #bfe6db;
+  --t-jade-ink: #2b2340; /* "Подтверждена", "Активен", "Забронирован", успех */
+  --t-sky-bg: #c4e3f3;
+  --t-sky-ink: #2b2340; /* "В аренде", справка */
+  --t-lavender-bg: #d6ccf2;
+  --t-lavender-ink: #2b2340; /* "Завершена" */
+  --t-neutral-bg: #e7dfd6;
+  --t-neutral-ink: #2b2340; /* "Отменена", "Не в каталоге" */
+  --t-peach-bg: #ffd3b8;
+  --t-peach-ink: #2b2340; /* "Неявка", конфликт, ошибка формы */
+  --t-butter-bg: #ffe9a6;
+  --t-butter-ink: #2b2340; /* "Не оплачено", предупреждение */
+  --t-moss-bg: #c9e3b3;
+  --t-moss-ink: #2b2340; /* "Оплачено", "Свободен" */
+  --t-sand-bg: #ebcb9a;
+  --t-sand-ink: #2b2340; /* "На обслуживании" */
+  --t-sand-hatch: #d9b27c; /* штриховка обслуживания */
+  --t-ember-bg: #f0764a;
+  --t-ember-ink: #2b2340; /* "Возврат просрочен" */
+
+  /* Боковое меню админки */
+  --c-side-bg: #43365c;
+  --c-side-ink: #f7eddd;
+  --c-side-muted: #c9bedd;
+  --c-side-hover: #54466f;
+  --c-side-line: #2b2340;
+}
+
+[data-theme='night'] {
+  color-scheme: dark;
+
+  --c-bg: #25223f; /* "Сумерки" */
+  --c-surface: #322d55; /* "Ночная чешуя" */
+  --c-sunk: #1f1c36;
+  --c-overlay: rgba(12, 10, 26, 0.7);
+
+  --c-ink: #f7eddd; /* "Лунное молоко" */
+  --c-ink-muted: #b9aed6;
+  --c-ink-strong: #2b2340;
+
+  --c-line: #14112a;
+  --c-line-control: #a99edb; /* ночью контур сливается с фоном, поэтому у полей своя светлая граница */
+  --c-line-soft: #47416f;
+  --c-shadow: #1a1731;
+
+  --c-accent: #6fd3ba; /* "Светлый нефрит" */
+  --c-accent-deep: #3e9c8b;
+  --c-accent-ink: #6fd3ba;
+  --c-accent-soft: #2c5c58;
+  --c-highlight: #ffe9a6; /* "Звезда" */
+
+  --c-fire: #ff9166; /* "Тлеющий уголёк" */
+  --c-fire-deep: #c4623f;
+  --c-fire-ink: #ff9166;
+  --c-fire-soft: #6e4640;
+  --c-focus: #a99edb;
+
+  --c-peach: #c98e86;
+  --c-butter: #ffe9a6;
+  --c-sky: #5e86c9;
+  --c-moss: #7dbb8a;
+  --c-lavender: #8b7bd8;
+  --c-blush: #f59bb0;
+
+  /* Ночью плитки каталога остаются светлыми, как окна с лампой: контур спрайта должен читаться */
+  --c-tile-mint: #9ccfc4;
+  --c-tile-peach: #e0a994;
+  --c-tile-sky: #93b5de;
+  --c-tile-butter: #e3cd8e;
+  --c-tile-moss: #a9cc98;
+  --c-tile-lavender: #a99bdd;
+
+  --c-grid: rgba(185, 167, 232, 0.07);
+  --c-grid-strong: rgba(185, 167, 232, 0.14);
+
+  --t-jade-bg: #2c5c58;
+  --t-jade-ink: #cff3e8;
+  --t-sky-bg: #2f4f7c;
+  --t-sky-ink: #d5e8fa;
+  --t-lavender-bg: #4a3f86;
+  --t-lavender-ink: #e2dbfa;
+  --t-neutral-bg: #413c5e;
+  --t-neutral-ink: #d9d2e6;
+  --t-peach-bg: #6e4640;
+  --t-peach-ink: #ffdcc8;
+  --t-butter-bg: #6b5a2a;
+  --t-butter-ink: #ffedb5;
+  --t-moss-bg: #3d5f3a;
+  --t-moss-ink: #d8f0c4;
+  --t-sand-bg: #54424a;
+  --t-sand-ink: #f0dccb;
+  --t-sand-hatch: #6a545c;
+  --t-ember-bg: #ff9166;
+  --t-ember-ink: #2b2340;
+
+  --c-side-bg: #1b1833;
+  --c-side-ink: #f7eddd;
+  --c-side-muted: #b9aed6;
+  --c-side-hover: #2a2648;
+  --c-side-line: #14112a;
+}
+
+:root {
+  /* Шрифты */
+  --font-display:
+    'Handjet', 'Rubik', system-ui, sans-serif; /* вывеска, заголовки, кнопки, метки */
+  --font-text:
+    'Rubik', system-ui, -apple-system, 'Segoe UI', sans-serif; /* весь рабочий текст */
+  --font-digits: var(
+    --font-text
+  ); /* цены, суммы, коды, счётчики: у Handjet ноль с точкой читается как восьмёрка */
+
+  /* Размеры Handjet. Мельче 1rem (16 px) пиксельный шрифт не ставим */
+  --fs-sign: clamp(3.5rem, 15vw, 9rem); /* вывеска на первом экране */
+  --fs-h1: clamp(2.125rem, 4.6vw, 3.625rem); /* 34–58 */
+  --fs-h2: clamp(1.75rem, 3vw, 2.25rem); /* 28–36 */
+  --fs-h3: 1.5rem; /* 24 */
+  --fs-name: 2rem; /* имя дракона в карточке */
+  --fs-price: 2rem; /* цена в каталоге, набирается --font-digits */
+  --fs-label: 1.125rem; /* метка, кнопка: 18 */
+  --fs-label-sm: 1rem; /* компактная кнопка админки: 16 */
+
+  /* Размеры Rubik */
+  --fs-lead: 1.25rem; /* 20, вводный абзац */
+  --fs-body: 1.0625rem; /* 17, текст лендинга */
+  --fs-ui: 0.9375rem; /* 15, текст админки и подписи полей */
+  --fs-small: 0.875rem; /* 14, таблицы, подсказки, статусы */
+  --fs-micro: 0.8125rem; /* 13, предел для лендинга */
+  --fs-caps: 0.75rem; /* 12, шапка таблицы прописными, предел для админки */
+
+  /* Пиксель: толщина контура и высота "ступеньки" */
+  --px: 3px; /* лендинг, карточки, окна */
+  --px-sm: 2px; /* статусы, плотные элементы админки */
+  --block: 6px; /* видимая высота тени-блока под карточкой */
+  --key: 4px; /* высота торца кнопки */
+  --ico: 1px; /* один пиксель значка: сетка 16x16 показывается в 16 px */
+
+  /* Отступы, шаг 4 px */
+  --s-1: 4px;
+  --s-2: 8px;
+  --s-3: 12px;
+  --s-4: 16px;
+  --s-5: 24px;
+  --s-6: 32px;
+  --s-7: 48px;
+  --s-8: 64px;
+  --s-9: 96px;
+
+  /* Сетка */
+  --page-max: 1240px;
+  --page-gutter: clamp(16px, 4vw, 48px);
+  --measure: 66ch; /* предел ширины абзаца */
+
+  /* Движение: кадры, а не плавность */
+  --t-press: 80ms; /* нажатие кнопки, один кадр */
+  --t-fast: 160ms; /* наведение, смена цвета */
+  --t-appear: 320ms; /* появление карточки и сообщения */
+  --step-1: steps(1);
+  --step-2: steps(2);
+  --step-4: steps(4);
+
+  /* Слои */
+  --z-sticky: 10;
+  --z-menu: 20;
+  --z-panel: 100;
+  --z-window: 140;
+  --z-toast: 200;
+}
+
+/* Рамки и тень-блок собраны из цветов темы, поэтому объявлены там же, где тема:
+   вложенный блок с data-theme получает свои рамки. */
+:root,
+[data-theme] {
+  /* Рамка "ступенькой": четыре полосы без угловых пикселей. Рисуется снаружи элемента */
+  --frame:
+    0 calc(-1 * var(--px)) 0 0 var(--c-line), 0 var(--px) 0 0 var(--c-line),
+    calc(-1 * var(--px)) 0 0 0 var(--c-line), var(--px) 0 0 0 var(--c-line);
+  --frame-control:
+    0 calc(-1 * var(--px)) 0 0 var(--c-line-control),
+    0 var(--px) 0 0 var(--c-line-control),
+    calc(-1 * var(--px)) 0 0 0 var(--c-line-control),
+    var(--px) 0 0 0 var(--c-line-control);
+  --frame-sm:
+    0 calc(-1 * var(--px-sm)) 0 0 var(--c-line),
+    0 var(--px-sm) 0 0 var(--c-line),
+    calc(-1 * var(--px-sm)) 0 0 0 var(--c-line),
+    var(--px-sm) 0 0 0 var(--c-line);
+  --frame-sm-control:
+    0 calc(-1 * var(--px-sm)) 0 0 var(--c-line-control),
+    0 var(--px-sm) 0 0 var(--c-line-control),
+    calc(-1 * var(--px-sm)) 0 0 0 var(--c-line-control),
+    var(--px-sm) 0 0 0 var(--c-line-control);
+  /* Тень-блок: сплошная плита под карточкой, без размытия */
+  --shadow-block: 0 calc(var(--px) + var(--block)) 0 0 var(--c-shadow);
+  --shadow-block-sm: 0 calc(var(--px-sm) + 4px) 0 0 var(--c-shadow);
+  /* Обводка фокуса: идёт по силуэту элемента, повторяет ступеньку рамки и торец кнопки. Ставится свойством filter */
+  --focus-ring: drop-shadow(var(--px-sm) 0 0 var(--c-focus))
+    drop-shadow(calc(-1 * var(--px-sm)) 0 0 var(--c-focus))
+    drop-shadow(0 var(--px-sm) 0 var(--c-focus))
+    drop-shadow(0 calc(-1 * var(--px-sm)) 0 var(--c-focus));
+}

@@ -1718,45 +1718,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"cheshuevo-landing@workspace:.":
-  version: 0.0.0-use.local
-  resolution: "cheshuevo-landing@workspace:."
-  dependencies:
-    "@eslint/js": "npm:^9.36.0"
-    "@feature-sliced/steiger-plugin": "npm:^0.5.6"
-    "@playwright/test": "npm:^1.55.0"
-    "@tanstack/react-query": "npm:^5.90.2"
-    "@testing-library/dom": "npm:^10.4.2"
-    "@testing-library/jest-dom": "npm:^6.8.0"
-    "@testing-library/react": "npm:^16.3.0"
-    "@testing-library/user-event": "npm:^14.6.1"
-    "@types/node": "npm:^24.19.2"
-    "@types/react": "npm:^19.3.0"
-    "@types/react-dom": "npm:^19.3.0"
-    "@vitejs/plugin-react": "npm:^4.5.2"
-    eslint: "npm:^9.36.0"
-    eslint-config-prettier: "npm:^10.1.8"
-    eslint-plugin-react-hooks: "npm:^5.2.0"
-    eslint-plugin-react-refresh: "npm:^0.4.20"
-    globals: "npm:^16.4.0"
-    i18next: "npm:^25.5.2"
-    jsdom: "npm:^27.0.0"
-    lottie-react: "npm:^2.4.1"
-    lucide-react: "npm:^0.544.0"
-    prettier: "npm:^3.6.2"
-    react: "npm:^19.3.1"
-    react-dom: "npm:^19.3.1"
-    react-i18next: "npm:^15.7.3"
-    react-router-dom: "npm:^7.9.1"
-    steiger: "npm:^0.5.11"
-    typescript: "npm:~5.9.2"
-    typescript-eslint: "npm:^8.44.0"
-    vite: "npm:^6.3.5"
-    vitest: "npm:^3.2.4"
-    zustand: "npm:^5.0.8"
-  languageName: unknown
-  linkType: soft
-
 "chokidar@npm:^4.0.3":
   version: 4.0.3
   resolution: "chokidar@npm:4.0.3"
@@ -2057,6 +2018,45 @@ __metadata:
   checksum: 10c0/10bee5aa514b2a9a37c87cd81268db607a2e933a050074abc2f6fa3da9080ebed206a320cbc123567f2c3087d22292853bdfdceaffdd4334ffe2af9510b29360
   languageName: node
   linkType: hard
+
+"drakonsk-landing@workspace:.":
+  version: 0.0.0-use.local
+  resolution: "drakonsk-landing@workspace:."
+  dependencies:
+    "@eslint/js": "npm:^9.36.0"
+    "@feature-sliced/steiger-plugin": "npm:^0.5.6"
+    "@playwright/test": "npm:^1.55.0"
+    "@tanstack/react-query": "npm:^5.90.2"
+    "@testing-library/dom": "npm:^10.4.2"
+    "@testing-library/jest-dom": "npm:^6.8.0"
+    "@testing-library/react": "npm:^16.3.0"
+    "@testing-library/user-event": "npm:^14.6.1"
+    "@types/node": "npm:^24.19.2"
+    "@types/react": "npm:^19.3.0"
+    "@types/react-dom": "npm:^19.3.0"
+    "@vitejs/plugin-react": "npm:^4.5.2"
+    eslint: "npm:^9.36.0"
+    eslint-config-prettier: "npm:^10.1.8"
+    eslint-plugin-react-hooks: "npm:^5.2.0"
+    eslint-plugin-react-refresh: "npm:^0.4.20"
+    globals: "npm:^16.4.0"
+    i18next: "npm:^25.5.2"
+    jsdom: "npm:^27.0.0"
+    lottie-react: "npm:^2.4.1"
+    prettier: "npm:^3.6.2"
+    react: "npm:^19.3.1"
+    react-dom: "npm:^19.3.1"
+    react-hook-form: "npm:^7.92.0"
+    react-i18next: "npm:^15.7.3"
+    react-router-dom: "npm:^7.9.1"
+    steiger: "npm:^0.5.11"
+    typescript: "npm:~5.9.2"
+    typescript-eslint: "npm:^8.44.0"
+    vite: "npm:^6.3.5"
+    vitest: "npm:^3.2.4"
+    zustand: "npm:^5.0.8"
+  languageName: unknown
+  linkType: soft
 
 "effector@npm:^23.4.2":
   version: 23.4.4
@@ -3014,15 +3014,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"lucide-react@npm:^0.544.0":
-  version: 0.544.0
-  resolution: "lucide-react@npm:0.544.0"
-  peerDependencies:
-    react: ^16.5.1 || ^17.0.0 || ^18.0.0 || ^19.0.0
-  checksum: 10c0/2503f8cf65e62915997073b6053423bf8091b9470cb397560b417ef2f1628ea162c49e821b787cf153afb86828482d941f051c3f2aa642a1fa58c3de227e0113
-  languageName: node
-  linkType: hard
-
 "lz-string@npm:^1.5.0":
   version: 1.5.0
   resolution: "lz-string@npm:1.5.0"
@@ -3469,6 +3460,19 @@ __metadata:
   peerDependencies:
     react: ^19.3.1
   checksum: 10c0/382700916313b2ebc46acee80642f300bb8601eac6a9e7fefade5b8b30e66b05bf3aaa56a3c964589fcd578d27b486e847470c2697d879264e766661ff49fac7
+  languageName: node
+  linkType: hard
+
+"react-hook-form@npm:^7.92.0":
+  version: 7.92.0
+  resolution: "react-hook-form@npm:7.92.0"
+  peerDependencies:
+    "@types/react": "*"
+    react: ^16.8.0 || ^17 || ^18 || ^19
+  peerDependenciesMeta:
+    "@types/react":
+      optional: true
+  checksum: 10c0/afed3d373c8f61bf019d82e92ff13dd41d39027b5c70332268f79a8bdcbea476798ffa9b4081df832dd6993e995092b2bc0788d24e51df173720ec57478a1631
   languageName: node
   linkType: hard
 

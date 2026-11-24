@@ -2,57 +2,50 @@
 
 **Язык:** [EN](README.md) · [RU](README.ru.md)
 
-Клиентский лендинг проката драконов (MVP): React, TypeScript, Vite, Feature-Sliced Design.
+Публичный лендинг проката драконов (MVP). Стек: React + TypeScript + Vite, архитектура Feature-Sliced Design.
 
-## Стек
-
-- React + TypeScript + Vite
-- Feature-Sliced Design
-- Vitest, Playwright
-
-## Требования
-
-- Node.js 20+
-- Yarn
-
-## Быстрый старт
-
-```bash
-cp .env.example .env
-# при необходимости укажите VITE_API_BASE_URL
-yarn
-yarn dev
-```
+Ручная проверка стабов: см. [DEMO.md](DEMO.md).
 
 ## Скрипты
 
-| Команда            | Назначение                       |
-| ------------------ | -------------------------------- |
-| `yarn dev`         | Dev-сервер                       |
-| `yarn build`       | Production-сборка                |
-| `yarn preview`     | Превью сборки                    |
-| `yarn lint`        | ESLint                           |
-| `yarn lint:fix`    | ESLint с автофиксом              |
-| `yarn lint:fsd`    | Steiger (Feature-Sliced Design)  |
-| `yarn format`      | Prettier                         |
-| `yarn typecheck`   | Проверка TypeScript              |
-| `yarn check`       | lint + lint:fsd + typecheck      |
-| `yarn test`        | Unit-тесты (Vitest)              |
-| `yarn test:watch`  | Unit-тесты в watch               |
-| `yarn test:e2e`    | E2E (Playwright)                 |
-| `yarn test:e2e:ui` | Playwright UI                    |
+| Команда             | Назначение                                                 |
+| ------------------- | ---------------------------------------------------------- |
+| `yarn dev`          | Dev-сервер                                                 |
+| `yarn build`        | Production-сборка (перед этим `prebuild` → `seo:generate`) |
+| `yarn seo:generate` | `robots.txt` + `sitemap.xml` по `VITE_SITE_URL`            |
+| `yarn preview`      | Превью сборки                                              |
+| `yarn lint`         | ESLint                                                     |
+| `yarn lint:fix`     | ESLint с автофиксом                                        |
+| `yarn lint:fsd`     | Steiger (FSD)                                              |
+| `yarn format`       | Prettier                                                   |
+| `yarn typecheck`    | Проверка TypeScript                                        |
+| `yarn check`        | lint + lint:fsd + typecheck                                |
+| `yarn test`         | Unit-тесты (Vitest)                                        |
+| `yarn test:watch`   | Unit-тесты в watch                                         |
+| `yarn test:e2e`     | E2E (Playwright)                                           |
+| `yarn test:e2e:ui`  | Playwright UI                                              |
 
 ## Окружение
 
-Скопируйте `.env.example` в `.env` и при необходимости укажите `VITE_API_BASE_URL`.
+Скопируйте `.env.example` в `.env` и при необходимости задайте переменные:
 
-## Структура проекта
+| Переменная          | Назначение                                    |
+| ------------------- | --------------------------------------------- |
+| `VITE_API_BASE_URL` | Базовый URL API (по умолчанию localhost:8080) |
+| `VITE_SITE_URL`     | Абсолютный origin сайта без trailing slash    |
+
+Для продакшена задайте реальный `VITE_SITE_URL` в `.env` (сейчас в `.env.example`: `https://drakonsk.ru`). От него зависят `canonical` / `og:url` и генерация `public/robots.txt` + `public/sitemap.xml`.
+
+## Структура (FSD)
 
 ```text
 src/
   app/        # entry, providers, routes, global styles
-  pages/      # страницы (home)
-  shared/     # api, config/i18n, model
+  pages/      # home (лендинг), dragon-booking, not-found
+  widgets/    # hero, site-header/footer, catalog, booking-wizard
+  features/   # select-period, booking-contacts, verify-email
+  entities/   # dragon, booking (+ stubs)
+  shared/     # api, config/i18n, model, ui-kit
 ```
 
 ## Лицензия

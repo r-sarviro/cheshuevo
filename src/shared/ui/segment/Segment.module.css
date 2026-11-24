@@ -1,0 +1,94 @@
+/* Ghost-button chrome: same pixel frame + key drop as Button size=sm */
+
+.root {
+  --seg-bg: var(--c-surface);
+  --seg-ink: var(--c-ink);
+  --seg-key: var(--c-shadow);
+  --seg-line: var(--c-line-control);
+  --seg-drop: calc(var(--px) + var(--key));
+
+  position: relative;
+  display: inline-flex;
+  align-items: stretch;
+  margin: var(--px) var(--px) calc(var(--px) * 2 + var(--key));
+  border: 0;
+  border-radius: 0;
+  background: var(--seg-bg);
+  color: var(--seg-ink);
+  box-shadow:
+    0 calc(-1 * var(--px)) 0 0 var(--seg-line),
+    0 var(--px) 0 0 var(--seg-line),
+    calc(-1 * var(--px)) 0 0 0 var(--seg-line),
+    var(--px) 0 0 0 var(--seg-line),
+    0 var(--seg-drop) 0 0 var(--seg-key),
+    calc(-1 * var(--px)) var(--seg-drop) 0 0 var(--seg-line),
+    var(--px) var(--seg-drop) 0 0 var(--seg-line),
+    0 calc(var(--seg-drop) + var(--px)) 0 0 var(--seg-line);
+}
+
+.item {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 36px;
+  min-height: 36px;
+  padding: 6px 12px;
+  border: 0;
+  border-radius: 0;
+  background: none;
+  color: inherit;
+  font: 700 var(--fs-label-sm) / 1 var(--font-display);
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  cursor: pointer;
+  -webkit-tap-highlight-color: transparent;
+  transition: background-color var(--t-fast) var(--step-2);
+}
+
+.item + .item {
+  box-shadow: calc(-1 * var(--px)) 0 0 0 var(--seg-line);
+}
+
+.item:hover,
+.item.isHover {
+  background: var(--c-highlight);
+  color: var(--c-ink-strong);
+}
+
+.item[aria-pressed='true'],
+.item[aria-current='true'],
+.item[aria-selected='true'] {
+  background: var(--c-accent);
+  color: var(--c-ink-strong);
+}
+
+.item:focus-visible,
+.item.isFocus {
+  outline: none;
+  filter: var(--focus-ring);
+  position: relative;
+  z-index: 1;
+}
+
+.item:focus-visible:not(
+    [aria-pressed='true'],
+    [aria-current='true'],
+    [aria-selected='true'],
+    :hover,
+    .isHover
+  ),
+.item.isFocus:not(
+    [aria-pressed='true'],
+    [aria-current='true'],
+    [aria-selected='true'],
+    :hover,
+    .isHover
+  ) {
+  background: var(--seg-bg);
+}
+
+@media (forced-colors: active) {
+  .root {
+    outline: 2px solid CanvasText;
+  }
+}

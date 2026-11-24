@@ -1,0 +1,62 @@
+---
+description: TypeScript/TSX naming and component style conventions for this project
+globs: '**/*.{ts,tsx}'
+alwaysApply: false
+---
+
+# TypeScript / TSX style
+
+Apply to `.ts` / `.tsx` in this project. Extend this rule over time; do not invent a parallel style.
+
+## Interfaces and types
+
+- Prefer `interface` for component/object props shapes.
+- Name interfaces with an `I` prefix so exports read as interfaces: `IComponentNameProps`, `IUser`.
+- Name `type` aliases with a `T` prefix: `TId`, `TThemeMode`.
+- Component props interface name matches the component: `ComponentName` → `IComponentNameProps`.
+
+## Naming
+
+- Components: `PascalCase` (`ComponentName`).
+- Module-level / exported constants (config, maps, flags): `UPPER_SNAKE_CASE` (`MAX_RETRY_COUNT`, `DEFAULT_LOCALE`).
+- Do not rename React components or hooks to `UPPER_SNAKE_CASE`. Hooks stay `useSomething`; local variables stay `camelCase`.
+
+## Component shape
+
+Prefer this pattern (default export):
+
+```tsx
+const ComponentName = (props: IComponentNameProps) => {
+  const { name, ...rest } = props
+
+  // ...
+
+  return <View {...rest}>{name}</View>
+}
+
+export default ComponentName
+```
+
+- Take a single `props` argument typed as `IComponentNameProps`.
+- Destructure needed fields from `props` inside the body; put unused/pass-through fields in a rest object (e.g. `rest`), not by redeclaring `props`.
+- Use `const` arrow components + `export default` (re-export as named from the slice `index` when needed).
+
+## Comments (JSDoc)
+
+- Components, widgets, screens, and other public UI/modules get a **laconic one-line JSDoc** stating what it is and why it exists.
+- The same for key decisions (non-obvious invariants, trade-offs, non-trivial algorithms).
+- Local/inline comments while implementing routine features or fixes are **forbidden**, unless they explain critical logic that would otherwise be easy to break.
+
+```tsx
+/** Верхняя панель: год, фокус и быстрые статы жизни. */
+const LifeTopBar = (props: ILifeTopBarProps) => {
+```
+
+## JSX conditionals
+
+- For optional render in JSX prefer `{isTrue && <>...</>}`, not `{isTrue ? <>...</> : null}`.
+- Use a ternary only when both branches render real UI (`isTrue ? <A /> : <B />`).
+
+## Preferences
+
+- Library types from dependencies keep their original names (`TextProps`, `StaticScreenProps`, etc.); do not rename imported third-party types with `I`/`T`. Aliases of library types in this project still use the `T` / `I` prefixes (`TStartScreenProps`).

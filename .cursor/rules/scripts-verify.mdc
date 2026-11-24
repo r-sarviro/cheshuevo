@@ -1,0 +1,33 @@
+---
+description: After code or test changes — run matching yarn scripts from package.json (check / test / e2e)
+alwaysApply: false
+---
+
+# Scripts verification
+
+After implementing features, fixes, or refactors that affect source, configs, or tests — verify with the matching scripts from `@package.json` before considering the work done.
+
+## When to run
+
+| When                                                                    | Command              |
+| ----------------------------------------------------------------------- | -------------------- |
+| Changes under `src` or verification configs (eslint, tsconfig, steiger) | `yarn check`         |
+| Unit tests or tested logic touched                                      | also `yarn test`     |
+| E2E specs or a critical user flow touched                               | also `yarn test:e2e` |
+
+Skip only when the change cannot affect these checks (e.g. Cursor rules / docs-only with no `src` impact), and say so briefly.
+
+## Do not run automatically
+
+Do not auto-run: `format`, `format:check`, `lint:fix`, `test:watch`, `test:e2e:ui` (write / interactive / redundant with `yarn check`).
+
+## How to verify
+
+1. From the project root, run the commands from the matrix above that match the change.
+2. If a command fails, fix the issue and re-run until clean (or until remaining failures are explicitly deferred by the user).
+3. Report briefly which scripts ran and the result.
+
+## Preferences
+
+- Prefer fixing failures over skipping or weakening checks.
+- `yarn check` already includes lint + Steiger + typecheck; do not duplicate a full Steiger-only run unless the change is structural-only and `fsd-steiger-verify` applies in isolation.
