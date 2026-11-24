@@ -1,21 +1,30 @@
 import { render, screen } from '@testing-library/react'
+import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
 import { MemoryRouter } from 'react-router-dom'
 import { describe, expect, it } from 'vitest'
 
 import HomePage from './HomePage'
 
-describe('HomePage', () => {
-  it('renders the sayt showcase intro title', () => {
-    render(
+function renderHome() {
+  const client = new QueryClient({
+    defaultOptions: { queries: { retry: false } },
+  })
+  return render(
+    <QueryClientProvider client={client}>
       <MemoryRouter>
         <HomePage />
-      </MemoryRouter>,
-    )
+      </MemoryRouter>
+    </QueryClientProvider>,
+  )
+}
+
+describe('HomePage', () => {
+  it('renders the landing hero title', async () => {
+    renderHome()
 
     expect(
-      screen.getByRole('heading', {
-        level: 1,
-        name: 'Лендинг: каталог и бронь',
+      await screen.findByRole('heading', {
+        name: 'Прокат драконов',
       }),
     ).toBeInTheDocument()
   })

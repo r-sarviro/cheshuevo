@@ -2,6 +2,8 @@
 
 Публичный лендинг проката драконов (MVP). Стек: React + TypeScript + Vite, архитектура Feature-Sliced Design.
 
+Ручная проверка стабов: см. [DEMO.md](DEMO.md).
+
 ## Скрипты
 
 | Команда            | Назначение                  |
@@ -29,9 +31,9 @@
 ```text
 src/
   app/        # entry, providers, routes, global styles
-  pages/      # страницы (home = smoke блоков)
-  widgets/    # site-header, site-footer, dragon-catalog
+  pages/      # home (лендинг), dragon-booking, not-found
+  widgets/    # hero, site-header/footer, catalog, booking-wizard
   features/   # select-period, booking-contacts, verify-email
-  entities/   # dragon, booking
+  entities/   # dragon, booking (+ stubs)
   shared/     # api, config/i18n, model, ui-kit
 ```

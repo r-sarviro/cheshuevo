@@ -1,7 +1,6 @@
 /* Port of .px-foot */
 
 .root {
-  margin-top: var(--s-8);
   padding: var(--s-6) 0 var(--s-7);
   background: var(--c-sunk);
   box-shadow: 0 calc(-1 * var(--px)) 0 0 var(--c-line);
@@ -50,23 +49,4 @@
 
 .locale {
   margin-left: auto;
-}
-
-.credits {
-  margin: var(--s-5) 0 0;
-  max-width: var(--measure);
-  color: var(--c-ink-muted);
-  font-size: var(--fs-micro);
-  line-height: 1.5;
-}
-
-.credits a {
-  color: inherit;
-}
-
-.credits a:is(:focus-visible) {
-  outline: var(--px-sm) solid var(--c-highlight);
-  outline-offset: 0;
-  background: var(--c-highlight);
-  color: var(--c-ink-strong);
 }

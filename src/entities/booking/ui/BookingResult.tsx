@@ -31,6 +31,8 @@ export interface IBookingResultProps {
   periodText: ReactNode
   totalText: ReactNode
   paymentText: ReactNode
+  /** Flush into a parent Panel (no second frame / single column). */
+  embedded?: boolean
   className?: string
 }
 
@@ -48,10 +50,17 @@ const BookingResult = (props: IBookingResultProps) => {
     periodText,
     totalText,
     paymentText,
+    embedded = false,
     className,
   } = props
 
-  const rootClass = [styles.root, className].filter(Boolean).join(' ')
+  const rootClass = [
+    styles.root,
+    embedded ? styles.embedded : null,
+    className,
+  ]
+    .filter(Boolean)
+    .join(' ')
   const bookingBadge = BOOKING_STATUS_TO_BADGE[booking.status]
   const paymentBadge = PAYMENT_STATUS_TO_BADGE[booking.paymentStatus]
 

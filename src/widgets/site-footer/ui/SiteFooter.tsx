@@ -22,11 +22,10 @@ export interface ISiteFooterProps {
   onLocaleChange?: (code: string) => void
   localeAriaLabel?: string
   navAriaLabel?: string
-  credits?: ReactNode
   className?: string
 }
 
-/** Landing footer: brand, nav, locale, optional credits. */
+/** Landing footer: brand, nav, locale. */
 const SiteFooter = (props: ISiteFooterProps) => {
   const {
     brand,
@@ -37,7 +36,6 @@ const SiteFooter = (props: ISiteFooterProps) => {
     onLocaleChange,
     localeAriaLabel,
     navAriaLabel,
-    credits,
     className,
   } = props
 
@@ -75,7 +73,6 @@ const SiteFooter = (props: ISiteFooterProps) => {
             </Segment>
           ) : null}
         </div>
-        {credits ? <p className={styles.credits}>{credits}</p> : null}
       </Wrap>
     </footer>
   )
