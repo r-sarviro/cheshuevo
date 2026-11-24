@@ -1,47 +1,53 @@
-# Чешуёво — клиентский лендинг
+# Cheshuevo — client landing
 
-Публичный лендинг проката драконов (MVP). Стек: React + TypeScript + Vite, архитектура Feature-Sliced Design.
+**Language:** [EN](README.md) · [RU](README.ru.md)
 
-Ручная проверка стабов: см. [DEMO.md](DEMO.md).
+Client landing for a dragon rental MVP: React, TypeScript, Vite, Feature-Sliced Design.
 
-## Скрипты
+Manual stub check: see [DEMO.md](DEMO.md).
 
-| Команда             | Назначение                                                 |
+## Scripts
+
+| Command             | Purpose                                                    |
 | ------------------- | ---------------------------------------------------------- |
-| `yarn dev`          | Dev-сервер                                                 |
-| `yarn build`        | Production-сборка (перед этим `prebuild` → `seo:generate`) |
-| `yarn seo:generate` | `robots.txt` + `sitemap.xml` по `VITE_SITE_URL`            |
-| `yarn preview`      | Превью сборки                                              |
+| `yarn dev`          | Dev server                                                 |
+| `yarn build`        | Production build (runs `prebuild` → `seo:generate`)        |
+| `yarn seo:generate` | `robots.txt` + `sitemap.xml` from `VITE_SITE_URL`          |
+| `yarn preview`      | Preview production build                                   |
 | `yarn lint`         | ESLint                                                     |
-| `yarn lint:fix`     | ESLint с автофиксом                                        |
+| `yarn lint:fix`     | ESLint with autofix                                        |
 | `yarn lint:fsd`     | Steiger (FSD)                                              |
 | `yarn format`       | Prettier                                                   |
-| `yarn typecheck`    | Проверка TypeScript                                        |
+| `yarn typecheck`    | TypeScript check                                           |
 | `yarn check`        | lint + lint:fsd + typecheck                                |
-| `yarn test`         | Unit-тесты (Vitest)                                        |
-| `yarn test:watch`   | Unit-тесты в watch                                         |
+| `yarn test`         | Unit tests (Vitest)                                        |
+| `yarn test:watch`   | Unit tests in watch mode                                   |
 | `yarn test:e2e`     | E2E (Playwright)                                           |
 | `yarn test:e2e:ui`  | Playwright UI                                              |
 
-## Окружение
+## Environment
 
-Скопируйте `.env.example` в `.env` и при необходимости задайте переменные:
+Copy `.env.example` to `.env` and set variables as needed:
 
-| Переменная          | Назначение                                    |
+| Variable            | Purpose                                       |
 | ------------------- | --------------------------------------------- |
-| `VITE_API_BASE_URL` | Базовый URL API (по умолчанию localhost:8080) |
-| `VITE_SITE_URL`     | Абсолютный origin сайта без trailing slash    |
+| `VITE_API_BASE_URL` | API base URL (default localhost:8080)         |
+| `VITE_SITE_URL`     | Absolute site origin without trailing slash   |
 
-Для продакшена задайте реальный `VITE_SITE_URL` в `.env` (сейчас в `.env.example`: `https://drakonsk.ru`). От него зависят `canonical` / `og:url` и генерация `public/robots.txt` + `public/sitemap.xml`.
+For production set a real `VITE_SITE_URL` in `.env` (`.env.example` currently has `https://drakonsk.ru`). It drives `canonical` / `og:url` and generation of `public/robots.txt` + `public/sitemap.xml`.
 
-## Структура (FSD)
+## Project structure
 
 ```text
 src/
   app/        # entry, providers, routes, global styles
-  pages/      # home (лендинг), dragon-booking, not-found
+  pages/      # home (landing), dragon-booking, not-found
   widgets/    # hero, site-header/footer, catalog, booking-wizard
   features/   # select-period, booking-contacts, verify-email
   entities/   # dragon, booking (+ stubs)
   shared/     # api, config/i18n, model, ui-kit
 ```
+
+## License
+
+MIT
