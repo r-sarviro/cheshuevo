@@ -12,6 +12,8 @@ export interface IButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
   block?: boolean
   iconOnly?: boolean
   loading?: boolean
+  /** Demo/static pressed look (vitrina is-pressed). */
+  pressed?: boolean
   children?: ReactNode
 }
 
@@ -23,6 +25,7 @@ const Button = (props: IButtonProps) => {
     block = false,
     iconOnly = false,
     loading = false,
+    pressed = false,
     disabled,
     className,
     children,
@@ -38,6 +41,7 @@ const Button = (props: IButtonProps) => {
     block ? styles.block : '',
     iconOnly ? styles.iconOnly : '',
     loading ? styles.isLoading : '',
+    pressed ? styles.isPressed : '',
     className,
   ]
     .filter(Boolean)

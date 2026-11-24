@@ -63,6 +63,7 @@ const DragonSprite = (props: IDragonSpriteProps) => {
     styles.root,
     name === 'mascot' ? styles.mascot : '',
     name === 'mascot' && mascotSize === 'lg' ? styles.mascotLg : '',
+    name === 'loader' ? styles.loader : '',
     fit ? styles.fit : '',
     className,
   ]

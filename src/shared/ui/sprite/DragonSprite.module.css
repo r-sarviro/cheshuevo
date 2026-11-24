@@ -11,6 +11,11 @@
   height: 160px;
 }
 
+.loader {
+  width: 96px;
+  height: 96px;
+}
+
 @media (min-width: 640px) {
   .mascotLg {
     width: 408px;
