@@ -5,6 +5,8 @@
   "type": "module",
   "scripts": {
     "dev": "vite",
+    "seo:generate": "node scripts/generate-seo-static.mjs",
+    "prebuild": "yarn seo:generate",
     "build": "tsc -b && vite build",
     "preview": "vite preview",
     "lint": "eslint .",

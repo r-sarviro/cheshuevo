@@ -1,6 +1,7 @@
 import { useTranslation } from 'react-i18next'
 import { useNavigate } from 'react-router-dom'
 
+import { useDocumentMeta } from '@/shared/lib/document-meta'
 import { Button } from '@/shared/ui/button'
 import { EmptyState } from '@/shared/ui/empty-state'
 import { Icon } from '@/shared/ui/icon'
@@ -17,6 +18,12 @@ const NotFoundPage = () => {
   const { t } = useTranslation()
   const chrome = useSiteChrome()
   const navigate = useNavigate()
+
+  useDocumentMeta({
+    title: t('seo.notFound.title'),
+    description: t('seo.notFound.description'),
+    noIndex: true,
+  })
 
   return (
     <div className={styles.page}>

@@ -1,6 +1,7 @@
 import { useTranslation } from 'react-i18next'
 
 import { DragonCard, useDragonsQuery } from '@/entities/dragon'
+import { useDocumentMeta } from '@/shared/lib/document-meta'
 import { Button } from '@/shared/ui/button'
 import { EmptyState } from '@/shared/ui/empty-state'
 import { Icon } from '@/shared/ui/icon'
@@ -18,6 +19,12 @@ const HomePage = () => {
   const { t } = useTranslation()
   const chrome = useSiteChrome()
   const dragonsQuery = useDragonsQuery()
+
+  useDocumentMeta({
+    title: t('seo.home.title'),
+    description: t('seo.home.description'),
+    canonicalPath: '/',
+  })
 
   return (
     <div className={styles.page}>
