@@ -1,0 +1,21 @@
+---
+description: Routing, navigation, loaders/actions, or links — use React Router docs
+alwaysApply: false
+---
+
+# React Router docs
+
+When adding or changing routes, navigation, links, loaders, actions, or router setup.
+
+## Version source of truth
+
+1. Read `react-router-dom` from `@package.json` before relying on API details.
+2. Use official docs: `https://reactrouter.com/home` (and linked reactrouter.com pages) for the installed major (baseline hint: **7**).
+3. Before non-trivial routing, data APIs, or upgrades: open the docs — do not invent patterns from older majors (e.g. v5 / early v6).
+4. Cite concrete doc page URLs when recommending APIs, route shapes, or navigation patterns.
+
+## Preferences
+
+- Prefer current React Router APIs documented for this project's version; do not suggest deprecated APIs from older majors without verifying they still apply.
+- Follow existing router conventions in this project (`src/app` routes) when present; extend them instead of introducing a parallel router.
+- When docs and training knowledge conflict, the official React Router docs for this major win.

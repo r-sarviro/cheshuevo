@@ -1,0 +1,21 @@
+---
+description: Forms, validation, or controlled/uncontrolled fields — use React Hook Form docs
+alwaysApply: false
+---
+
+# React Hook Form docs
+
+When adding or changing forms, field registration, validation, submit handlers, or form state.
+
+## Version source of truth
+
+1. Read `react-hook-form` from `@package.json` before relying on API details.
+2. Use official docs: `https://react-hook-form.com/` (and linked API/guide pages) for the installed major (baseline hint: **7**).
+3. Before non-trivial form setup, validation schemas, or upgrades: open the docs — do not invent patterns from older majors.
+4. Cite concrete doc page URLs when recommending hooks, Controller usage, or validation strategies.
+
+## Preferences
+
+- Prefer current React Hook Form APIs documented for this project's version; do not suggest deprecated APIs from older majors without verifying they still apply.
+- Follow existing form setup in this project when present; extend it instead of introducing a second forms library.
+- When docs and training knowledge conflict, the official React Hook Form docs for this major win.

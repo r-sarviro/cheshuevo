@@ -1745,6 +1745,7 @@ __metadata:
     prettier: "npm:^3.6.2"
     react: "npm:^19.3.1"
     react-dom: "npm:^19.3.1"
+    react-hook-form: "npm:^7.92.0"
     react-i18next: "npm:^15.7.3"
     react-router-dom: "npm:^7.9.1"
     steiger: "npm:^0.5.11"
@@ -3459,6 +3460,19 @@ __metadata:
   peerDependencies:
     react: ^19.3.1
   checksum: 10c0/382700916313b2ebc46acee80642f300bb8601eac6a9e7fefade5b8b30e66b05bf3aaa56a3c964589fcd578d27b486e847470c2697d879264e766661ff49fac7
+  languageName: node
+  linkType: hard
+
+"react-hook-form@npm:^7.92.0":
+  version: 7.92.0
+  resolution: "react-hook-form@npm:7.92.0"
+  peerDependencies:
+    "@types/react": "*"
+    react: ^16.8.0 || ^17 || ^18 || ^19
+  peerDependenciesMeta:
+    "@types/react":
+      optional: true
+  checksum: 10c0/afed3d373c8f61bf019d82e92ff13dd41d39027b5c70332268f79a8bdcbea476798ffa9b4081df832dd6993e995092b2bc0788d24e51df173720ec57478a1631
   languageName: node
   linkType: hard
 
