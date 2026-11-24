@@ -1,0 +1,70 @@
+/* Port of .px-back, .px-dpage*, .px-price from vitrina sayt.css */
+
+.back {
+  margin-bottom: var(--s-3);
+}
+
+.root {
+  display: grid;
+  gap: var(--s-6);
+  align-items: start;
+}
+
+.root > * {
+  min-width: 0;
+}
+
+.pic {
+  height: 240px;
+  margin: var(--px) var(--px) calc(var(--px) + var(--block));
+  box-shadow: var(--frame), var(--shadow-block);
+}
+
+.about {
+  margin: 14px 0 0;
+}
+
+.rate {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: 6px 14px;
+  margin: 18px 0 0;
+}
+
+.rateHint {
+  max-width: 40ch;
+}
+
+.price {
+  margin: 0;
+  color: var(--c-ink-muted);
+  font-size: var(--fs-small);
+  white-space: nowrap;
+}
+
+.priceStrong {
+  color: var(--c-ink);
+  font: 700 var(--fs-price) / 1 var(--font-digits);
+  font-variant-numeric: tabular-nums;
+}
+
+.title {
+  margin-top: 22px;
+}
+
+@media (min-width: 1024px) {
+  .root {
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1.05fr);
+    gap: var(--s-7);
+  }
+
+  .side {
+    position: sticky;
+    top: var(--s-5);
+  }
+
+  .pic {
+    height: 360px;
+  }
+}

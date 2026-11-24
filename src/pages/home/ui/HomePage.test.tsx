@@ -5,7 +5,7 @@ import { describe, expect, it } from 'vitest'
 import HomePage from './HomePage'
 
 describe('HomePage', () => {
-  it('renders the building-blocks smoke title', () => {
+  it('renders the sayt showcase intro title', () => {
     render(
       <MemoryRouter>
         <HomePage />
@@ -13,7 +13,10 @@ describe('HomePage', () => {
     )
 
     expect(
-      screen.getByRole('heading', { level: 1, name: 'Блоки для лендинга' }),
+      screen.getByRole('heading', {
+        level: 1,
+        name: 'Лендинг: каталог и бронь',
+      }),
     ).toBeInTheDocument()
   })
 })
