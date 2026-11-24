@@ -52,6 +52,11 @@ const SiteHeader = (props: ISiteHeaderProps) => {
   const location = useLocation()
   const rootClass = [styles.root, className].filter(Boolean).join(' ')
   const night = theme === 'night'
+  const localeIndex = locales.findIndex((item) => item.code === locale)
+  const nextLocale =
+    locales.length > 0
+      ? locales[(localeIndex >= 0 ? localeIndex + 1 : 0) % locales.length]
+      : undefined
 
   return (
     <header className={rootClass}>
@@ -75,8 +80,23 @@ const SiteHeader = (props: ISiteHeaderProps) => {
         <div className={styles.nav} />
       )}
       {locales.length > 0 && onLocaleChange && localeAriaLabel ? (
-        <div className={styles.localeSlot}>
-          <Segment aria-label={localeAriaLabel}>
+        <>
+          {nextLocale ? (
+            <Button
+              className={styles.localeButton}
+              variant="ghost"
+              size="sm"
+              type="button"
+              aria-label={localeAriaLabel}
+              onClick={() => onLocaleChange(nextLocale.code)}
+            >
+              {nextLocale.label}
+            </Button>
+          ) : null}
+          <Segment
+            className={styles.localeSegment}
+            aria-label={localeAriaLabel}
+          >
             {locales.map((item) => (
               <SegmentItem
                 key={item.code}
@@ -87,7 +107,7 @@ const SiteHeader = (props: ISiteHeaderProps) => {
               </SegmentItem>
             ))}
           </Segment>
-        </div>
+        </>
       ) : null}
       {onThemeToggle ? (
         <Button

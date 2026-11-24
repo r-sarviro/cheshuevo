@@ -47,7 +47,9 @@ const NotFoundPage = () => {
           <EmptyState
             picture={<Icon name="cloud" xl />}
             pictureStyle={{ background: 'var(--c-tile-sky)' }}
-            heading={<Typography variant="h3">{t('notFound.title')}</Typography>}
+            heading={
+              <Typography variant="h3">{t('notFound.title')}</Typography>
+            }
             action={
               <Button type="button" onClick={() => void navigate(HOME_PATH)}>
                 {t('booking.toCatalog')}
@@ -61,12 +63,14 @@ const NotFoundPage = () => {
       <SiteFooter
         brand={chrome.brand}
         brandHref={chrome.brandHref}
-        navItems={chrome.navItems}
-        navAriaLabel={chrome.footerNavAriaLabel}
         locale={chrome.locale}
         locales={chrome.locales}
         onLocaleChange={chrome.onLocaleChange}
         localeAriaLabel={chrome.footerLocaleAriaLabel}
+        theme={chrome.theme}
+        onThemeToggle={chrome.onThemeToggle}
+        themeLabel={chrome.themeLabel}
+        themeAriaLabel={chrome.themeAriaLabel}
       />
     </div>
   )

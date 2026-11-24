@@ -72,9 +72,7 @@ const DragonBookingPage = () => {
         : {
             title: t('seo.home.title'),
             description: t('seo.home.description'),
-            canonicalPath: hasValidDragonId
-              ? dragonPath(dragonId)
-              : undefined,
+            canonicalPath: hasValidDragonId ? dragonPath(dragonId) : undefined,
           },
   )
 
@@ -131,10 +129,7 @@ const DragonBookingPage = () => {
                 <Typography variant="h3">{t('notFound.title')}</Typography>
               }
               action={
-                <Button
-                  type="button"
-                  onClick={() => void navigate(HOME_PATH)}
-                >
+                <Button type="button" onClick={() => void navigate(HOME_PATH)}>
                   {t('booking.toCatalog')}
                 </Button>
               }
@@ -184,12 +179,14 @@ const DragonBookingPage = () => {
       <SiteFooter
         brand={chrome.brand}
         brandHref={chrome.brandHref}
-        navItems={chrome.navItems}
-        navAriaLabel={chrome.footerNavAriaLabel}
         locale={chrome.locale}
         locales={chrome.locales}
         onLocaleChange={chrome.onLocaleChange}
         localeAriaLabel={chrome.footerLocaleAriaLabel}
+        theme={chrome.theme}
+        onThemeToggle={chrome.onThemeToggle}
+        themeLabel={chrome.themeLabel}
+        themeAriaLabel={chrome.themeAriaLabel}
       />
     </div>
   )

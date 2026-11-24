@@ -1,7 +1,7 @@
-/* Port of .px-foot */
+/* Port of .px-foot row without nav — controls match header toggles */
 
 .root {
-  padding: var(--s-6) 0 var(--s-7);
+  padding: var(--s-6) 0;
   background: var(--c-sunk);
   box-shadow: 0 calc(-1 * var(--px)) 0 0 var(--c-line);
 }
@@ -10,47 +10,40 @@
   display: flex;
   flex-wrap: wrap;
   align-items: center;
-  gap: 12px 24px;
-}
-
-.nav {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 4px 16px;
-  margin-left: 0;
-}
-
-.nav a {
-  display: inline-flex;
-  align-items: center;
-  min-height: 44px;
-  padding: 0 4px;
-  color: var(--c-ink);
-  font: 700 var(--fs-label) / 1 var(--font-display);
-  letter-spacing: 0.05em;
-  text-transform: uppercase;
-  text-decoration: underline;
-  text-decoration-thickness: var(--px);
-  text-underline-offset: 6px;
-  text-decoration-color: transparent;
-}
-
-.nav a:hover,
-.nav a[aria-current='page'] {
-  text-decoration-color: var(--c-fire);
-}
-
-.nav a:is(:focus-visible) {
-  outline: var(--px-sm) solid var(--c-highlight);
-  outline-offset: 0;
-  background: var(--c-highlight);
-  color: var(--c-ink-strong);
+  gap: 8px 12px;
 }
 
 .actions {
   display: flex;
   flex-wrap: wrap;
   align-items: center;
-  gap: 12px;
+  gap: 8px 12px;
   margin-left: auto;
+}
+
+.localeSegment {
+  display: none;
+}
+
+.themeText {
+  display: none;
+}
+
+@media (min-width: 640px) {
+  .row,
+  .actions {
+    gap: 18px;
+  }
+
+  .localeButton {
+    display: none;
+  }
+
+  .localeSegment {
+    display: inline-flex;
+  }
+
+  .themeText {
+    display: inline;
+  }
 }

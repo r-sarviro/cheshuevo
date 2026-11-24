@@ -82,18 +82,15 @@ const Hero = (props: IHeroProps) => {
   }, [theme, sky])
 
   const rootClass = [styles.root, className].filter(Boolean).join(' ')
+  const localeIndex = locales.findIndex((item) => item.code === locale)
+  const nextLocale =
+    locales.length > 0
+      ? locales[(localeIndex >= 0 ? localeIndex + 1 : 0) % locales.length]
+      : undefined
 
   return (
-    <section
-      ref={rootRef}
-      className={rootClass}
-      data-sky={sky}
-    >
-      <canvas
-        className={styles.layer}
-        data-layer="sky"
-        aria-hidden="true"
-      />
+    <section ref={rootRef} className={rootClass} data-sky={sky}>
+      <canvas className={styles.layer} data-layer="sky" aria-hidden="true" />
       <canvas
         className={[styles.layer, styles.mid].join(' ')}
         data-layer="mid"
@@ -126,20 +123,34 @@ const Hero = (props: IHeroProps) => {
           <span className={styles.nav} aria-hidden="true" />
         )}
         {locales.length > 0 && onLocaleChange && localeAriaLabel ? (
-          <Segment
-            className={styles.headerLocale}
-            aria-label={localeAriaLabel}
-          >
-            {locales.map((item) => (
-              <SegmentItem
-                key={item.code}
-                pressed={locale === item.code}
-                onClick={() => onLocaleChange(item.code)}
+          <>
+            {nextLocale ? (
+              <Button
+                className={styles.localeButton}
+                type="button"
+                variant="ghost"
+                size="sm"
+                onClick={() => onLocaleChange(nextLocale.code)}
+                aria-label={localeAriaLabel}
               >
-                {item.label}
-              </SegmentItem>
-            ))}
-          </Segment>
+                {nextLocale.label}
+              </Button>
+            ) : null}
+            <Segment
+              className={styles.localeSegment}
+              aria-label={localeAriaLabel}
+            >
+              {locales.map((item) => (
+                <SegmentItem
+                  key={item.code}
+                  pressed={locale === item.code}
+                  onClick={() => onLocaleChange(item.code)}
+                >
+                  {item.label}
+                </SegmentItem>
+              ))}
+            </Segment>
+          </>
         ) : null}
         {onThemeToggle ? (
           <Button
