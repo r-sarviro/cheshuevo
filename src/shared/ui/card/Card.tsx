@@ -1,19 +1,25 @@
-import type { CSSProperties, HTMLAttributes, ReactNode } from 'react'
+import type {
+  CSSProperties,
+  ElementType,
+  HTMLAttributes,
+  ReactNode,
+} from 'react'
 
 import styles from './Card.module.css'
 
-export interface ICardProps extends HTMLAttributes<HTMLDivElement> {
+export interface ICardProps extends HTMLAttributes<HTMLElement> {
+  as?: ElementType
   children: ReactNode
 }
 
 /** Surface card with stepped frame and block shadow. */
 const Card = (props: ICardProps) => {
-  const { className, children, ...rest } = props
+  const { as: Tag = 'div', className, children, ...rest } = props
   const rootClass = [styles.root, className].filter(Boolean).join(' ')
   return (
-    <div className={rootClass} {...rest}>
+    <Tag className={rootClass} {...rest}>
       {children}
-    </div>
+    </Tag>
   )
 }
 

@@ -1,0 +1,73 @@
+/* Port of .px-top--page (without hero sky overrides) */
+
+.root {
+  position: relative;
+  z-index: var(--z-sticky);
+  display: flex;
+  align-items: center;
+  gap: 8px 12px;
+  padding: 12px var(--page-gutter);
+  background: var(--c-bg);
+  box-shadow: 0 var(--px) 0 0 var(--c-line);
+}
+
+.nav {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 4px 16px;
+  margin-left: auto;
+}
+
+.nav a {
+  display: inline-flex;
+  align-items: center;
+  min-height: 44px;
+  padding: 0 4px;
+  color: var(--c-ink);
+  font: 700 var(--fs-label) / 1 var(--font-display);
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  text-decoration: underline;
+  text-decoration-thickness: var(--px);
+  text-underline-offset: 6px;
+  text-decoration-color: transparent;
+}
+
+.nav a:hover,
+.nav a[aria-current='page'] {
+  text-decoration-color: var(--c-fire);
+}
+
+.nav a:is(:focus-visible) {
+  outline: var(--px-sm) solid var(--c-highlight);
+  outline-offset: 0;
+  background: var(--c-highlight);
+  color: var(--c-ink-strong);
+}
+
+.localeSlot {
+  display: none;
+}
+
+.themeText {
+  display: none;
+}
+
+.theme {
+  margin-block: var(--px);
+}
+
+@media (min-width: 640px) {
+  .root {
+    padding-block: 16px;
+    gap: 18px;
+  }
+
+  .localeSlot {
+    display: contents;
+  }
+
+  .themeText {
+    display: inline;
+  }
+}

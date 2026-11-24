@@ -1,0 +1,40 @@
+/* Port of .px-brand — fixed cream letters, plum outline, jade key. */
+
+.root {
+  --sign-px: 2px;
+  display: inline-flex;
+  flex: none;
+  align-items: center;
+  min-height: 44px;
+  margin: 0 6px 0 2px;
+  padding: 0 0 8px;
+  color: #fffaf0;
+  font: 800 2rem / 1 var(--font-display);
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  text-decoration: none;
+  text-shadow:
+    var(--sign-px) 0 0 #4b3f66,
+    calc(-1 * var(--sign-px)) 0 0 #4b3f66,
+    0 var(--sign-px) 0 #4b3f66,
+    0 calc(-1 * var(--sign-px)) 0 #4b3f66,
+    var(--sign-px) var(--sign-px) 0 #4b3f66,
+    calc(-1 * var(--sign-px)) var(--sign-px) 0 #4b3f66,
+    var(--sign-px) calc(-1 * var(--sign-px)) 0 #4b3f66,
+    calc(-1 * var(--sign-px)) calc(-1 * var(--sign-px)) 0 #4b3f66,
+    0 calc(var(--sign-px) * 2) 0 #2f8279,
+    var(--sign-px) calc(var(--sign-px) * 2) 0 #2f8279,
+    calc(-1 * var(--sign-px)) calc(var(--sign-px) * 2) 0 #2f8279,
+    0 calc(var(--sign-px) * 3) 0 #2f8279,
+    var(--sign-px) calc(var(--sign-px) * 3) 0 #2f8279,
+    calc(-1 * var(--sign-px)) calc(var(--sign-px) * 3) 0 #2f8279,
+    0 calc(var(--sign-px) * 4) 0 #4b3f66,
+    var(--sign-px) calc(var(--sign-px) * 4) 0 #4b3f66,
+    calc(-1 * var(--sign-px)) calc(var(--sign-px) * 4) 0 #4b3f66;
+}
+
+@media (min-width: 640px) {
+  .root {
+    font-size: 2.25rem;
+  }
+}

@@ -1,0 +1,31 @@
+/* Port of .px-wrap / .px-section */
+
+.wrap {
+  max-width: var(--page-max);
+  margin: 0 auto;
+  padding-inline: var(--page-gutter);
+}
+
+.section {
+  padding-block: var(--s-7) var(--s-5);
+}
+
+.sectionHead {
+  max-width: var(--measure);
+  margin-bottom: var(--s-5);
+}
+
+.sectionHead p {
+  margin: 12px 0 0;
+  color: var(--c-ink-muted);
+}
+
+@media (min-width: 640px) {
+  .section {
+    padding-block: var(--s-8) var(--s-6);
+  }
+
+  .sectionHead {
+    margin-bottom: var(--s-6);
+  }
+}

@@ -39,6 +39,15 @@
   margin-top: 10px;
 }
 
+/* Port of .px-note .px-btn-text — inherit note tone */
+.actions :global(button),
+.actions :global(a) {
+  color: inherit;
+  text-decoration-color: currentColor;
+  min-height: 32px;
+  font-size: var(--fs-label-sm);
+}
+
 @keyframes rise {
   from {
     opacity: 0;

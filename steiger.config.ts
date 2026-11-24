@@ -13,12 +13,10 @@ export default defineConfig([
       '**/dist/**',
     ],
   },
-
   {
-    // Каркас MVP: мало слайсов → ожидаемые срабатывания. Вернуть после entities/features.
+    // Слайсы пока только на smoke HomePage; включить после pages каталога/брони.
     rules: {
       'fsd/insignificant-slice': 'off',
-      'fsd/no-segmentless-slices': 'off',
     },
   },
 ])
