@@ -15,6 +15,8 @@ export interface IDragon {
   description?: string
   imageUrl?: string | null
   tileToken?: string
+  /** PixelSprites catalog key from the vitrina (china, river, …). */
+  spriteKey?: string
   hourlyRate: number
   currency: string
   operationalStatus: TDragonOperationalStatus
@@ -27,6 +29,7 @@ export type IDragonListItem = Pick<
   | 'shortDescription'
   | 'imageUrl'
   | 'tileToken'
+  | 'spriteKey'
   | 'hourlyRate'
   | 'currency'
   | 'operationalStatus'

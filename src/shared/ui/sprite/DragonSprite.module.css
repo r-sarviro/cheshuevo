@@ -1,0 +1,25 @@
+/* Port of canvas pixel rendering + .px-mascot from sayt */
+
+.root {
+  display: block;
+  image-rendering: pixelated;
+  image-rendering: crisp-edges;
+}
+
+.mascot {
+  width: 272px;
+  height: 160px;
+}
+
+@media (min-width: 640px) {
+  .mascotLg {
+    width: 408px;
+    height: 240px;
+  }
+}
+
+.fit {
+  width: 100%;
+  height: auto;
+  max-width: 100%;
+}

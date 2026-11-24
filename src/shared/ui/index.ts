@@ -65,3 +65,11 @@ export {
   type IStepsItem,
   type TStepsItemStatus,
 } from './steps'
+export {
+  DragonSprite,
+  mountSprite,
+  mountHero,
+  refreshSprites,
+  SPRITE_NAMES,
+  type IDragonSpriteProps,
+} from './sprite'
