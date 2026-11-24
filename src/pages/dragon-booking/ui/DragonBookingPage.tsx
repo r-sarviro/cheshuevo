@@ -8,6 +8,7 @@ import {
   createDefaultPeriod,
   useBookingDraftStore,
 } from '@/widgets/booking-wizard'
+import { useDocumentMeta } from '@/shared/lib/document-meta'
 import { Button, ButtonText } from '@/shared/ui/button'
 import { EmptyState } from '@/shared/ui/empty-state'
 import { Icon } from '@/shared/ui/icon'
@@ -51,6 +52,29 @@ const DragonBookingPage = () => {
   const isCenteredStage = dragonQuery.isPending || dragonQuery.isError
   const dragon = dragonQuery.data
   const copy = dragon ? getDragonCopy(t, dragon) : null
+  const hasValidDragonId = Number.isFinite(dragonId) && dragonId > 0
+
+  useDocumentMeta(
+    dragonQuery.isError || !hasValidDragonId
+      ? {
+          title: t('seo.notFound.title'),
+          description: t('seo.notFound.description'),
+          noIndex: true,
+        }
+      : copy
+        ? {
+            title: t('seo.booking.title', { name: copy.name }),
+            description: t('seo.booking.description', { name: copy.name }),
+            canonicalPath: `/dragons/${dragonId}`,
+          }
+        : {
+            title: t('seo.home.title'),
+            description: t('seo.home.description'),
+            canonicalPath: hasValidDragonId
+              ? `/dragons/${dragonId}`
+              : undefined,
+          },
+  )
 
   return (
     <div className={styles.page}>

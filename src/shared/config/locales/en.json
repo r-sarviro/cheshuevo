@@ -24,7 +24,7 @@
   },
   "landing": {
     "heroTitle": "Dragon rental",
-    "heroLead": "Choose a dragon and a convenient time.",
+    "heroLead": "Pick a dragon, a flight time, and book in a minute.",
     "heroCta": "Choose a dragon",
     "navCatalog": "Catalog",
     "navPrimary": "Site sections",
@@ -34,7 +34,7 @@
   },
   "catalog": {
     "title": "Dragon catalog",
-    "lead": "Active dragons for rent: sprite, short blurb, hourly price.",
+    "lead": "Available dragons with an hourly rate — pick one and book.",
     "book": "Book",
     "cardLoading": "Card is loading",
     "emptyTitle": "Catalog is empty for now",
@@ -101,6 +101,23 @@
   "notFound": {
     "title": "Page not found",
     "body": "Maybe the dragon flew to another address."
+  },
+  "seo": {
+    "default": {
+      "description": "Dragon rental — pick, book, fly"
+    },
+    "home": {
+      "title": "Drakonsk — dragon rental",
+      "description": "Dragon rental — pick, book, fly"
+    },
+    "booking": {
+      "title": "{{name}} — booking | Drakonsk",
+      "description": "Book {{name}}: choose a period and confirm your email."
+    },
+    "notFound": {
+      "title": "Page not found | Drakonsk",
+      "description": "This page does not exist. Return to the Drakonsk dragon catalog."
+    }
   },
   "dragons": {
     "sakurka": {
