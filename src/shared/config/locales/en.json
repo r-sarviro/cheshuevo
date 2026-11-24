@@ -30,7 +30,8 @@
     "navPrimary": "Site sections",
     "navFooter": "Site sections, footer",
     "locale": "Language",
-    "localeFooter": "Language, footer"
+    "localeFooter": "Language, footer",
+    "installApp": "Install app"
   },
   "catalog": {
     "title": "Dragon catalog",

@@ -1,6 +1,7 @@
 import type { ReactNode } from 'react'
 import { Link } from 'react-router-dom'
 
+import { InstallAppButton } from '@/features/install-app'
 import { Brand } from '@/shared/ui/brand'
 import { Wrap } from '@/shared/ui/layout'
 import { Segment, SegmentItem } from '@/shared/ui/segment'
@@ -25,7 +26,7 @@ export interface ISiteFooterProps {
   className?: string
 }
 
-/** Landing footer: brand, nav, locale. */
+/** Landing footer: brand, nav, locale, optional PWA install. */
 const SiteFooter = (props: ISiteFooterProps) => {
   const {
     brand,
@@ -59,19 +60,22 @@ const SiteFooter = (props: ISiteFooterProps) => {
               ))}
             </nav>
           ) : null}
-          {locales.length > 0 && onLocaleChange && localeAriaLabel ? (
-            <Segment className={styles.locale} aria-label={localeAriaLabel}>
-              {locales.map((item) => (
-                <SegmentItem
-                  key={item.code}
-                  pressed={locale === item.code}
-                  onClick={() => onLocaleChange(item.code)}
-                >
-                  {item.label}
-                </SegmentItem>
-              ))}
-            </Segment>
-          ) : null}
+          <div className={styles.actions}>
+            <InstallAppButton />
+            {locales.length > 0 && onLocaleChange && localeAriaLabel ? (
+              <Segment aria-label={localeAriaLabel}>
+                {locales.map((item) => (
+                  <SegmentItem
+                    key={item.code}
+                    pressed={locale === item.code}
+                    onClick={() => onLocaleChange(item.code)}
+                  >
+                    {item.label}
+                  </SegmentItem>
+                ))}
+              </Segment>
+            ) : null}
+          </div>
         </div>
       </Wrap>
     </footer>
