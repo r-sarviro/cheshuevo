@@ -6,7 +6,7 @@ import {
   periodToInterval,
   useCreateBookingMutation,
 } from '@/entities/booking'
-import type { IDragon } from '@/entities/dragon'
+import { getDragonCopy, type IDragon } from '@/entities/dragon'
 import {
   useConfirmEmailCodeMutation,
   useRequestEmailCodeMutation,
@@ -31,6 +31,7 @@ type TOtpForm = { code: string }
 const OtpStep = (props: IOtpStepProps) => {
   const { dragon } = props
   const { t } = useTranslation()
+  const copy = getDragonCopy(t, dragon)
   const contacts = useBookingDraftStore((s) => s.contacts)
   const period = useBookingDraftStore((s) => s.period)
   const verificationId = useBookingDraftStore((s) => s.verificationId)
@@ -107,12 +108,12 @@ const OtpStep = (props: IOtpStepProps) => {
         verificationToken: confirmed.verificationToken,
         hourlyRate: dragon.hourlyRate,
         currency: dragon.currency,
-        dragonName: dragon.name,
+        dragonName: copy.name,
       })
       setCreatedBooking(booking)
     } catch (error) {
       if (error instanceof ApiError && error.code === 'BOOKING_CONFLICT') {
-        setConflict(t('booking.conflictBody', { name: dragon.name }))
+        setConflict(t('booking.conflictBody', { name: copy.name }))
         return
       }
       if (error instanceof ApiError && error.code === 'OTP_EXHAUSTED') {

@@ -1,7 +1,7 @@
 import { useTranslation } from 'react-i18next'
 import { useNavigate } from 'react-router-dom'
 
-import type { IDragon } from '@/entities/dragon'
+import { getDragonCopy, type IDragon } from '@/entities/dragon'
 import { ButtonText } from '@/shared/ui/button'
 import { Note } from '@/shared/ui/note'
 
@@ -17,6 +17,7 @@ export interface IConflictStepProps {
 const ConflictStep = (props: IConflictStepProps) => {
   const { dragon } = props
   const { t } = useTranslation()
+  const copy = getDragonCopy(t, dragon)
   const navigate = useNavigate()
   const conflictMessage = useBookingDraftStore((s) => s.conflictMessage)
   const setStep = useBookingDraftStore((s) => s.setStep)
@@ -46,7 +47,7 @@ const ConflictStep = (props: IConflictStepProps) => {
           </>
         }
       >
-        {conflictMessage ?? t('booking.conflictBody', { name: dragon.name })}
+        {conflictMessage ?? t('booking.conflictBody', { name: copy.name })}
       </Note>
     </div>
   )

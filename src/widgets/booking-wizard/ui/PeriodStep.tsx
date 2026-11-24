@@ -7,7 +7,7 @@ import {
   periodToInterval,
   useAvailabilityQuery,
 } from '@/entities/booking'
-import type { IDragon } from '@/entities/dragon'
+import { getDragonCopy, type IDragon } from '@/entities/dragon'
 import {
   SelectPeriod,
   type ISelectPeriodValue,
@@ -28,6 +28,7 @@ export interface IPeriodStepProps {
 const PeriodStep = (props: IPeriodStepProps) => {
   const { dragon } = props
   const { t } = useTranslation()
+  const copy = getDragonCopy(t, dragon)
   const period = useBookingDraftStore((s) => s.period)
   const setPeriod = useBookingDraftStore((s) => s.setPeriod)
   const setStep = useBookingDraftStore((s) => s.setStep)
@@ -158,9 +159,9 @@ const PeriodStep = (props: IPeriodStepProps) => {
           availability === 'loading'
             ? t('booking.periodChecking')
             : availability === 'free'
-              ? t('booking.periodFree', { name: dragon.name })
+              ? t('booking.periodFree', { name: copy.name })
               : availability === 'busy'
-                ? t('booking.periodBusy', { name: dragon.name })
+                ? t('booking.periodBusy', { name: copy.name })
                 : undefined
         }
         quoteDetail={
@@ -175,7 +176,7 @@ const PeriodStep = (props: IPeriodStepProps) => {
         error={Boolean(formState.errors.endTime)}
         errorMessage={
           formState.errors.endTime?.type === 'busy'
-            ? t('booking.periodBusy', { name: dragon.name })
+            ? t('booking.periodBusy', { name: copy.name })
             : formState.errors.endTime
               ? t('booking.periodError')
               : undefined
