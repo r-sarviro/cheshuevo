@@ -1,4 +1,4 @@
-/* Port of canvas pixel rendering + .px-mascot from sayt */
+/* Port of canvas pixel rendering from sayt (slim: loader / extras). */
 
 .root {
   display: block;
@@ -6,21 +6,9 @@
   image-rendering: crisp-edges;
 }
 
-.mascot {
-  width: 272px;
-  height: 160px;
-}
-
 .loader {
   width: 96px;
   height: 96px;
-}
-
-@media (min-width: 640px) {
-  .mascotLg {
-    width: 408px;
-    height: 240px;
-  }
 }
 
 .fit {

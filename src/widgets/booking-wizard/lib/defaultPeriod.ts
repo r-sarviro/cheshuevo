@@ -1,6 +1,6 @@
 import type { ISelectPeriodValue } from '@/features/select-period'
 
-/** Tomorrow 13:00–15:00 — avoids Cheshuika demo busy window 10:00–12:00. */
+/** Tomorrow 13:00–15:00 — avoids Sakurka demo busy window 10:00–12:00. */
 export function createDefaultPeriod(now = new Date()): ISelectPeriodValue {
   const day = new Date(now)
   day.setDate(day.getDate() + 1)

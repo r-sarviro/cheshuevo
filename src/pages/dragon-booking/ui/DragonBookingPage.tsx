@@ -12,7 +12,7 @@ import { Button, ButtonText } from '@/shared/ui/button'
 import { EmptyState } from '@/shared/ui/empty-state'
 import { Icon } from '@/shared/ui/icon'
 import { Wrap } from '@/shared/ui/layout'
-import { DragonSprite } from '@/shared/ui/sprite'
+import { DragonSheetSprite, DragonSprite } from '@/shared/ui/sprite'
 import { Typography } from '@/shared/ui/typography'
 import { DragonPage } from '@/widgets/dragon-page'
 import { useSiteChrome } from '@/widgets/site-chrome'
@@ -87,7 +87,9 @@ const DragonBookingPage = () => {
                 />
               }
               heading={
-                <Typography variant="h3">{t('catalog.loadingTitle')}</Typography>
+                <Typography variant="h3">
+                  {t('catalog.loadingTitle')}
+                </Typography>
               }
             >
               {t('catalog.loadingBody')}
@@ -125,12 +127,12 @@ const DragonBookingPage = () => {
                 </ButtonText>
               }
               picture={
-                <DragonSprite
-                  name={dragon.spriteKey ?? 'mascot'}
-                  fit={dragon.spriteKey !== 'mascot'}
-                  mascotSize={dragon.spriteKey === 'mascot' ? 'lg' : 'md'}
-                  label={dragon.name}
-                />
+                dragon.spriteKey ? (
+                  <DragonSheetSprite
+                    name={dragon.spriteKey}
+                    label={dragon.name}
+                  />
+                ) : null
               }
               pictureTile={dragon.tileToken}
               pictureLabel={dragon.name}

@@ -67,9 +67,15 @@ export {
 } from './steps'
 export {
   DragonSprite,
+  DragonSheetSprite,
   mountSprite,
   mountHero,
   refreshSprites,
   SPRITE_NAMES,
+  hasDragonSheet,
+  getDragonSheetSpec,
+  DRAGON_SHEET_CATALOG,
   type IDragonSpriteProps,
+  type IDragonSheetSpriteProps,
+  type IDragonSheetSpec,
 } from './sprite'

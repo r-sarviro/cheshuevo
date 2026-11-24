@@ -15,7 +15,7 @@ export interface IDragon {
   description?: string
   imageUrl?: string | null
   tileToken?: string
-  /** PixelSprites catalog key from the vitrina (china, river, …). */
+  /** Sheet sprite slug from the nursery catalog (sakurka, snezhok, …). */
   spriteKey?: string
   hourlyRate: number
   currency: string
