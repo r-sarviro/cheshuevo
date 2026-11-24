@@ -1,0 +1,15 @@
+/* Port of .px-catalog */
+
+.root {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(min(100%, 278px), 1fr));
+  gap: 22px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.item {
+  min-width: 0;
+  height: 100%;
+}

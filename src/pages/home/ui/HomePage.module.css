@@ -1,64 +1,46 @@
 .page {
   min-height: 100%;
-  padding: var(--s-5) var(--page-gutter) var(--s-8);
-  background-image:
-    linear-gradient(var(--c-grid-strong) 2px, transparent 2px),
-    linear-gradient(90deg, var(--c-grid-strong) 2px, transparent 2px),
-    linear-gradient(var(--c-grid) 1px, transparent 1px),
-    linear-gradient(90deg, var(--c-grid) 1px, transparent 1px);
-  background-size:
-    160px 160px,
-    160px 160px,
-    16px 16px,
-    16px 16px;
-}
-
-.wrap {
-  max-width: var(--page-max);
-  margin: 0 auto;
-  display: grid;
-  gap: var(--s-6);
-}
-
-.toolbar {
   display: flex;
-  flex-wrap: wrap;
-  gap: var(--s-3);
-  align-items: center;
-  justify-content: space-between;
+  flex-direction: column;
+  background-color: var(--c-bg);
 }
 
-.toolbarGroup {
-  display: flex;
-  flex-wrap: wrap;
-  gap: var(--s-3);
-  align-items: center;
+.main {
+  flex: 1;
+  padding-block: var(--s-6) var(--s-7);
 }
 
-.section {
+.stack {
   display: grid;
-  gap: var(--s-3);
+  gap: var(--s-7);
 }
 
-.row {
-  display: flex;
-  flex-wrap: wrap;
-  gap: var(--s-3);
-  align-items: center;
-}
-
-.fields {
+.samples {
   display: grid;
-  gap: var(--s-4);
-  max-width: 420px;
+  gap: var(--s-5);
+}
+
+.cap {
+  margin: 0;
+  color: var(--c-ink-muted);
+  font: 500 var(--fs-small) / 1.4 var(--font-text);
+}
+
+.leadLine {
+  margin: 0;
+  color: var(--c-ink-muted);
+  font: 400 var(--fs-small) / 1.45 var(--font-text);
 }
 
 .cardDemo {
   max-width: 320px;
 }
 
-.skeletonBox {
+.picPlaceholder {
+  display: grid;
+  place-items: center;
   width: 100%;
-  max-width: 280px;
-  height: 72px;
+  height: 100%;
+  color: var(--c-ink-muted);
+  font: 700 var(--fs-label) / 1 var(--font-display);
 }

@@ -29,6 +29,9 @@
 ```text
 src/
   app/        # entry, providers, routes, global styles
-  pages/      # страницы (home)
-  shared/     # api, config/i18n, model
+  pages/      # страницы (home = smoke блоков)
+  widgets/    # site-header, site-footer, dragon-catalog
+  features/   # select-period, booking-contacts, verify-email
+  entities/   # dragon, booking
+  shared/     # api, config/i18n, model, ui-kit
 ```

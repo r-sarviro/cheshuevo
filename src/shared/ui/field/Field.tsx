@@ -14,13 +14,24 @@ export interface IFieldProps {
   hint?: ReactNode
   error?: ReactNode
   htmlFor?: string
+  hintId?: string
+  errorId?: string
   children: ReactNode
   className?: string
 }
 
 /** Labeled control stack with optional hint or error. */
 const Field = (props: IFieldProps) => {
-  const { label, hint, error, htmlFor, children, className } = props
+  const {
+    label,
+    hint,
+    error,
+    htmlFor,
+    hintId,
+    errorId,
+    children,
+    className,
+  } = props
   const rootClass = [styles.field, className].filter(Boolean).join(' ')
 
   return (
@@ -32,12 +43,16 @@ const Field = (props: IFieldProps) => {
       ) : null}
       {children}
       {error ? (
-        <p className={styles.error} role="alert">
+        <p className={styles.error} role="alert" id={errorId}>
           <Icon name="cross" className={styles.errorIcon} />
           <span>{error}</span>
         </p>
       ) : null}
-      {!error && hint ? <p className={styles.hint}>{hint}</p> : null}
+      {!error && hint ? (
+        <p className={styles.hint} id={hintId}>
+          {hint}
+        </p>
+      ) : null}
     </div>
   )
 }
