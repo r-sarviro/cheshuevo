@@ -1,6 +1,11 @@
 import { useTranslation } from 'react-i18next'
 
-import { type AppLocale } from '@/shared/config'
+import {
+  CATALOG_PATH,
+  HOME_PATH,
+  PLAY_PATH,
+  type AppLocale,
+} from '@/shared/config'
 import { useUiStore } from '@/shared/model'
 
 /** Shared locale/theme props for Hero, SiteHeader, SiteFooter. */
@@ -18,8 +23,11 @@ export function useSiteChrome() {
 
   return {
     brand: t('app.title'),
-    brandHref: '/',
-    navItems: [{ href: '/#catalog', label: t('landing.navCatalog') }],
+    brandHref: HOME_PATH,
+    navItems: [
+      { href: CATALOG_PATH, label: t('landing.navCatalog') },
+      { href: PLAY_PATH, label: t('landing.navFlight') },
+    ],
     navAriaLabel: t('landing.navPrimary'),
     locale,
     locales,

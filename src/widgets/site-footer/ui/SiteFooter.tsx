@@ -1,7 +1,8 @@
 import type { ReactNode } from 'react'
-import { Link } from 'react-router-dom'
+import { Link, useLocation } from 'react-router-dom'
 
 import { InstallAppButton } from '@/features/install-app'
+import { handleInPageHashNav } from '@/shared/lib'
 import { Brand } from '@/shared/ui/brand'
 import { Wrap } from '@/shared/ui/layout'
 import { Segment, SegmentItem } from '@/shared/ui/segment'
@@ -40,6 +41,7 @@ const SiteFooter = (props: ISiteFooterProps) => {
     className,
   } = props
 
+  const location = useLocation()
   const rootClass = [styles.root, className].filter(Boolean).join(' ')
 
   return (
@@ -54,6 +56,9 @@ const SiteFooter = (props: ISiteFooterProps) => {
                   key={item.href}
                   to={item.href}
                   aria-current={item.current ? 'page' : undefined}
+                  onClick={(event) => {
+                    handleInPageHashNav(event, item.href, location.pathname)
+                  }}
                 >
                   {item.label}
                 </Link>

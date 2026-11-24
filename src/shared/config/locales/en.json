@@ -27,6 +27,7 @@
     "heroLead": "Pick a dragon, a flight time, and book in a minute.",
     "heroCta": "Choose a dragon",
     "navCatalog": "Catalog",
+    "navFlight": "Test flight",
     "navPrimary": "Site sections",
     "navFooter": "Site sections, footer",
     "locale": "Language",
@@ -103,6 +104,15 @@
     "title": "Page not found",
     "body": "Maybe the dragon flew to another address."
   },
+  "play": {
+    "title": "Test flight",
+    "tapToStart": "Tap or press Space to fly",
+    "gameOver": "Crashed",
+    "score": "Score",
+    "best": "Best: {{score}}",
+    "restart": "Try again",
+    "back": "Back"
+  },
   "seo": {
     "default": {
       "description": "Dragon rental — pick, book, fly"
@@ -118,6 +128,10 @@
     "notFound": {
       "title": "Page not found | Drakonsk",
       "description": "This page does not exist. Return to the Drakonsk dragon catalog."
+    },
+    "play": {
+      "title": "Test flight | Drakonsk",
+      "description": "A trial flight: guide the dragon between the rocks and beat your best score."
     }
   },
   "dragons": {

@@ -2,6 +2,7 @@ import { useTranslation } from 'react-i18next'
 import { Link } from 'react-router-dom'
 
 import { BookingResult } from '@/entities/booking'
+import { HOME_PATH } from '@/shared/config'
 import { useUiStore } from '@/shared/model'
 import buttonStyles from '@/shared/ui/button/Button.module.css'
 
@@ -50,7 +51,10 @@ const ResultStep = () => {
           : undefined
       }
       actions={
-        <Link className={[buttonStyles.btn, buttonStyles.ghost].join(' ')} to="/">
+        <Link
+          className={[buttonStyles.btn, buttonStyles.ghost].join(' ')}
+          to={HOME_PATH}
+        >
           {t('booking.toCatalog')}
         </Link>
       }

@@ -8,6 +8,12 @@ import {
   createDefaultPeriod,
   useBookingDraftStore,
 } from '@/widgets/booking-wizard'
+import {
+  CATALOG_HASH,
+  CATALOG_PATH,
+  HOME_PATH,
+  dragonPath,
+} from '@/shared/config'
 import { useDocumentMeta } from '@/shared/lib/document-meta'
 import { Button, ButtonText } from '@/shared/ui/button'
 import { EmptyState } from '@/shared/ui/empty-state'
@@ -42,13 +48,9 @@ const DragonBookingPage = () => {
     }
   }, [dragonId, resetForDragon, storeDragonId])
 
-  const headerNav = [
-    {
-      href: '/#catalog',
-      label: t('landing.navCatalog'),
-      current: true as const,
-    },
-  ]
+  const headerNav = chrome.navItems.map((item) =>
+    item.href === CATALOG_PATH ? { ...item, current: true as const } : item,
+  )
   const isCenteredStage = dragonQuery.isPending || dragonQuery.isError
   const dragon = dragonQuery.data
   const copy = dragon ? getDragonCopy(t, dragon) : null
@@ -65,13 +67,13 @@ const DragonBookingPage = () => {
         ? {
             title: t('seo.booking.title', { name: copy.name }),
             description: t('seo.booking.description', { name: copy.name }),
-            canonicalPath: `/dragons/${dragonId}`,
+            canonicalPath: dragonPath(dragonId),
           }
         : {
             title: t('seo.home.title'),
             description: t('seo.home.description'),
             canonicalPath: hasValidDragonId
-              ? `/dragons/${dragonId}`
+              ? dragonPath(dragonId)
               : undefined,
           },
   )
@@ -129,7 +131,10 @@ const DragonBookingPage = () => {
                 <Typography variant="h3">{t('notFound.title')}</Typography>
               }
               action={
-                <Button type="button" onClick={() => void navigate('/')}>
+                <Button
+                  type="button"
+                  onClick={() => void navigate(HOME_PATH)}
+                >
                   {t('booking.toCatalog')}
                 </Button>
               }
@@ -144,7 +149,10 @@ const DragonBookingPage = () => {
                 <ButtonText
                   type="button"
                   onClick={() =>
-                    void navigate({ pathname: '/', hash: 'catalog' })
+                    void navigate({
+                      pathname: HOME_PATH,
+                      hash: CATALOG_HASH,
+                    })
                   }
                 >
                   <Icon name="left" />

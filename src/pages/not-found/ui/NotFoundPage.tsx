@@ -1,6 +1,7 @@
 import { useTranslation } from 'react-i18next'
 import { useNavigate } from 'react-router-dom'
 
+import { HOME_PATH } from '@/shared/config'
 import { useDocumentMeta } from '@/shared/lib/document-meta'
 import { Button } from '@/shared/ui/button'
 import { EmptyState } from '@/shared/ui/empty-state'
@@ -48,7 +49,7 @@ const NotFoundPage = () => {
             pictureStyle={{ background: 'var(--c-tile-sky)' }}
             heading={<Typography variant="h3">{t('notFound.title')}</Typography>}
             action={
-              <Button type="button" onClick={() => void navigate('/')}>
+              <Button type="button" onClick={() => void navigate(HOME_PATH)}>
                 {t('booking.toCatalog')}
               </Button>
             }
