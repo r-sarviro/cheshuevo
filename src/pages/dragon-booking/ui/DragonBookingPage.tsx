@@ -2,7 +2,7 @@ import { useEffect } from 'react'
 import { useTranslation } from 'react-i18next'
 import { useNavigate, useParams } from 'react-router-dom'
 
-import { useDragonQuery } from '@/entities/dragon'
+import { getDragonCopy, useDragonQuery } from '@/entities/dragon'
 import {
   BookingWizard,
   createDefaultPeriod,
@@ -50,6 +50,7 @@ const DragonBookingPage = () => {
   ]
   const isCenteredStage = dragonQuery.isPending || dragonQuery.isError
   const dragon = dragonQuery.data
+  const copy = dragon ? getDragonCopy(t, dragon) : null
 
   return (
     <div className={styles.page}>
@@ -113,7 +114,7 @@ const DragonBookingPage = () => {
             </EmptyState>
           ) : null}
 
-          {dragon ? (
+          {dragon && copy ? (
             <DragonPage
               back={
                 <ButtonText
@@ -130,14 +131,14 @@ const DragonBookingPage = () => {
                 dragon.spriteKey ? (
                   <DragonSheetSprite
                     name={dragon.spriteKey}
-                    label={dragon.name}
+                    label={copy.name}
                   />
                 ) : null
               }
               pictureTile={dragon.tileToken}
-              pictureLabel={dragon.name}
-              name={dragon.name}
-              about={dragon.description ?? dragon.shortDescription}
+              pictureLabel={copy.name}
+              name={copy.name}
+              about={copy.description}
               rateAmount={`${dragon.hourlyRate}\u00a0${dragon.currency}`}
               rateUnit={t('ds.perHour')}
               rateHint={t('booking.rateHint')}

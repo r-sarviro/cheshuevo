@@ -1,4 +1,5 @@
 import type { ReactNode } from 'react'
+import { useTranslation } from 'react-i18next'
 import { Link } from 'react-router-dom'
 
 import { Button } from '@/shared/ui/button'
@@ -12,6 +13,7 @@ import {
   hasDragonSheet,
 } from '@/shared/ui/sprite'
 
+import { getDragonCopy } from '../lib/dragonCopy'
 import type { IDragonListItem } from '../model/types'
 import styles from './DragonCard.module.css'
 
@@ -44,6 +46,8 @@ const DragonCard = (props: IDragonCardProps) => {
     onActionClick,
     className,
   } = props
+  const { t } = useTranslation()
+  const copy = dragon ? getDragonCopy(t, dragon) : null
 
   const rootClass = [styles.root, loading ? styles.loading : '', className]
     .filter(Boolean)
@@ -97,16 +101,16 @@ const DragonCard = (props: IDragonCardProps) => {
     )
   }
 
-  if (!dragon) {
+  if (!dragon || !copy) {
     return null
   }
 
   const nameContent = href ? (
     <Link className={styles.nameLink} to={href}>
-      {dragon.name}
+      {copy.name}
     </Link>
   ) : (
-    dragon.name
+    copy.name
   )
 
   const actionClass = [buttonStyles.btn, styles.action].join(' ')
@@ -125,9 +129,9 @@ const DragonCard = (props: IDragonCardProps) => {
     (imageFailed ? (
       <Icon name="egg" xl />
     ) : dragon.spriteKey && hasDragonSheet(dragon.spriteKey) ? (
-      <DragonSheetSprite name={dragon.spriteKey} label={dragon.name} />
+      <DragonSheetSprite name={dragon.spriteKey} label={copy.name} />
     ) : dragon.spriteKey ? (
-      <DragonSprite name={dragon.spriteKey} fit label={dragon.name} />
+      <DragonSprite name={dragon.spriteKey} fit label={copy.name} />
     ) : dragon.imageUrl ? (
       <img src={dragon.imageUrl} alt="" />
     ) : null)
@@ -144,7 +148,7 @@ const DragonCard = (props: IDragonCardProps) => {
       </CardPic>
       <CardBody className={styles.body}>
         <h3 className={styles.name}>{nameContent}</h3>
-        <p className={styles.about}>{dragon.shortDescription}</p>
+        <p className={styles.about}>{copy.shortDescription}</p>
         <div className={styles.foot}>
           <p className={styles.price}>
             <b className={styles.priceStrong}>
