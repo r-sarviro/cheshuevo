@@ -2,10 +2,7 @@ import { useEffect, useState, type FormEvent } from 'react'
 import { useForm } from 'react-hook-form'
 import { useTranslation } from 'react-i18next'
 
-import {
-  periodToInterval,
-  useCreateBookingMutation,
-} from '@/entities/booking'
+import { periodToInterval, useCreateBookingMutation } from '@/entities/booking'
 import { getDragonCopy, type IDragon } from '@/entities/dragon'
 import {
   useConfirmEmailCodeMutation,
@@ -64,12 +61,19 @@ const OtpStep = (props: IOtpStepProps) => {
     return () => window.clearInterval(id)
   }, [secondsLeft, verificationId])
 
-  const { register, watch, setValue, getValues, setError, clearErrors, formState } =
-    useForm<TOtpForm>({
-      defaultValues: { code: '' },
-      mode: 'onSubmit',
-      shouldUnregister: false,
-    })
+  const {
+    register,
+    watch,
+    setValue,
+    getValues,
+    setError,
+    clearErrors,
+    formState,
+  } = useForm<TOtpForm>({
+    defaultValues: { code: '' },
+    mode: 'onSubmit',
+    shouldUnregister: false,
+  })
 
   useEffect(() => {
     register('code')

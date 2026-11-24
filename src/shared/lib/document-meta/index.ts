@@ -1,4 +1,1 @@
-export {
-  useDocumentMeta,
-  type IDocumentMetaOptions,
-} from './useDocumentMeta'
+export { useDocumentMeta, type IDocumentMetaOptions } from './useDocumentMeta'

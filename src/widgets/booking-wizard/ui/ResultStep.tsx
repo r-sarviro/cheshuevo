@@ -46,9 +46,7 @@ const ResultStep = () => {
       })}
       paymentText={t('booking.paymentHint')}
       emailHint={
-        contacts
-          ? t('booking.emailSent', { email: contacts.email })
-          : undefined
+        contacts ? t('booking.emailSent', { email: contacts.email }) : undefined
       }
       actions={
         <Link

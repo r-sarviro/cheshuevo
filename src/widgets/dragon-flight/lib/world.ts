@@ -40,7 +40,11 @@ export function createWorld(width: number, height: number): IFlightWorld {
   return world
 }
 
-export function resizeWorld(world: IFlightWorld, width: number, height: number) {
+export function resizeWorld(
+  world: IFlightWorld,
+  width: number,
+  height: number,
+) {
   const scaleX = width / Math.max(1, world.width)
   const scaleY = height / Math.max(1, world.height)
 
@@ -48,7 +52,11 @@ export function resizeWorld(world: IFlightWorld, width: number, height: number) 
   world.height = height
   world.scrollSpeed = Math.max(160, width * 0.18)
   world.bird.x = width * FLIGHT_TUNING.birdXRatio
-  world.bird.y = clamp(world.bird.y * scaleY, world.bird.radius, height - world.bird.radius)
+  world.bird.y = clamp(
+    world.bird.y * scaleY,
+    world.bird.radius,
+    height - world.bird.radius,
+  )
   world.bird.radius = clamp(height * FLIGHT_TUNING.birdRadiusRatio, 18, 36)
   world.bird.vy *= scaleY
 
@@ -57,7 +65,11 @@ export function resizeWorld(world: IFlightWorld, width: number, height: number) 
     return {
       x: rock.x * scaleX,
       width: metrics.rockWidth,
-      gapY: clamp(rock.gapY * scaleY, height * 0.08, height - metrics.gapH - height * 0.08),
+      gapY: clamp(
+        rock.gapY * scaleY,
+        height * 0.08,
+        height - metrics.gapH - height * 0.08,
+      ),
       gapH: metrics.gapH,
       scored: rock.scored,
     }
@@ -85,7 +97,10 @@ export function stepWorld(
   onScore: () => void,
 ): boolean {
   const bird = world.bird
-  bird.vy = Math.min(FLIGHT_TUNING.maxFall, bird.vy + FLIGHT_TUNING.gravity * dt)
+  bird.vy = Math.min(
+    FLIGHT_TUNING.maxFall,
+    bird.vy + FLIGHT_TUNING.gravity * dt,
+  )
   bird.y += bird.vy * dt
   world.frameTime += dt
 

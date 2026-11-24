@@ -8,9 +8,7 @@ type TDragonsListResponse = {
 
 /** GET /api/v1/public/dragons */
 export function getDragons() {
-  return apiRequest<TDragonsListResponse | IDragonListItem[]>(
-    '/public/dragons',
-  )
+  return apiRequest<TDragonsListResponse | IDragonListItem[]>('/public/dragons')
 }
 
 /** GET /api/v1/public/dragons/{id} */

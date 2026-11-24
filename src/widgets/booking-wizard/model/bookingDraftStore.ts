@@ -4,12 +4,7 @@ import type { IBooking } from '@/entities/booking'
 import type { IBookingContactsValue } from '@/features/booking-contacts'
 import type { ISelectPeriodValue } from '@/features/select-period'
 
-export type TBookingStep =
-  | 'period'
-  | 'contacts'
-  | 'otp'
-  | 'result'
-  | 'conflict'
+export type TBookingStep = 'period' | 'contacts' | 'otp' | 'result' | 'conflict'
 
 export type TBookingDraftState = {
   dragonId: number | null
@@ -80,8 +75,7 @@ export const useBookingDraftStore = create<TBookingDraftState>((set) => ({
     set((state) => ({
       otpAttemptsLeft:
         attemptsLeft === undefined ? state.otpAttemptsLeft : attemptsLeft,
-      otpExhausted:
-        exhausted === undefined ? state.otpExhausted : exhausted,
+      otpExhausted: exhausted === undefined ? state.otpExhausted : exhausted,
     })),
   setCreatedBooking: (createdBooking) =>
     set({ createdBooking, step: 'result', conflictMessage: null }),

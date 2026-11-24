@@ -54,11 +54,7 @@ const BookingResult = (props: IBookingResultProps) => {
     className,
   } = props
 
-  const rootClass = [
-    styles.root,
-    embedded ? styles.embedded : null,
-    className,
-  ]
+  const rootClass = [styles.root, embedded ? styles.embedded : null, className]
     .filter(Boolean)
     .join(' ')
   const bookingBadge = BOOKING_STATUS_TO_BADGE[booking.status]

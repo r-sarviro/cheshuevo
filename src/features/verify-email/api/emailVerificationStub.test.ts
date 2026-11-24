@@ -25,11 +25,15 @@ async function startSession(email = 'test@example.com') {
 
 describe('requestEmailCodeStub', () => {
   it('rejects invalid email', async () => {
-    await expect(requestEmailCodeStub({ email: 'not-an-email' })).rejects.toMatchObject({
+    await expect(
+      requestEmailCodeStub({ email: 'not-an-email' }),
+    ).rejects.toMatchObject({
       status: 400,
       code: 'INVALID_EMAIL',
     })
-    await expect(requestEmailCodeStub({ email: 'trailing@' })).rejects.toMatchObject({
+    await expect(
+      requestEmailCodeStub({ email: 'trailing@' }),
+    ).rejects.toMatchObject({
       status: 400,
       code: 'INVALID_EMAIL',
     })
