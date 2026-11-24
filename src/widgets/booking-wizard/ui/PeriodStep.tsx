@@ -8,10 +8,7 @@ import {
   useAvailabilityQuery,
 } from '@/entities/booking'
 import { getDragonCopy, type IDragon } from '@/entities/dragon'
-import {
-  SelectPeriod,
-  type ISelectPeriodValue,
-} from '@/features/select-period'
+import { SelectPeriod, type ISelectPeriodValue } from '@/features/select-period'
 import { Button } from '@/shared/ui/button'
 import { Typography } from '@/shared/ui/typography'
 

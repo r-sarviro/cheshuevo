@@ -44,11 +44,7 @@ function resolveOrigin(): string {
 function resolveCanonical(path: string | undefined, origin: string): string {
   if (!origin) return ''
   const normalizedPath =
-    !path || path === '/'
-      ? '/'
-      : path.startsWith('/')
-        ? path
-        : `/${path}`
+    !path || path === '/' ? '/' : path.startsWith('/') ? path : `/${path}`
   return `${origin}${normalizedPath === '/' ? '/' : normalizedPath}`
 }
 

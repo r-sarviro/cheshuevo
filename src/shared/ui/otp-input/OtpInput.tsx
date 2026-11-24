@@ -11,8 +11,10 @@ import styles from './OtpInput.module.css'
 
 const DEFAULT_LENGTH = 6
 
-export interface IOtpInputProps
-  extends Omit<FieldsetHTMLAttributes<HTMLFieldSetElement>, 'onChange'> {
+export interface IOtpInputProps extends Omit<
+  FieldsetHTMLAttributes<HTMLFieldSetElement>,
+  'onChange'
+> {
   length?: number
   value: string
   onChange: (value: string) => void
@@ -94,11 +96,7 @@ const OtpInput = (props: IOtpInputProps) => {
     inputsRef.current[focusIndex]?.focus()
   }
 
-  const rootClass = [
-    styles.root,
-    invalid ? styles.invalid : '',
-    className,
-  ]
+  const rootClass = [styles.root, invalid ? styles.invalid : '', className]
     .filter(Boolean)
     .join(' ')
 
@@ -124,9 +122,7 @@ const OtpInput = (props: IOtpInputProps) => {
           value={digit}
           placeholder=" "
           disabled={disabled}
-          aria-label={
-            digitLabel ? digitLabel(index + 1) : String(index + 1)
-          }
+          aria-label={digitLabel ? digitLabel(index + 1) : String(index + 1)}
           onChange={(event) => handleChange(index, event)}
           onKeyDown={(event) => handleKeyDown(index, event)}
           onFocus={(event) => event.target.select()}

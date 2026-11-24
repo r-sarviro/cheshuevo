@@ -14,12 +14,7 @@ import {
   type IFlightAssets,
 } from '../lib/draw'
 import type { IFlightWorld } from '../lib/types'
-import {
-  createWorld,
-  flapBird,
-  resizeWorld,
-  stepWorld,
-} from '../lib/world'
+import { createWorld, flapBird, resizeWorld, stepWorld } from '../lib/world'
 import { useFlightStore } from '../model/flightStore'
 
 import styles from './DragonFlightGame.module.css'

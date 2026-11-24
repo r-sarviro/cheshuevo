@@ -22,16 +22,8 @@ export interface IFieldProps {
 
 /** Labeled control stack with optional hint or error. */
 const Field = (props: IFieldProps) => {
-  const {
-    label,
-    hint,
-    error,
-    htmlFor,
-    hintId,
-    errorId,
-    children,
-    className,
-  } = props
+  const { label, hint, error, htmlFor, hintId, errorId, children, className } =
+    props
   const rootClass = [styles.field, className].filter(Boolean).join(' ')
 
   return (

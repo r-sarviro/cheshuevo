@@ -70,7 +70,10 @@ const ContactsStep = () => {
       })
       setStep('otp')
     } catch {
-      setError('email', { type: 'server', message: t('booking.sendFailedBody') })
+      setError('email', {
+        type: 'server',
+        message: t('booking.sendFailedBody'),
+      })
     }
   }
 
@@ -83,7 +86,10 @@ const ContactsStep = () => {
         value={value}
         onChange={(next) => {
           setValue('name', next.name, { shouldDirty: true, shouldTouch: true })
-          setValue('email', next.email, { shouldDirty: true, shouldTouch: true })
+          setValue('email', next.email, {
+            shouldDirty: true,
+            shouldTouch: true,
+          })
           clearErrors()
         }}
         labels={{
