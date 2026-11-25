@@ -1,0 +1,165 @@
+/* Port of .kb-mid / .kb-headrow / .kb-list / .kb-row / .kb-sec-title */
+
+.root {
+  max-width: 880px;
+}
+
+.headrow {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px 16px;
+}
+
+.headrow :global(a[class*='Button']),
+.headrow :global(button[class*='Button']) {
+  margin-block: var(--px) calc(var(--px) * 2 + var(--key));
+}
+
+.loading {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  margin: var(--s-5) 0 0;
+  color: var(--c-ink-muted);
+  font: 400 var(--fs-small) / 1.4 var(--font-text);
+}
+
+.secTitle {
+  margin: var(--s-6) 0 var(--s-3);
+}
+
+.list {
+  display: grid;
+  gap: 14px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.list:has(+ .secTitle),
+.loading + .list {
+  margin-top: var(--s-3);
+}
+
+.row {
+  position: relative;
+  display: grid;
+  grid-template-columns: 64px minmax(0, 1fr);
+  gap: 4px 14px;
+  margin: var(--px) var(--px) calc(var(--px) + var(--block));
+  padding: 14px 14px 16px;
+  background: var(--c-surface);
+  box-shadow: var(--frame), var(--shadow-block);
+  color: var(--c-ink);
+  text-decoration: none;
+  transition:
+    transform var(--t-press) var(--step-1),
+    box-shadow var(--t-press) var(--step-1);
+}
+
+.row:hover {
+  transform: translateY(calc(-1 * var(--px)));
+  box-shadow:
+    var(--frame),
+    0 calc(var(--px) * 2 + var(--block)) 0 0 var(--c-shadow);
+}
+
+.row:focus-visible {
+  outline: none;
+  filter: var(--focus-ring);
+}
+
+.rowPic {
+  grid-row: span 2;
+  display: grid;
+  place-items: center;
+  width: 64px;
+  height: 64px;
+  background: var(--tile, var(--c-tile-mint));
+  box-shadow: var(--frame-sm);
+  margin: var(--px-sm);
+  overflow: hidden;
+}
+
+.rowPic img {
+  width: 64px;
+  height: 64px;
+  image-rendering: pixelated;
+  image-rendering: crisp-edges;
+}
+
+.rowMain {
+  display: grid;
+  gap: 2px;
+  min-width: 0;
+}
+
+.rowName {
+  font: 700 1.5rem / 1.05 var(--font-display);
+  letter-spacing: 0.01em;
+}
+
+.rowNo {
+  color: var(--c-ink-muted);
+  font: 500 var(--fs-small) / 1.4 var(--font-text);
+  font-variant-numeric: tabular-nums;
+}
+
+.rowWhen {
+  font: 500 var(--fs-ui) / 1.4 var(--font-text);
+  font-variant-numeric: tabular-nums;
+}
+
+.rowSum {
+  color: var(--c-ink-muted);
+  font: 400 var(--fs-small) / 1.4 var(--font-text);
+  font-variant-numeric: tabular-nums;
+}
+
+.rowBadges {
+  grid-column: 1 / -1;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 4px 6px;
+  margin-top: 6px;
+}
+
+.rowGo {
+  display: none;
+}
+
+.rowGhost {
+  pointer-events: none;
+}
+
+.skel {
+  display: block;
+  height: 14px;
+  margin: 3px 0;
+}
+
+@media (min-width: 768px) {
+  .row {
+    grid-template-columns: 64px minmax(0, 1fr) auto 24px;
+    align-items: center;
+    padding: 16px 18px;
+  }
+
+  .rowPic {
+    grid-row: auto;
+  }
+
+  .rowBadges {
+    grid-column: auto;
+    flex-direction: column;
+    align-items: flex-start;
+    margin-top: 0;
+  }
+
+  .rowGo {
+    display: inline-flex;
+    color: var(--c-ink-muted);
+  }
+}

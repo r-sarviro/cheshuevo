@@ -1,0 +1,24 @@
+/* Port of .kb-readonly */
+
+.root {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  min-height: 48px;
+  margin: var(--px);
+  padding: 11px 14px;
+  background: var(--c-sunk);
+  color: var(--c-ink);
+  font: 400 var(--fs-body) / 1.4 var(--font-text);
+  overflow-wrap: anywhere;
+  box-shadow:
+    0 calc(-1 * var(--px)) 0 0 var(--c-line-soft),
+    0 var(--px) 0 0 var(--c-line-soft),
+    calc(-1 * var(--px)) 0 0 0 var(--c-line-soft),
+    var(--px) 0 0 0 var(--c-line-soft);
+}
+
+.icon {
+  color: var(--c-ink-muted);
+  flex: none;
+}
