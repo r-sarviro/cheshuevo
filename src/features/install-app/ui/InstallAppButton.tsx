@@ -33,7 +33,7 @@ const InstallAppButton = (props: IInstallAppButtonProps) => {
         void install()
       }}
     >
-      <Icon name="download" aria-hidden />
+      <Icon name="upload" aria-hidden />
       <span className={styles.label}>{label}</span>
     </Button>
   )

@@ -60,6 +60,7 @@ export {
 export { EmptyState, type IEmptyStateProps } from './empty-state'
 export { OtpInput, type IOtpInputProps } from './otp-input'
 export { Panel, type IPanelProps } from './panel'
+export { Dialog, type IDialogProps } from './dialog'
 export {
   Steps,
   type IStepsProps,
