@@ -5,6 +5,7 @@ import { getDragonSheetSpec } from './sheetCatalog'
 import {
   createSheetLive,
   drawSheetLive,
+  SHEET_FPS,
   sizeSheetLive,
   type ISheetLiveState,
 } from './sheetEngine'
@@ -14,6 +15,8 @@ export interface IDragonSheetSpriteProps {
   className?: string
   label?: string
 }
+
+const FRAME_MS = 1000 / SHEET_FPS
 
 /** Canvas dragon from PNG sheet catalog (idle / blink / breath / special). */
 const DragonSheetSprite = (props: IDragonSheetSpriteProps) => {
@@ -25,23 +28,23 @@ const DragonSheetSprite = (props: IDragonSheetSpriteProps) => {
     const spec = getDragonSheetSpec(name)
     if (!canvas || !spec) return
 
-    const reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches
     const state: ISheetLiveState = createSheetLive(canvas, spec)
     sizeSheetLive(state)
     drawSheetLive(state, 0)
 
+    const resizeTarget = canvas.parentElement ?? canvas
     const resizeObserver = new ResizeObserver(() => {
       sizeSheetLive(state)
       drawSheetLive(state, performance.now() / 1000)
     })
-    resizeObserver.observe(canvas)
+    resizeObserver.observe(resizeTarget)
 
     let frameId = 0
     let last = 0
-    if (!reduce) {
+    if (!state.reduce) {
       const loop = (ts: number) => {
         frameId = window.requestAnimationFrame(loop)
-        if (ts - last < 100) return
+        if (ts - last < FRAME_MS) return
         last = ts
         drawSheetLive(state, ts / 1000, true)
       }
