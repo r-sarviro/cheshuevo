@@ -1,0 +1,80 @@
+/* Port of .px-tags / .px-tag / .px-tag__key from vitrina-2 (#o-tegi) */
+
+.root {
+  --tag-shape: polygon(
+    8px 0,
+    100% 0,
+    100% 100%,
+    8px 100%,
+    8px calc(100% - 2px),
+    6px calc(100% - 2px),
+    6px calc(100% - 4px),
+    4px calc(100% - 4px),
+    4px calc(100% - 6px),
+    2px calc(100% - 6px),
+    2px calc(100% - 8px),
+    0 calc(100% - 8px),
+    0 8px,
+    2px 8px,
+    2px 6px,
+    4px 6px,
+    4px 4px,
+    6px 4px,
+    6px 2px,
+    8px 2px
+  );
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.tag {
+  --tag-line: var(--c-line-control);
+  --tag-fill: var(--c-tile-butter);
+  position: relative;
+  isolation: isolate;
+  display: inline-flex;
+  align-items: baseline;
+  gap: 5px;
+  min-height: 26px;
+  padding: 5px 10px 5px 22px;
+  background: var(--tag-line);
+  color: var(--c-ink-strong);
+  font: 500 var(--fs-small) / 1.25 var(--font-text);
+  clip-path: var(--tag-shape);
+}
+
+.tag::before {
+  content: '';
+  position: absolute;
+  inset: 2px;
+  z-index: -1;
+  background: var(--tag-fill);
+  clip-path: var(--tag-shape);
+}
+
+.tag::after {
+  content: '';
+  position: absolute;
+  left: 9px;
+  top: calc(50% - 2px);
+  width: 4px;
+  height: 4px;
+  background: var(--tag-line);
+}
+
+.key {
+  font-weight: 400;
+  opacity: 0.68;
+}
+
+@media (forced-colors: active) {
+  .tag {
+    clip-path: none;
+    outline: 2px solid CanvasText;
+    outline-offset: -2px;
+  }
+}

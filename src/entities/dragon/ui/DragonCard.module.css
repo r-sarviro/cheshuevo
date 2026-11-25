@@ -20,6 +20,13 @@
   height: 240px;
 }
 
+.picEarth {
+  background: linear-gradient(
+    var(--tile, var(--c-tile-mint)) 0 84%,
+    color-mix(in srgb, var(--tile, var(--c-tile-mint)) 86%, #43365c) 84%
+  );
+}
+
 .body {
   display: flex;
   flex: 1;
@@ -30,6 +37,21 @@
   margin: 0;
   font: 700 var(--fs-name) / 1.05 var(--font-display);
   letter-spacing: 0.01em;
+}
+
+.tags {
+  margin-top: 10px;
+}
+
+.tagsGhost {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+
+.ghostTag {
+  display: block;
+  height: 26px;
 }
 
 .nameLink {
@@ -56,6 +78,15 @@
   color: var(--c-ink-muted);
   font-size: var(--fs-ui);
   line-height: 1.45;
+}
+
+.fit {
+  margin: -4px 0 16px;
+  padding-top: 10px;
+  border-top: 2px dashed var(--c-line-soft);
+  color: var(--c-ink-muted);
+  font-size: var(--fs-small);
+  line-height: 1.4;
 }
 
 .foot {

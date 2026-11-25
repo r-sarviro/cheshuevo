@@ -9,6 +9,12 @@ const SAKURKA = {
   shortDescription: 'Весной цветёт и сразу просит её сфотографировать.',
   description: 'Весной цветёт и сразу просит её сфотографировать.',
   spriteKey: 'sakurka',
+  tags: [
+    { label: 'Восточный дракон' },
+    { key: 'Стихия', label: 'Ветер' },
+    { label: 'Мечтательная' },
+  ],
+  fit: 'Фотосессии',
 }
 
 afterEach(async () => {
@@ -27,6 +33,8 @@ describe('getDragonCopy', () => {
       name: 'Stub',
       shortDescription: 'Short',
       description: 'Long',
+      tags: [],
+      fit: '',
     })
   })
 
@@ -35,6 +43,12 @@ describe('getDragonCopy', () => {
 
     expect(copy.name).toBe('Сакурка')
     expect(copy.shortDescription).toContain('сфотографировать')
+    expect(copy.fit).toBe('Фотосессии')
+    expect(copy.tags).toEqual([
+      { label: 'Восточный дракон' },
+      { key: 'Стихия', label: 'Ветер' },
+      { label: 'Мечтательная' },
+    ])
   })
 
   it('reads en keys by spriteKey', async () => {
@@ -43,5 +57,11 @@ describe('getDragonCopy', () => {
 
     expect(copy.name).toBe('Sakurka')
     expect(copy.shortDescription).toContain('photographed')
+    expect(copy.fit).toBe('Photo shoots')
+    expect(copy.tags).toEqual([
+      { label: 'Eastern dragon' },
+      { key: 'Element', label: 'Wind' },
+      { label: 'Dreamy' },
+    ])
   })
 })

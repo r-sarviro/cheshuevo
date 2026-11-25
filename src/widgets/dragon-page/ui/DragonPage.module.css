@@ -20,8 +20,25 @@
   box-shadow: var(--frame), var(--shadow-block);
 }
 
+.picEarth {
+  background: linear-gradient(
+    var(--tile, var(--c-tile-mint)) 0 84%,
+    color-mix(in srgb, var(--tile, var(--c-tile-mint)) 86%, #43365c) 84%
+  );
+}
+
+.tags {
+  margin-top: 12px;
+}
+
 .about {
   margin: 14px 0 0;
+}
+
+.fit {
+  margin: 10px 0 0;
+  color: var(--c-ink-muted);
+  font-size: var(--fs-ui);
 }
 
 .rate {

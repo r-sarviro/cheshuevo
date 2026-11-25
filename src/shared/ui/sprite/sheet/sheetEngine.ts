@@ -6,6 +6,8 @@ import type {
 
 export const SHEET_FPS = 12
 export const SHEET_PIC_HEIGHT = 240
+/** Cap like vitrina `.px-dsprite--lg` (360×270 → ×3 for 120×90 frames). */
+export const SHEET_FIT_MAX_HEIGHT = 270
 export const SHEET_GROUND_PAD = 27
 
 interface ISheetParticle {
@@ -163,21 +165,25 @@ function drawParticles(state: ISheetLiveState) {
   ctx.globalAlpha = 1
 }
 
-/** Fit canvas into 240px tile: integer scale, dragon on ground strip. */
+/** Fit canvas into the pic tile height: integer scale, dragon on ground strip. */
 export function sizeSheetLive(state: ISheetLiveState) {
   const parent = state.canvas.parentElement
   const width =
     parent?.clientWidth ?? state.canvas.getBoundingClientRect().width
   if (!width) return
 
+  const rawHeight =
+    parent && parent.clientHeight > 0 ? parent.clientHeight : SHEET_PIC_HEIGHT
+  const picHeight = Math.min(rawHeight, SHEET_FIT_MAX_HEIGHT)
+
   const fw = state.spec.fw
   const fh = state.spec.fh
   const scale = Math.max(
     1,
-    Math.min(Math.floor(width / fw), Math.floor(SHEET_PIC_HEIGHT / fh)),
+    Math.min(Math.floor(width / fw), Math.floor(picHeight / fh)),
   )
   const logicalW = Math.ceil(width / scale)
-  const logicalH = Math.round(SHEET_PIC_HEIGHT / scale)
+  const logicalH = Math.round(picHeight / scale)
 
   state.scale = scale
   state.ox = Math.floor((logicalW - fw) / 2)
@@ -190,7 +196,7 @@ export function sizeSheetLive(state: ISheetLiveState) {
   state.canvas.width = logicalW
   state.canvas.height = logicalH
   state.canvas.style.width = `${logicalW * scale}px`
-  state.canvas.style.height = `${SHEET_PIC_HEIGHT}px`
+  state.canvas.style.height = `${picHeight}px`
   state.ctx.imageSmoothingEnabled = false
   state.fx = []
 }
