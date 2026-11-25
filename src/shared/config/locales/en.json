@@ -159,7 +159,24 @@
     "phoneError": "Check the number: 11 digits required, e.g. +7 900 123-45-67",
     "emailLabel": "Email",
     "emailHint": "You sign in with this email, so it cannot be changed",
-    "save": "Save"
+    "save": "Save",
+    "saveSuccess": "Saved.",
+    "saveFailed": "Could not save. Try again.",
+    "loginLead": "Sign in with the email you used to book a dragon. No password: we will send a code.",
+    "loginGetCode": "Get code",
+    "loginSubmit": "Sign in",
+    "loginResent": "A new code was sent to {{email}}.",
+    "loginExpired": "Your session expired. Sign in again with a code from email — it takes a minute.",
+    "loginDeepLink": "Sign in to open booking {{number}}.",
+    "loggedOut": "You signed out. To see bookings again, sign in with a code from email.",
+    "cancelAction": "Cancel booking",
+    "cancelTitle": "Cancel booking?",
+    "cancelBody": "The time will free up for other customers.",
+    "cancelConfirm": "Cancel booking",
+    "cancelKeep": "Keep booking",
+    "cancelFailed": "Could not cancel the booking. Try again.",
+    "cancelStarted": "The rental has already started, so you cannot cancel on the site. Contact the shop: {{contacts}}",
+    "rentalContacts": "+7 900 555-12-34 or hello@drakonsk.ru"
   },
   "seo": {
     "default": {

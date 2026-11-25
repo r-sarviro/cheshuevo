@@ -19,6 +19,10 @@ vi.mock('@/shared/api', async (importOriginal) => {
   }
 })
 
+vi.mock('@/shared/api/stubDelay', () => ({
+  stubDelay: () => Promise.resolve(),
+}))
+
 async function startSession(email = 'test@example.com') {
   return requestEmailCodeStub({ email })
 }

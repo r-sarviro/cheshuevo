@@ -1,0 +1,43 @@
+.root {
+  max-width: 560px;
+}
+
+.lead {
+  margin: 0 0 var(--s-5);
+  color: var(--c-ink-muted);
+  font: 400 var(--fs-body) / 1.45 var(--font-text);
+}
+
+.form {
+  display: flex;
+  flex-direction: column;
+  gap: var(--s-5);
+  min-width: 0;
+  margin: var(--px) var(--px) calc(var(--px) + var(--block));
+  padding: 18px 16px 22px;
+  background: var(--c-surface);
+  box-shadow: var(--frame), var(--shadow-block);
+}
+
+.actions {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 4px 16px;
+}
+
+.inlineChange {
+  min-height: 0;
+  padding: 0;
+  font-size: var(--fs-label-sm);
+}
+
+.timer {
+  font-variant-numeric: tabular-nums;
+}
+
+@media (min-width: 640px) {
+  .form {
+    padding: 24px 26px 28px;
+  }
+}

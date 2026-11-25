@@ -69,6 +69,14 @@
   gap: 8px;
 }
 
+.actions {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 4px 16px;
+  margin-top: 4px;
+}
+
 @keyframes rise {
   from {
     opacity: 0;

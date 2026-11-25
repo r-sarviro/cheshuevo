@@ -21,12 +21,14 @@ export interface ICabinetBookingCardProps {
   badges: ReactNode
   facts: ICabinetBookingCardFact[]
   notes?: ReactNode
+  /** Feature actions (e.g. cancel) — composed by the page. */
+  actions?: ReactNode
   fresh?: boolean
   copyLabel?: ReactNode
   className?: string
 }
 
-/** LK booking detail card (kb-card). Read-only — no actions in this slice. */
+/** LK booking detail card (kb-card). Actions via slot from features. */
 const CabinetBookingCard = (props: ICabinetBookingCardProps) => {
   const {
     title,
@@ -36,6 +38,7 @@ const CabinetBookingCard = (props: ICabinetBookingCardProps) => {
     badges,
     facts,
     notes,
+    actions,
     fresh = false,
     copyLabel,
     className,
@@ -103,6 +106,7 @@ const CabinetBookingCard = (props: ICabinetBookingCardProps) => {
           </Facts>
         ) : null}
         {notes}
+        {actions ? <div className={styles.actions}>{actions}</div> : null}
       </div>
     </section>
   )
