@@ -12,6 +12,7 @@ import {
   DragonSprite,
   hasDragonSheet,
 } from '@/shared/ui/sprite'
+import { Tag, Tags } from '@/shared/ui/tag'
 
 import { getDragonCopy } from '../lib/dragonCopy'
 import type { IDragonListItem } from '../model/types'
@@ -73,6 +74,23 @@ const DragonCard = (props: IDragonCardProps) => {
               aria-hidden="true"
             />
           </p>
+          <div
+            className={[styles.tags, styles.tagsGhost].join(' ')}
+            aria-hidden="true"
+          >
+            <span
+              className={[styles.ghostTag, skeletonStyles.root].join(' ')}
+              style={{ width: 128 }}
+            />
+            <span
+              className={[styles.ghostTag, skeletonStyles.root].join(' ')}
+              style={{ width: 108 }}
+            />
+            <span
+              className={[styles.ghostTag, skeletonStyles.root].join(' ')}
+              style={{ width: 96 }}
+            />
+          </div>
           <p className={styles.about}>
             <span
               className={[styles.ghost, skeletonStyles.root].join(' ')}
@@ -82,6 +100,12 @@ const DragonCard = (props: IDragonCardProps) => {
               className={[styles.ghost, skeletonStyles.root].join(' ')}
               style={{ width: '70%', marginTop: 6 }}
               aria-hidden="true"
+            />
+          </p>
+          <p className={styles.fit} aria-hidden="true">
+            <span
+              className={[styles.ghost, skeletonStyles.root].join(' ')}
+              style={{ width: '58%' }}
             />
           </p>
           <div className={styles.foot}>
@@ -136,19 +160,36 @@ const DragonCard = (props: IDragonCardProps) => {
       <img src={dragon.imageUrl} alt="" />
     ) : null)
 
+  const picClass = [
+    styles.pic,
+    imageFailed ? styles.picFailed : styles.picEarth,
+  ]
+    .filter(Boolean)
+    .join(' ')
+
   return (
     <Card as="article" className={rootClass}>
       <CardPic
-        className={[styles.pic, imageFailed ? styles.picFailed : '']
-          .filter(Boolean)
-          .join(' ')}
+        className={picClass}
         tile={imageFailed ? undefined : dragon.tileToken}
       >
         {picContent}
       </CardPic>
       <CardBody className={styles.body}>
         <h3 className={styles.name}>{nameContent}</h3>
+        {copy.tags.length ? (
+          <Tags className={styles.tags} aria-label={t('catalog.tagsLabel')}>
+            {copy.tags.map((tag) => (
+              <Tag key={`${tag.key ?? ''}:${tag.label}`} tagKey={tag.key}>
+                {tag.label}
+              </Tag>
+            ))}
+          </Tags>
+        ) : null}
         <p className={styles.about}>{copy.shortDescription}</p>
+        {copy.fit ? (
+          <p className={styles.fit}>{t('catalog.fit', { fit: copy.fit })}</p>
+        ) : null}
         <div className={styles.foot}>
           <p className={styles.price}>
             <b className={styles.priceStrong}>

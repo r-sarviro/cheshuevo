@@ -165,7 +165,12 @@ const DragonBookingPage = () => {
               pictureTile={dragon.tileToken}
               pictureLabel={copy.name}
               name={copy.name}
+              tags={copy.tags}
+              tagsLabel={t('catalog.tagsLabel')}
               about={copy.description}
+              fit={
+                copy.fit ? t('catalog.fit', { fit: copy.fit }) : undefined
+              }
               rateAmount={`${dragon.hourlyRate}\u00a0${dragon.currency}`}
               rateUnit={t('ds.perHour')}
               rateHint={t('booking.rateHint')}

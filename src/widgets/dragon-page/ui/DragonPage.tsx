@@ -1,9 +1,15 @@
 import type { ReactNode } from 'react'
 
 import { CardPic } from '@/shared/ui/card'
+import { Tag, Tags } from '@/shared/ui/tag'
 import { Typography } from '@/shared/ui/typography'
 
 import styles from './DragonPage.module.css'
+
+export interface IDragonPageTag {
+  label: string
+  key?: string
+}
 
 export interface IDragonPageProps {
   back: ReactNode
@@ -11,7 +17,10 @@ export interface IDragonPageProps {
   pictureTile?: string
   pictureLabel?: string
   name: ReactNode
+  tags?: IDragonPageTag[]
+  tagsLabel?: string
   about: ReactNode
+  fit?: ReactNode
   rateAmount: ReactNode
   rateUnit: ReactNode
   rateHint?: ReactNode
@@ -27,7 +36,10 @@ const DragonPage = (props: IDragonPageProps) => {
     pictureTile,
     pictureLabel,
     name,
+    tags,
+    tagsLabel,
     about,
+    fit,
     rateAmount,
     rateUnit,
     rateHint,
@@ -36,6 +48,7 @@ const DragonPage = (props: IDragonPageProps) => {
   } = props
 
   const rootClass = [styles.root, className].filter(Boolean).join(' ')
+  const picClass = [styles.pic, styles.picEarth].join(' ')
 
   return (
     <div>
@@ -43,7 +56,7 @@ const DragonPage = (props: IDragonPageProps) => {
       <div className={rootClass}>
         <div className={styles.side}>
           <CardPic
-            className={styles.pic}
+            className={picClass}
             tile={pictureTile}
             aria-label={pictureLabel}
           >
@@ -52,9 +65,19 @@ const DragonPage = (props: IDragonPageProps) => {
           <Typography className={styles.title} variant="h1">
             {name}
           </Typography>
+          {tags?.length ? (
+            <Tags className={styles.tags} aria-label={tagsLabel}>
+              {tags.map((tag) => (
+                <Tag key={`${tag.key ?? ''}:${tag.label}`} tagKey={tag.key}>
+                  {tag.label}
+                </Tag>
+              ))}
+            </Tags>
+          ) : null}
           <Typography className={styles.about} variant="text">
             {about}
           </Typography>
+          {fit ? <p className={styles.fit}>{fit}</p> : null}
           <div className={styles.rate}>
             <p className={styles.price}>
               <b className={styles.priceStrong}>{rateAmount}</b> {rateUnit}
