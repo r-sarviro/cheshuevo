@@ -1,7 +1,14 @@
-import type { IDragonSheetSpec, ISheetFxEmitter } from './sheetCatalog'
+import type {
+  IDragonSheetSpec,
+  ISheetFxEmitter,
+  ISheetRigPart,
+} from './sheetCatalog'
 
-export const SHEET_FRAME_W = 80
-export const SHEET_FRAME_H = 60
+export const SHEET_FPS = 12
+export const SHEET_PIC_HEIGHT = 240
+/** Cap like vitrina `.px-dsprite--lg` (360×270 → ×3 for 120×90 frames). */
+export const SHEET_FIT_MAX_HEIGHT = 270
+export const SHEET_GROUND_PAD = 27
 
 interface ISheetParticle {
   x: number
@@ -21,41 +28,92 @@ export interface ISheetLiveState {
   canvas: HTMLCanvasElement
   ctx: CanvasRenderingContext2D
   img: HTMLImageElement
+  pose: HTMLCanvasElement | null
   scale: number
   ox: number
   oy: number
   phase: number
   fx: ISheetParticle[]
   ready: boolean
+  reduce: boolean
 }
+
+const BREATH = [0, 0, 0, 0, 0, 1, 2, 3, 3, 3, 3, 3, 3, 2, 1, 0] as const
+const NOTE = [
+  [2, 0],
+  [3, 0],
+  [2, 1],
+  [4, 1],
+  [2, 2],
+  [2, 3],
+  [0, 4],
+  [1, 4],
+  [2, 4],
+  [0, 5],
+  [1, 5],
+] as const
 
 const rnd = (range: [number, number]) =>
   range[0] + Math.random() * (range[1] - range[0])
 
-/** Choose frame index for sheet timeline (idle/blink/breath/special). */
-export function sheetFrameAt(
-  spec: IDragonSheetSpec,
-  t: number,
-  phase: number,
-): number {
-  const tt = t + phase
+/** Special-move frame index, or -1 while idle/breathing. */
+export function sheetSpecial(spec: IDragonSheetSpec, t: number): number {
   const seq = spec.seq
   const tot = seq.reduce((sum, item) => sum + item[1], 0)
-  let frame = Math.floor(tt / 0.8) % 2 ? 2 : 0
-  let u = spec.loop ? tt % tot : (tt % spec.every) - (spec.every - tot)
-  if (u >= 0) {
-    for (const [key, duration] of seq) {
-      if (u < duration) {
-        frame = key
-        break
+  if (!tot) return -1
+  let u = spec.loop ? t % tot : (t % spec.every) - (spec.every - tot)
+  if (u < 0) return -1
+  for (const [key, duration] of seq) {
+    if (u < duration) return key
+    u -= duration
+  }
+  return -1
+}
+
+function sheetBreath(t: number): number {
+  return BREATH[Math.floor(((t % 1.6) / 1.6) * BREATH.length)] ?? 0
+}
+
+function rigApply(
+  poseCtx: CanvasRenderingContext2D,
+  img: HTMLImageElement,
+  sx: number,
+  rig: ISheetRigPart[],
+  t: number,
+) {
+  for (const part of rig) {
+    const [x0, y0, x1, y1] = part.box
+    const w = x1 - x0
+    const h = y1 - y0
+    const period = part.period || 2.4
+    const amp = part.amp || 1
+    const phase = part.phase || 0
+    const wave = part.wave ?? 1.2
+
+    if (part.type === 'rows') {
+      for (let y = y0; y < y1; y += 1) {
+        const r =
+          (part.root === 'top' ? y - y0 : y1 - 1 - y) / Math.max(1, h - 1)
+        const dd = Math.round(
+          amp * r * Math.sin((t * 6.283) / period - wave * r * 3 + phase),
+        )
+        if (!dd) continue
+        poseCtx.clearRect(x0, y, w, 1)
+        poseCtx.drawImage(img, sx + x0, y, w, 1, x0 + dd, y, w, 1)
       }
-      u -= duration
+    } else {
+      for (let x = x0; x < x1; x += 1) {
+        const r =
+          (part.root === 'left' ? x - x0 : x1 - 1 - x) / Math.max(1, w - 1)
+        const dd = Math.round(
+          amp * r * Math.sin((t * 6.283) / period - wave * r * 3 + phase),
+        )
+        if (!dd) continue
+        poseCtx.clearRect(x, y0, 1, h)
+        poseCtx.drawImage(img, sx + x, y0, 1, h, x, y0 + dd, 1, h)
+      }
     }
   }
-  if (tt % 3.4 < 0.17 && (frame === 0 || frame === 2)) {
-    return 1
-  }
-  return frame
 }
 
 function emitFx(
@@ -84,79 +142,144 @@ function emitFx(
   }
 }
 
-/** Fit integer pixel scale and bottom-align sprite in the canvas. */
-export function sizeSheetLive(state: ISheetLiveState) {
-  const rect = state.canvas.getBoundingClientRect()
-  const scale = Math.max(
-    2,
-    Math.floor(
-      Math.min(
-        rect.width / (SHEET_FRAME_W + 6),
-        (rect.height * 0.84) / (SHEET_FRAME_H + 2),
-      ),
-    ),
-  )
-  state.scale = scale
-  state.canvas.width = Math.floor(rect.width)
-  state.canvas.height = Math.floor(rect.height)
-  state.ox = Math.floor((state.canvas.width - SHEET_FRAME_W * scale) / 2)
-  state.oy = Math.floor(
-    state.canvas.height * 0.84 - (SHEET_FRAME_H - 1) * scale,
-  )
-  state.ctx.imageSmoothingEnabled = false
-}
-
 function drawParticles(state: ISheetLiveState) {
-  const { ctx, scale: S, ox, oy } = state
+  const { ctx, ox, oy } = state
   for (const particle of state.fx) {
     ctx.globalAlpha = Math.max(0, 1 - particle.life / particle.max)
-    ctx.fillStyle = particle.c
-    const x = ox + Math.round(particle.x) * S
-    const y = oy + Math.round(particle.y) * S
+    const x = ox + Math.round(particle.x)
+    const y = oy + Math.round(particle.y)
     if (particle.s === 'note') {
-      for (const [a, b] of [
-        [2, 0],
-        [3, 0],
-        [2, 1],
-        [4, 1],
-        [2, 2],
-        [2, 3],
-        [0, 4],
-        [1, 4],
-        [2, 4],
-        [0, 5],
-        [1, 5],
-      ]) {
-        ctx.fillRect(x + a * S, y + b * S, S, S)
+      for (const [a, b] of NOTE) {
+        ctx.fillStyle = particle.c
+        ctx.fillRect(x + a, y + b, 1, 1)
       }
     } else if (particle.w) {
-      ctx.fillRect(x, y, particle.w * S, S)
+      ctx.fillStyle = particle.c
+      ctx.fillRect(x, y, particle.w, 1)
     } else {
-      ctx.fillRect(x, y, 2 * S, S)
-      ctx.fillRect(x + S, y + S, S, S)
+      ctx.fillStyle = particle.c
+      ctx.fillRect(x, y, 2, 1)
+      ctx.fillRect(x + 1, y + 1, 1, 1)
     }
   }
   ctx.globalAlpha = 1
 }
 
-/** Draw one animation tick; pass step=true to spawn FX and age particles. */
-export function drawSheetLive(state: ISheetLiveState, t: number, step = false) {
-  const { ctx, canvas, img, scale, ox, oy, spec } = state
-  ctx.clearRect(0, 0, canvas.width, canvas.height)
-  if (!state.ready || !img.complete) return
+/** Fit canvas into the pic tile height: integer scale, dragon on ground strip. */
+export function sizeSheetLive(state: ISheetLiveState) {
+  const parent = state.canvas.parentElement
+  const width =
+    parent?.clientWidth ?? state.canvas.getBoundingClientRect().width
+  if (!width) return
 
-  const frame = sheetFrameAt(spec, t, state.phase)
-  ctx.drawImage(
-    img,
-    frame * SHEET_FRAME_W,
-    0,
-    SHEET_FRAME_W,
-    SHEET_FRAME_H,
-    ox,
-    oy,
-    SHEET_FRAME_W * scale,
-    SHEET_FRAME_H * scale,
+  const rawHeight =
+    parent && parent.clientHeight > 0 ? parent.clientHeight : SHEET_PIC_HEIGHT
+  const picHeight = Math.min(rawHeight, SHEET_FIT_MAX_HEIGHT)
+
+  const fw = state.spec.fw
+  const fh = state.spec.fh
+  const scale = Math.max(
+    1,
+    Math.min(Math.floor(width / fw), Math.floor(picHeight / fh)),
   )
+  const logicalW = Math.ceil(width / scale)
+  const logicalH = Math.round(picHeight / scale)
+
+  state.scale = scale
+  state.ox = Math.floor((logicalW - fw) / 2)
+  state.oy = Math.max(0, logicalH - fh - Math.round(SHEET_GROUND_PAD / scale))
+
+  if (state.canvas.width === logicalW && state.canvas.height === logicalH) {
+    return
+  }
+
+  state.canvas.width = logicalW
+  state.canvas.height = logicalH
+  state.canvas.style.width = `${logicalW * scale}px`
+  state.canvas.style.height = `${picHeight}px`
+  state.ctx.imageSmoothingEnabled = false
+  state.fx = []
+}
+
+/** Draw one animation tick; pass step=true to spawn FX and age particles. */
+export function drawSheetLive(
+  state: ISheetLiveState,
+  t0: number,
+  step = false,
+) {
+  const { ctx, canvas, img, spec, reduce } = state
+  const fw = spec.fw
+  const fh = spec.fh
+  const base = Math.round((fh * 58) / 60)
+
+  ctx.clearRect(0, 0, canvas.width, canvas.height)
+  if (!state.ready || !img.complete || !img.naturalWidth) return
+
+  const t = t0 + state.phase
+  const special = reduce ? -1 : sheetSpecial(spec, t)
+  const blink = !reduce && t % 3.4 < 0.17 && special <= 0
+  let frame = special >= 0 ? special : 0
+  let lift = 0
+  let oy = state.oy
+
+  if (spec.hover && !reduce) {
+    const up = Math.round(Math.sin(t * 2.6) + 1)
+    oy -= up
+    const cx = state.ox + fw / 2
+    const cy = state.oy + base + 1
+    const rx = Math.round(fw * (0.24 - up * 0.03))
+    ctx.fillStyle = 'rgba(67,54,92,.16)'
+    ctx.fillRect(cx - rx, cy, rx * 2, 1)
+    ctx.fillRect(cx - rx + 3, cy - 1, rx * 2 - 6, 1)
+    ctx.fillRect(cx - rx + 3, cy + 1, rx * 2 - 6, 1)
+  }
+
+  const idle = special < 0
+  if (idle) frame = blink ? 1 : 0
+  if (idle && !reduce) {
+    const breathStep = sheetBreath(t)
+    if (breathStep) {
+      if (spec.breath) {
+        lift = Math.round(
+          spec.breath[0] + ((spec.breath[1] - spec.breath[0]) * breathStep) / 3,
+        )
+      } else if (breathStep === 3 && !blink) {
+        frame = 2
+      }
+    }
+  }
+
+  let source: CanvasImageSource = img
+  let sx = frame * fw
+  if (state.pose && idle && !reduce && spec.rig?.length) {
+    const poseCtx = state.pose.getContext('2d')
+    if (poseCtx) {
+      poseCtx.clearRect(0, 0, fw, fh)
+      poseCtx.drawImage(img, sx, 0, fw, fh, 0, 0, fw, fh)
+      rigApply(poseCtx, img, sx, spec.rig, t)
+      source = state.pose
+      sx = 0
+    }
+  }
+
+  if (lift) {
+    ctx.drawImage(source, sx, 1, fw, lift, state.ox, oy, fw, lift)
+    ctx.drawImage(
+      source,
+      sx,
+      lift,
+      fw,
+      fh - lift,
+      state.ox,
+      oy + lift,
+      fw,
+      fh - lift,
+    )
+  } else {
+    ctx.drawImage(source, sx, 0, fw, fh, state.ox, oy, fw, fh)
+  }
+
+  if (reduce) return
 
   if (step) {
     emitFx(state, frame, spec.fx)
@@ -182,19 +305,31 @@ export function createSheetLive(
   if (!ctx) {
     throw new Error('2D canvas context unavailable')
   }
+
+  const reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches
+  const pose =
+    spec.rig && spec.rig.length ? document.createElement('canvas') : null
+  if (pose) {
+    pose.width = spec.fw
+    pose.height = spec.fh
+  }
+
   const img = new Image()
   const state: ISheetLiveState = {
     spec,
     canvas,
     ctx,
     img,
+    pose,
     scale: 2,
     ox: 0,
     oy: 0,
     phase,
     fx: [],
     ready: false,
+    reduce,
   }
+
   img.onload = () => {
     state.ready = true
     sizeSheetLive(state)

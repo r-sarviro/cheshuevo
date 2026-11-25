@@ -17,6 +17,7 @@ export {
   type ISelectProps,
 } from './field'
 export { Badge, type IBadgeProps } from './badge'
+export { Tag, Tags, type ITagProps, type ITagsProps } from './tag'
 export { Note, type INoteProps } from './note'
 export { Frame, type IFrameProps } from './frame'
 export {

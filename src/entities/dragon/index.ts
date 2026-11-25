@@ -1,6 +1,7 @@
 export type {
   IDragon,
   IDragonListItem,
+  IDragonTag,
   TDragonOperationalStatus,
 } from './model/types'
 export { DRAGON_OPERATIONAL_STATUSES } from './model/types'

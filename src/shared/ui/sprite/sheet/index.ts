@@ -8,4 +8,5 @@ export {
   hasDragonSheet,
   type IDragonSheetSpec,
   type ISheetFxEmitter,
+  type ISheetRigPart,
 } from './sheetCatalog'
