@@ -29,22 +29,21 @@ export type TCreateBookingStubPayload = ICreateBookingPayload & {
   dragonName: string
 }
 
-export type TCreateCustomerBookingStubPayload = ICreateCustomerBookingPayload & {
-  hourlyRate: number
-  currency: string
-  dragonName: string
-}
-
-function buildConfirmedBooking(
-  payload: {
-    dragonId: number
-    startsAt: string
-    endsAt: string
+export type TCreateCustomerBookingStubPayload =
+  ICreateCustomerBookingPayload & {
     hourlyRate: number
     currency: string
     dragonName: string
-  },
-): IBooking {
+  }
+
+function buildConfirmedBooking(payload: {
+  dragonId: number
+  startsAt: string
+  endsAt: string
+  hourlyRate: number
+  currency: string
+  dragonName: string
+}): IBooking {
   const hours = billableHours(payload.startsAt, payload.endsAt)
   const number = `DR-${String(bookingSeq++).padStart(6, '0')}`
   return {
@@ -115,11 +114,7 @@ export async function createBookingStub(
   }
 
   const booking = buildConfirmedBooking(payload)
-  rememberCreatedBooking(
-    booking,
-    payload.customerEmail,
-    payload.customerName,
-  )
+  rememberCreatedBooking(booking, payload.customerEmail, payload.customerName)
   return booking
 }
 

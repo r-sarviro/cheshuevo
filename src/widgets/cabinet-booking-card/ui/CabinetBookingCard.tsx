@@ -45,17 +45,11 @@ const CabinetBookingCard = (props: ICabinetBookingCardProps) => {
   } = props
   const { t } = useTranslation()
 
-  const rootClass = [
-    styles.root,
-    fresh ? styles.fresh : null,
-    className,
-  ]
+  const rootClass = [styles.root, fresh ? styles.fresh : null, className]
     .filter(Boolean)
     .join(' ')
 
-  const picStyle = tile
-    ? ({ ['--tile']: tile } as CSSProperties)
-    : undefined
+  const picStyle = tile ? ({ ['--tile']: tile } as CSSProperties) : undefined
 
   const onCopy = async () => {
     try {

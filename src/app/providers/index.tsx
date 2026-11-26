@@ -10,5 +10,7 @@ type AppProvidersProps = {
 
 /** App-wide providers (router is mounted separately via RouterProvider). */
 export function AppProviders({ children }: AppProvidersProps) {
-  return <QueryClientProvider client={queryClient}>{children}</QueryClientProvider>
+  return (
+    <QueryClientProvider client={queryClient}>{children}</QueryClientProvider>
+  )
 }

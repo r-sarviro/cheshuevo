@@ -170,11 +170,7 @@ export function customerHasBookingsStub(email: string): boolean {
  */
 export function assertCustomerCanRequestLoginStub(email: string) {
   if (customerHasBookingsStub(email)) return
-  throw new ApiError(
-    404,
-    'NO_BOOKINGS',
-    'No bookings for this email',
-  )
+  throw new ApiError(404, 'NO_BOOKINGS', 'No bookings for this email')
 }
 
 /** Attach a newly created public booking to the cabinet stub store. */

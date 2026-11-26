@@ -19,9 +19,7 @@ export function splitCustomerBookings(
     }
   }
 
-  current.sort(
-    (a, b) => Date.parse(a.startsAt) - Date.parse(b.startsAt) || 0,
-  )
+  current.sort((a, b) => Date.parse(a.startsAt) - Date.parse(b.startsAt) || 0)
   past.sort((a, b) => Date.parse(b.startsAt) - Date.parse(a.startsAt) || 0)
 
   void now
