@@ -142,11 +142,7 @@ const PeriodStep = (props: IPeriodStepProps) => {
   const busy = createCustomerBooking.isPending
 
   return (
-    <form
-      className={styles.stack}
-      onSubmit={handleSubmit(onValid)}
-      noValidate
-    >
+    <form className={styles.stack} onSubmit={handleSubmit(onValid)} noValidate>
       <Typography className={styles.heading} variant="h2">
         {t('booking.whenFly')}
       </Typography>

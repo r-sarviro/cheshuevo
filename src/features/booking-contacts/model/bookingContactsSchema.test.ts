@@ -30,9 +30,9 @@ describe('bookingContactsSchema', () => {
     })
     expect(result.success).toBe(false)
     if (!result.success) {
-      expect(result.error.issues.some((i) => i.message === 'ds.emailError')).toBe(
-        true,
-      )
+      expect(
+        result.error.issues.some((i) => i.message === 'ds.emailError'),
+      ).toBe(true)
     }
   })
 })
