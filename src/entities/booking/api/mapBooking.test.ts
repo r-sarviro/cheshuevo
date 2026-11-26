@@ -73,6 +73,29 @@ describe('mapCreatedBooking', () => {
       },
     })
   })
+
+  it('maps cabinet create response when session is null', () => {
+    expect(
+      mapCreatedBooking({
+        booking_number: 'DR-000010',
+        status: 'CONFIRMED',
+        payment_status: 'UNPAID',
+        total_amount: 300,
+        currency: 'RUB',
+        starts_at: '2026-12-15T10:00:00Z',
+        ends_at: '2026-12-15T12:00:00Z',
+        billable_hours: 2,
+        dragon_id: 6,
+        dragon_name: 'Снежок',
+        confirmation_email_queued: true,
+        session: null,
+      }),
+    ).toMatchObject({
+      bookingNumber: 'DR-000010',
+      dragonId: 6,
+      session: null,
+    })
+  })
 })
 
 describe('mapCustomerBooking', () => {
