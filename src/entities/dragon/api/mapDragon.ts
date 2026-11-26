@@ -2,9 +2,7 @@ import type { TDragonResourceWire } from '@/shared/api'
 
 import type { IDragon, IDragonListItem, IDragonTag } from '../model/types'
 
-function mapTags(
-  raw: TDragonResourceWire['tags'],
-): IDragonTag[] | undefined {
+function mapTags(raw: TDragonResourceWire['tags']): IDragonTag[] | undefined {
   if (!Array.isArray(raw) || raw.length === 0) return undefined
   const tags = raw
     .map((item): IDragonTag | null => {

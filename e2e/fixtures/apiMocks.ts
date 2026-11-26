@@ -55,7 +55,7 @@ export async function mockApi(
   page: Page,
   options?: {
     noBookingsOnLogin?: boolean
-    bookings?: typeof MOCK_BOOKING[]
+    bookings?: (typeof MOCK_BOOKING)[]
     availabilityUnavailable?: boolean
     /** Default: succeed. */
     otpConfirm?: 'ok' | 'invalid' | 'exhausted'

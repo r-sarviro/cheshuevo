@@ -8,7 +8,10 @@ test('seeded session shows bookings and detail', async ({ page }) => {
   await page.goto('/cabinet/bookings')
 
   await expect(page.getByText('DR-000001')).toBeVisible()
-  await page.getByRole('link', { name: /DR-000001|Бриз/i }).first().click()
+  await page
+    .getByRole('link', { name: /DR-000001|Бриз/i })
+    .first()
+    .click()
   await expect(page).toHaveURL(/\/cabinet\/bookings\/DR-000001/)
   await expect(page.getByText('Бриз').first()).toBeVisible()
 })

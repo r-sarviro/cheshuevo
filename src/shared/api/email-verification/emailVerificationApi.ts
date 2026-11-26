@@ -67,13 +67,10 @@ export async function confirmEmailCode(
     email: payload.email,
     code: payload.code,
   }
-  const raw = await apiRequest<unknown>(
-    '/public/email-verifications/confirm',
-    {
-      method: 'POST',
-      body,
-    },
-  )
+  const raw = await apiRequest<unknown>('/public/email-verifications/confirm', {
+    method: 'POST',
+    body,
+  })
   const wire = parseWire(emailVerificationConfirmedSchema, raw)
   return {
     verificationToken: wire.verification_token,

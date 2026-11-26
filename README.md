@@ -40,10 +40,10 @@ yarn dev
 
 Copy `.env.example` to `.env` and set variables as needed:
 
-| Variable            | Purpose                                     |
-| ------------------- | ------------------------------------------- |
+| Variable            | Purpose                                        |
+| ------------------- | ---------------------------------------------- |
 | `VITE_API_BASE_URL` | API base URL (default `localhost:8000/api/v1`) |
-| `VITE_SITE_URL`     | Absolute site origin without trailing slash |
+| `VITE_SITE_URL`     | Absolute site origin without trailing slash    |
 
 For production set a real `VITE_SITE_URL` in the build/CI environment (`.env.example` currently has `https://drakonsk.ru`). It drives `canonical` / `og:url` and generation of `public/robots.txt` + `public/sitemap.xml` during `yarn build`.
 
@@ -51,17 +51,17 @@ After changing `openapi.json`, regenerate client types with `yarn api:types`.
 
 ## Routes
 
-| Path | Purpose |
-| ---- | ------- |
-| `/` | Landing (hero, catalog, info blocks) |
-| `/about` | About / how it works / place / contacts |
-| `/dragons/:dragonId` | Dragon page + booking wizard |
-| `/cabinet/login` | Cabinet login (email OTP) |
-| `/cabinet/bookings` | Customer bookings |
-| `/cabinet/bookings/:bookingNumber` | Booking detail |
-| `/cabinet/profile` | Profile |
-| `/test-flight` | Mini-game |
-| `/404` | Not found |
+| Path                               | Purpose                                 |
+| ---------------------------------- | --------------------------------------- |
+| `/`                                | Landing (hero, catalog, info blocks)    |
+| `/about`                           | About / how it works / place / contacts |
+| `/dragons/:dragonId`               | Dragon page + booking wizard            |
+| `/cabinet/login`                   | Cabinet login (email OTP)               |
+| `/cabinet/bookings`                | Customer bookings                       |
+| `/cabinet/bookings/:bookingNumber` | Booking detail                          |
+| `/cabinet/profile`                 | Profile                                 |
+| `/test-flight`                     | Mini-game                               |
+| `/404`                             | Not found                               |
 
 ## Project structure
 
