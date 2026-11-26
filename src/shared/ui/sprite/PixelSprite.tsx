@@ -2,7 +2,7 @@ import { useEffect, useRef } from 'react'
 
 import { useUiStore } from '@/shared/model'
 
-import styles from './DragonSprite.module.css'
+import styles from './PixelSprite.module.css'
 import { mount, refresh } from './engine/pixelSprites.js'
 
 const DEFAULT_SIZE: Record<string, { width: number; height: number }> = {
@@ -15,7 +15,7 @@ const DEFAULT_SIZE: Record<string, { width: number; height: number }> = {
   'clouds-night': { width: 180, height: 72 },
 }
 
-export interface IDragonSpriteProps {
+export interface IPixelSpriteProps {
   name: string
   fit?: boolean
   width?: number
@@ -25,7 +25,7 @@ export interface IDragonSpriteProps {
 }
 
 /** Canvas sprite from slim PixelSprites (loader / flame / clouds). */
-const DragonSprite = (props: IDragonSpriteProps) => {
+const PixelSprite = (props: IPixelSpriteProps) => {
   const { name, fit = false, width, height, className, label } = props
 
   const canvasRef = useRef<HTMLCanvasElement>(null)
@@ -70,4 +70,4 @@ const DragonSprite = (props: IDragonSpriteProps) => {
   )
 }
 
-export default DragonSprite
+export default PixelSprite

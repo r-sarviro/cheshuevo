@@ -13,7 +13,7 @@ import { Frame } from '@/shared/ui/frame'
 import { Icon, type TIconName } from '@/shared/ui/icon'
 import { Link } from '@/shared/ui/link'
 import { Section, SectionHead, Wrap } from '@/shared/ui/layout'
-import { DragonSprite } from '@/shared/ui/sprite'
+import { PixelSprite } from '@/shared/ui/sprite'
 import { Typography } from '@/shared/ui/typography'
 
 import styles from './LandingInfo.module.css'
@@ -82,7 +82,7 @@ const LandingAbout = (props: ILandingAboutProps) => {
               ) : null}
             </div>
             <div className={styles.aboutFlameSlot}>
-              <DragonSprite
+              <PixelSprite
                 className={styles.aboutFlameSprite}
                 name="flame"
                 label={t('landing.bridgeSpriteAltFlame')}
