@@ -6,10 +6,9 @@ const LARAVEL_LOG =
   '/Users/r.sarviro/Documents/Projects/cheshuevo-gitlab/admin/backend/storage/logs/laravel.log'
 
 function readLatestOtp(email: string): string {
-  const out = execSync(
-    `rg -n "rental\\.otp" "${LARAVEL_LOG}" | tail -20`,
-    { encoding: 'utf8' },
-  )
+  const out = execSync(`rg -n "rental\\.otp" "${LARAVEL_LOG}" | tail -20`, {
+    encoding: 'utf8',
+  })
   const lines = out.trim().split('\n').reverse()
   for (const line of lines) {
     if (!line.includes(email)) continue
@@ -25,7 +24,10 @@ function readLatestOtp(email: string): string {
  * Requires API + yarn dev; OTP is read from Laravel local log.
  */
 test('live guest booking creates confirmed booking', async ({ page }) => {
-  test.skip(process.env.LIVE_API !== '1', 'Set LIVE_API=1 to run against real API')
+  test.skip(
+    process.env.LIVE_API !== '1',
+    'Set LIVE_API=1 to run against real API',
+  )
   test.setTimeout(90_000)
 
   const email = `live-book-${randomUUID().slice(0, 8)}@example.com`
@@ -56,12 +58,17 @@ test('live guest booking creates confirmed booking', async ({ page }) => {
   await page.getByRole('button', { name: /Подтвердить бронь/i }).click()
 
   await expect(page.getByText(/DR-\d+/)).toBeVisible({ timeout: 20_000 })
-  await expect(page.getByText(/Подтверждение отправили|Оплата/i).first()).toBeVisible()
   await expect(
-    page.getByRole('link', { name: /Открыть бронь/i }),
+    page.getByText(/Подтверждение отправили|Оплата/i).first(),
   ).toBeVisible()
+  await expect(page.getByRole('link', { name: /Открыть бронь/i })).toBeVisible()
 
-  const bookingNumber = (await page.getByText(/DR-\d+/).first().textContent())?.trim()
+  const bookingNumber = (
+    await page
+      .getByText(/DR-\d+/)
+      .first()
+      .textContent()
+  )?.trim()
   expect(bookingNumber).toMatch(/^DR-\d+/)
 
   await page.getByRole('link', { name: /Открыть бронь/i }).click()

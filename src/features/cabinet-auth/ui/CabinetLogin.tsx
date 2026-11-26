@@ -12,11 +12,7 @@ import {
   useRequestEmailCodeMutation,
 } from '@/shared/api'
 import { CATALOG_PATH } from '@/shared/config'
-import {
-  emailSchema,
-  otpFormSchema,
-  type TOtpFormValues,
-} from '@/shared/lib'
+import { emailSchema, otpFormSchema, type TOtpFormValues } from '@/shared/lib'
 import { Button, ButtonText } from '@/shared/ui/button'
 import buttonStyles from '@/shared/ui/button/Button.module.css'
 import { Field, Input } from '@/shared/ui/field'
@@ -283,9 +279,7 @@ const CabinetLogin = (props: ICabinetLoginProps) => {
       : null
 
   const emailError = emailForm.formState.errors.email
-  const emailErrorText = emailError?.message
-    ? t(emailError.message)
-    : undefined
+  const emailErrorText = emailError?.message ? t(emailError.message) : undefined
 
   const codeError = codeForm.formState.errors.code
   const codeErrorText = codeError?.message

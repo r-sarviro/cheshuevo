@@ -144,7 +144,9 @@ describe('apiRequest', () => {
                 reject(reason)
                 return
               }
-              reject(new DOMException('The operation was aborted.', 'AbortError'))
+              reject(
+                new DOMException('The operation was aborted.', 'AbortError'),
+              )
             })
           }),
       ),

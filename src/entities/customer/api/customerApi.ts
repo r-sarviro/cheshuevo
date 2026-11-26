@@ -1,8 +1,4 @@
-import {
-  apiRequest,
-  customerMeSchema,
-  parseWire,
-} from '@/shared/api'
+import { apiRequest, customerMeSchema, parseWire } from '@/shared/api'
 
 import type { ICustomerProfile } from '../model/types'
 
@@ -22,9 +18,7 @@ export async function getCustomerMe(
 }
 
 /** POST /api/v1/customer/logout → 204 */
-export async function logoutCustomer(
-  signal?: AbortSignal,
-): Promise<void> {
+export async function logoutCustomer(signal?: AbortSignal): Promise<void> {
   await apiRequest<null>('/customer/logout', {
     method: 'POST',
     auth: 'customer',

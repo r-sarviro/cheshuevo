@@ -84,7 +84,9 @@ export function mapCustomerBooking(
   }
 }
 
-export function mapAvailability(wire: TAvailabilitySchema): IAvailabilityResult {
+export function mapAvailability(
+  wire: TAvailabilitySchema,
+): IAvailabilityResult {
   return {
     available: wire.available,
     billableHours: wire.billable_hours,

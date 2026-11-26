@@ -9,7 +9,4 @@ export type {
   ICustomerProfile,
 } from './model/types'
 export { getCustomerMe, logoutCustomer } from './api/customerApi'
-export {
-  customerQueryKeys,
-  useCustomerMeQuery,
-} from './api/useCustomerMeQuery'
+export { customerQueryKeys, useCustomerMeQuery } from './api/useCustomerMeQuery'

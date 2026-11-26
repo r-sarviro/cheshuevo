@@ -47,7 +47,9 @@ test('unavailable period blocks booking CTA', async ({ page }) => {
     timeout: 10_000,
   })
   await expect(
-    page.getByRole('button', { name: /Забронировать|Book|Продолжить|Continue/i }),
+    page.getByRole('button', {
+      name: /Забронировать|Book|Продолжить|Continue/i,
+    }),
   ).toBeDisabled()
 })
 
@@ -56,7 +58,9 @@ test('contacts require name and valid email', async ({ page }) => {
   await goToContacts(page)
 
   await page.getByRole('button', { name: /Получить код/i }).click()
-  await expect(page.getByText(/как к вам обращаться|how to address/i)).toBeVisible()
+  await expect(
+    page.getByText(/как к вам обращаться|how to address/i),
+  ).toBeVisible()
 
   await page.getByLabel(/^Имя/i).fill('Анна')
   await page.locator('input[type="email"]').fill('not-an-email')
@@ -82,7 +86,9 @@ test('exhausted OTP shows lock note', async ({ page }) => {
   await typeOtp(page, '000000')
   await page.getByRole('button', { name: /Подтвердить бронь/i }).click()
 
-  await expect(page.getByText(/Слишком много попыток|Too many attempts/i)).toBeVisible({
+  await expect(
+    page.getByText(/Слишком много попыток|Too many attempts/i),
+  ).toBeVisible({
     timeout: 10_000,
   })
   await expect(
@@ -96,9 +102,9 @@ test('booking conflict shows conflict step', async ({ page }) => {
   await typeOtp(page, '123456')
   await page.getByRole('button', { name: /Подтвердить бронь/i }).click()
 
-  await expect(
-    page.getByText(/уже занят|already booked/i),
-  ).toBeVisible({ timeout: 10_000 })
+  await expect(page.getByText(/уже занят|already booked/i)).toBeVisible({
+    timeout: 10_000,
+  })
   await expect(
     page.getByRole('button', { name: /Другой дракон|another dragon/i }),
   ).toBeVisible()
@@ -121,7 +127,5 @@ test('guest booking happy path: period → contacts → OTP → result', async (
   await expect(
     page.getByText(/Подтверждение отправили на anna-e2e@example.com/i),
   ).toBeVisible()
-  await expect(
-    page.getByRole('link', { name: /Открыть бронь/i }),
-  ).toBeVisible()
+  await expect(page.getByRole('link', { name: /Открыть бронь/i })).toBeVisible()
 })
