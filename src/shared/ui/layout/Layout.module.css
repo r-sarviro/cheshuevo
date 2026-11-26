@@ -7,7 +7,7 @@
 }
 
 .section {
-  padding-block: var(--s-7) var(--s-5);
+  padding-block: var(--s-6);
 }
 
 .sectionHead {
@@ -22,7 +22,7 @@
 
 @media (min-width: 640px) {
   .section {
-    padding-block: var(--s-8) var(--s-6);
+    padding-block: var(--s-7);
   }
 
   .sectionHead {

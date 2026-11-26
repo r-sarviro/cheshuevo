@@ -76,6 +76,11 @@ const CabinetShellLayout = () => {
         onThemeToggle={chrome.onThemeToggle}
         themeLabel={chrome.themeLabel}
         themeAriaLabel={chrome.themeAriaLabel}
+        phone={chrome.rentalPhone}
+        phoneHref={chrome.rentalPhoneHref}
+        email={chrome.rentalEmail}
+        emailHref={chrome.rentalEmailHref}
+        copy={chrome.footerCopy}
       />
     </div>
   )

@@ -19,6 +19,7 @@ export {
 export { Badge, type IBadgeProps } from './badge'
 export { Tag, Tags, type ITagProps, type ITagsProps } from './tag'
 export { Note, type INoteProps } from './note'
+export { Divider, type IDividerProps } from './divider'
 export { Frame, type IFrameProps } from './frame'
 export {
   Card,
@@ -69,7 +70,7 @@ export {
   type TStepsItemStatus,
 } from './steps'
 export {
-  DragonSprite,
+  PixelSprite,
   DragonAvatar,
   dragonAvatarUrl,
   DragonSheetSprite,
@@ -80,7 +81,7 @@ export {
   hasDragonSheet,
   getDragonSheetSpec,
   DRAGON_SHEET_CATALOG,
-  type IDragonSpriteProps,
+  type IPixelSpriteProps,
   type IDragonAvatarProps,
   type IDragonSheetSpriteProps,
   type IDragonSheetSpec,

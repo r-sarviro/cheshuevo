@@ -41,7 +41,12 @@ Allow: /
 Sitemap: ${siteUrl}/sitemap.xml
 `
 
-const urls = ['/', '/test-flight', ...DRAGON_IDS.map((id) => `/dragons/${id}`)]
+const urls = [
+  '/',
+  '/about',
+  '/test-flight',
+  ...DRAGON_IDS.map((id) => `/dragons/${id}`),
+]
 const urlEntries = urls
   .map(
     (path) => `  <url>

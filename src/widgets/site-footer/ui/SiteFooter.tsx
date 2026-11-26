@@ -4,6 +4,7 @@ import { InstallAppButton } from '@/features/install-app'
 import { Brand } from '@/shared/ui/brand'
 import { Button } from '@/shared/ui/button'
 import { Icon } from '@/shared/ui/icon'
+import { Link } from '@/shared/ui/link'
 import { Wrap } from '@/shared/ui/layout'
 import { Segment, SegmentItem } from '@/shared/ui/segment'
 
@@ -20,10 +21,15 @@ export interface ISiteFooterProps {
   onThemeToggle?: () => void
   themeLabel?: ReactNode
   themeAriaLabel?: string
+  phone?: string
+  phoneHref?: string
+  email?: string
+  emailHref?: string
+  copy?: ReactNode
   className?: string
 }
 
-/** Landing footer: brand, install, locale and theme toggles. */
+/** Landing footer: brand row, then contacts + © (no nav — links live in header). */
 const SiteFooter = (props: ISiteFooterProps) => {
   const {
     brand,
@@ -36,6 +42,11 @@ const SiteFooter = (props: ISiteFooterProps) => {
     onThemeToggle,
     themeLabel,
     themeAriaLabel,
+    phone,
+    phoneHref,
+    email,
+    emailHref,
+    copy,
     className,
   } = props
 
@@ -46,6 +57,7 @@ const SiteFooter = (props: ISiteFooterProps) => {
     locales.length > 0
       ? locales[(localeIndex >= 0 ? localeIndex + 1 : 0) % locales.length]
       : undefined
+  const hasBar = Boolean(phone || email || copy)
 
   return (
     <footer className={rootClass}>
@@ -102,6 +114,29 @@ const SiteFooter = (props: ISiteFooterProps) => {
             ) : null}
           </div>
         </div>
+
+        {hasBar ? (
+          <div className={styles.bar}>
+            {phone || email ? (
+              <p className={styles.contacts}>
+                {phone && phoneHref ? (
+                  <Link href={phoneHref}>{phone}</Link>
+                ) : null}
+                {phone && email ? (
+                  <span className={styles.contactsSep} aria-hidden="true">
+                    ·
+                  </span>
+                ) : null}
+                {email && emailHref ? (
+                  <Link href={emailHref}>{email}</Link>
+                ) : null}
+              </p>
+            ) : (
+              <span />
+            )}
+            {copy ? <p className={styles.copy}>{copy}</p> : null}
+          </div>
+        ) : null}
       </Wrap>
     </footer>
   )
