@@ -28,6 +28,7 @@
     "heroCta": "Choose a dragon",
     "navCatalog": "Catalog",
     "navFlight": "Test flight",
+    "navBookings": "My bookings",
     "navPrimary": "Site sections",
     "locale": "Language",
     "localeFooter": "Language, footer",
@@ -64,6 +65,8 @@
     "periodError": "End must be at least one hour after start",
     "periodHint": "Every started hour counts in full",
     "continue": "Continue",
+    "confirmBooking": "Book now",
+    "sessionCreateFailed": "Could not create the booking. Try again.",
     "stepsLabel": "Booking steps",
     "stepPeriod": "Period",
     "stepContacts": "Contacts",
@@ -97,6 +100,7 @@
     "totalHours": "{{total}} for {{hours}} h",
     "paymentHint": "Pay the manager when you meet",
     "emailSent": "Confirmation sent to {{email}}.",
+    "openBooking": "Open booking",
     "toCatalog": "To catalog",
     "otherDragon": "Another dragon",
     "conflictBody": "{{name}} is busy from 10:00 to 12:00. Pick another time or another dragon."
@@ -119,12 +123,12 @@
     "sideAria": "Account and cabinet sections",
     "logout": "Log out",
     "tabBroni": "Bookings",
-    "tabPasport": "Rider passport",
-    "tabKoiny": "Dragon coins",
     "tabProfil": "Profile",
     "bookingsTitle": "My bookings",
     "bookMore": "Book another",
     "loading": "Loading bookings",
+    "detailLoadingTitle": "Loading",
+    "detailLoadingBody": "The booking card will appear shortly.",
     "sectionCurrent": "Current and upcoming",
     "sectionPast": "Past and cancelled",
     "emptyTitle": "No bookings yet",
@@ -141,7 +145,6 @@
     "factIssued": "Issued",
     "factReturned": "Returned",
     "factCancelled": "Cancelled",
-    "factWas": "Was",
     "statusConfirmed": "Confirmed",
     "statusInRent": "In rent",
     "statusCompleted": "Completed",
@@ -165,6 +168,8 @@
     "loginLead": "Sign in with the email you used to book a dragon. No password: we will send a code.",
     "loginGetCode": "Get code",
     "loginSubmit": "Sign in",
+    "loginNoBookingsTitle": "No bookings for this email",
+    "loginNoBookingsBody": "Book a dragon first — the cabinet opens after your first booking.",
     "loginResent": "A new code was sent to {{email}}.",
     "loginExpired": "Your session expired. Sign in again with a code from email — it takes a minute.",
     "loginDeepLink": "Sign in to open booking {{number}}.",
@@ -176,7 +181,18 @@
     "cancelKeep": "Keep booking",
     "cancelFailed": "Could not cancel the booking. Try again.",
     "cancelStarted": "The rental has already started, so you cannot cancel on the site. Contact the shop: {{contacts}}",
-    "rentalContacts": "+7 900 555-12-34 or hello@drakonsk.ru"
+    "rentalContacts": "+7 900 555-12-34 or hello@drakonsk.ru",
+    "rebook": "Book again",
+    "notFoundTitle": "Booking not found",
+    "notFoundBody": "Check the booking number. The cabinet only shows bookings made with your email.",
+    "paymentPaidManager": "Paid to the manager",
+    "paymentUnpaidManager": "Pay the manager when you meet",
+    "notePayManager": "You can pay the manager when you meet.",
+    "notePaidNoCancel": "This booking was paid to the manager, so it cannot be cancelled on the site. To cancel, contact the shop: {{contacts}}.",
+    "noteOverdueTitle": "Rental ended at {{time}}",
+    "noteOverdueBody": "Return the dragon to the shop. If you are late, warn the shop: other customers may be waiting.",
+    "noteStartMissed": "The start time has passed. If you are running late, contact the shop: {{contacts}}",
+    "noteNoShow": "The dragon was not issued: nobody showed up. If this is a mistake, contact the shop: {{contacts}}"
   },
   "seo": {
     "default": {
@@ -197,6 +213,25 @@
     "play": {
       "title": "Test flight | Drakonsk",
       "description": "A trial flight: guide the dragon between the rocks and beat your best score."
+    },
+    "cabinet": {
+      "login": {
+        "title": "Cabinet sign-in | Drakonsk",
+        "description": "Sign in with a code from email to open your bookings."
+      },
+      "bookings": {
+        "title": "My bookings | Drakonsk",
+        "description": "Current and past dragon rental bookings."
+      },
+      "detail": {
+        "title": "{{number}} — {{name}} | Drakonsk",
+        "fallbackTitle": "Booking | Drakonsk",
+        "description": "Booking card in the customer cabinet."
+      },
+      "profile": {
+        "title": "Profile | Drakonsk",
+        "description": "Name and phone for booking contact."
+      }
     }
   },
   "dragons": {

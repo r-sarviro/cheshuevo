@@ -73,6 +73,10 @@
   margin-bottom: 0;
 }
 
+.content {
+  min-width: 0;
+}
+
 .tab {
   display: flex;
   align-items: center;
@@ -133,12 +137,6 @@
 
   .tabIcon {
     display: none !important;
-  }
-}
-
-@media (min-width: 768px) {
-  .tabs {
-    grid-template-columns: repeat(4, minmax(0, 1fr));
   }
 }
 

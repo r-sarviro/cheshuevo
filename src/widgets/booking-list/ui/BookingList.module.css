@@ -17,15 +17,6 @@
   margin-block: var(--px) calc(var(--px) * 2 + var(--key));
 }
 
-.loading {
-  display: inline-flex;
-  align-items: center;
-  gap: 10px;
-  margin: var(--s-5) 0 0;
-  color: var(--c-ink-muted);
-  font: 400 var(--fs-small) / 1.4 var(--font-text);
-}
-
 .secTitle {
   margin: var(--s-6) 0 var(--s-3);
 }
@@ -33,14 +24,17 @@
 .list {
   display: grid;
   gap: 14px;
-  margin: 0;
+  margin: var(--s-5) 0 0;
   padding: 0;
   list-style: none;
 }
 
-.list:has(+ .secTitle),
-.loading + .list {
+.list:has(+ .secTitle) {
   margin-top: var(--s-3);
+}
+
+.secTitle + .list {
+  margin-top: 0;
 }
 
 .row {

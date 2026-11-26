@@ -1,0 +1,5 @@
+export { default as CabinetLoginPage } from './ui/CabinetLoginPage'
+export { default as CabinetShellLayout } from './ui/CabinetShellLayout'
+export { default as CabinetBookingsPage } from './ui/CabinetBookingsPage'
+export { default as CabinetBookingDetailPage } from './ui/CabinetBookingDetailPage'
+export { default as CabinetProfilePage } from './ui/CabinetProfilePage'

@@ -3,6 +3,11 @@ export {
   type IDragonSpriteProps,
 } from './DragonSprite'
 export {
+  default as DragonAvatar,
+  type IDragonAvatarProps,
+} from './DragonAvatar'
+export { dragonAvatarUrl } from './dragonAvatarUrl'
+export {
   mount as mountSprite,
   hero as mountHero,
   refresh as refreshSprites,

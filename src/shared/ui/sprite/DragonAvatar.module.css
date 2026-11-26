@@ -1,0 +1,8 @@
+/* Pixel head: show 1:1 without smoothing (vitrina / ЛК row). */
+.root {
+  display: block;
+  width: 32px;
+  height: 32px;
+  image-rendering: pixelated;
+  image-rendering: crisp-edges;
+}

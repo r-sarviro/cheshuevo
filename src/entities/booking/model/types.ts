@@ -36,6 +36,13 @@ export interface ICreateBookingPayload extends IBookingInterval {
   verificationToken: string
 }
 
+/** Session booking: identity comes from cabinet session (no OTP token). */
+export interface ICreateCustomerBookingPayload extends IBookingInterval {
+  dragonId: number
+  customerName: string
+  customerEmail: string
+}
+
 export interface IBooking {
   bookingNumber: string
   status: TBookingStatus

@@ -70,6 +70,8 @@ export {
 } from './steps'
 export {
   DragonSprite,
+  DragonAvatar,
+  dragonAvatarUrl,
   DragonSheetSprite,
   mountSprite,
   mountHero,
@@ -79,6 +81,7 @@ export {
   getDragonSheetSpec,
   DRAGON_SHEET_CATALOG,
   type IDragonSpriteProps,
+  type IDragonAvatarProps,
   type IDragonSheetSpriteProps,
   type IDragonSheetSpec,
 } from './sprite'
