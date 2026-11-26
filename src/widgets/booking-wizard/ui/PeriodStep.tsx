@@ -9,9 +9,10 @@ import {
   useCreateCustomerBookingMutation,
 } from '@/entities/booking'
 import { useCabinetSessionStore } from '@/entities/customer'
-import { getDragonCopy, type IDragon } from '@/entities/dragon'
+import { resolveDragonLocale, type IDragon } from '@/entities/dragon'
 import { SelectPeriod, type ISelectPeriodValue } from '@/features/select-period'
 import { ApiError } from '@/shared/api'
+import { useUiStore } from '@/shared/model'
 import { Button } from '@/shared/ui/button'
 import { Typography } from '@/shared/ui/typography'
 
@@ -28,7 +29,8 @@ export interface IPeriodStepProps {
 const PeriodStep = (props: IPeriodStepProps) => {
   const { dragon } = props
   const { t } = useTranslation()
-  const copy = getDragonCopy(t, dragon)
+  const locale = useUiStore((s) => s.locale)
+  const copy = resolveDragonLocale(dragon, locale)
   const period = useBookingDraftStore((s) => s.period)
   const setPeriod = useBookingDraftStore((s) => s.setPeriod)
   const setContacts = useBookingDraftStore((s) => s.setContacts)
@@ -41,7 +43,7 @@ const PeriodStep = (props: IPeriodStepProps) => {
   const createCustomerBooking = useCreateCustomerBookingMutation()
   const [submitError, setSubmitError] = useState<string | null>(null)
 
-  const authed = isAuthenticated() && Boolean(sessionEmail && sessionName)
+  const authed = isAuthenticated()
 
   const {
     register,
@@ -114,15 +116,16 @@ const PeriodStep = (props: IPeriodStepProps) => {
     setSubmitError(null)
     setPeriod(data)
 
-    if (authed && sessionEmail && sessionName) {
-      setContacts({ name: sessionName, email: sessionEmail })
+    if (authed) {
+      setContacts({
+        name: sessionName?.trim() || sessionEmail || '',
+        email: sessionEmail || '',
+      })
       try {
         const booking = await createCustomerBooking.mutateAsync({
           dragonId: dragon.id,
           startsAt: next.startsAt,
           endsAt: next.endsAt,
-          customerName: sessionName,
-          customerEmail: sessionEmail,
         })
         setCreatedBooking(booking)
       } catch (error) {

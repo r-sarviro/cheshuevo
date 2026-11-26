@@ -17,6 +17,7 @@
 | `yarn lint:fsd`     | Steiger (FSD)                                              |
 | `yarn format`       | Prettier                                                   |
 | `yarn typecheck`    | Проверка TypeScript                                        |
+| `yarn api:types`    | Генерация типов API из `openapi.json`                      |
 | `yarn check`        | lint + lint:fsd + typecheck                                |
 | `yarn test`         | Unit-тесты (Vitest)                                        |
 | `yarn test:watch`   | Unit-тесты в watch                                         |
@@ -29,7 +30,7 @@
 
 | Переменная          | Назначение                                    |
 | ------------------- | --------------------------------------------- |
-| `VITE_API_BASE_URL` | Базовый URL API (по умолчанию localhost:8080) |
+| `VITE_API_BASE_URL` | Базовый URL API (по умолчанию localhost:8000) |
 | `VITE_SITE_URL`     | Абсолютный origin сайта без trailing slash    |
 
 Для продакшена задайте реальный `VITE_SITE_URL` в `.env` (сейчас в `.env.example`: `https://drakonsk.ru`). От него зависят `canonical` / `og:url` и генерация `public/robots.txt` + `public/sitemap.xml`.

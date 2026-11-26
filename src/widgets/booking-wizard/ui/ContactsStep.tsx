@@ -62,7 +62,10 @@ const ContactsStep = () => {
     }
 
     try {
-      const result = await requestCode.mutateAsync({ email })
+      const result = await requestCode.mutateAsync({
+        email,
+        purpose: 'booking',
+      })
       setContacts({ name, email })
       setVerification({
         verificationId: result.verificationId,

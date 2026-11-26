@@ -8,8 +8,7 @@ export const bookingQueryKeys = {
       startsAt,
       endsAt,
     ] as const,
-  customer: (email: string) =>
-    [...bookingQueryKeys.all, 'customer', email] as const,
-  customerDetail: (email: string, bookingNumber: string) =>
-    [...bookingQueryKeys.customer(email), bookingNumber] as const,
+  customer: () => [...bookingQueryKeys.all, 'customer'] as const,
+  customerDetail: (bookingNumber: string) =>
+    [...bookingQueryKeys.customer(), bookingNumber] as const,
 }

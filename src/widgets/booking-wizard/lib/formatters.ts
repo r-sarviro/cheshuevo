@@ -1,7 +1,8 @@
 import { billableHours } from '@/entities/booking'
+import { formatMoney as formatMoneyShared } from '@/shared/lib/money'
 
 export function formatMoney(amount: number, currency: string): string {
-  return `${amount}\u00a0${currency}`
+  return formatMoneyShared(amount, currency)
 }
 
 export function formatQuoteDetail(

@@ -8,7 +8,7 @@ import {
 import { useTranslation } from 'react-i18next'
 import { Link } from 'react-router-dom'
 
-import { useCabinetSessionStore } from '@/entities/customer'
+import { getCustomerMe, useCabinetSessionStore } from '@/entities/customer'
 import {
   ApiError,
   useConfirmEmailCodeMutation,
@@ -41,11 +41,22 @@ export interface ICabinetLoginProps {
 
 type TStep = 'email' | 'code'
 
+function readAttemptsLeft(error: ApiError): number | null {
+  const raw = error.details?.attempts_left
+  return typeof raw === 'number' ? raw : null
+}
+
+function readResendAfter(error: ApiError): number | null {
+  const raw = error.details?.resend_after_seconds
+  return typeof raw === 'number' ? raw : null
+}
+
 /** Cabinet login: email → OTP (CAB-002), no password. */
 const CabinetLogin = (props: ICabinetLoginProps) => {
   const { redirectHint, onSuccess, className } = props
   const { t } = useTranslation()
   const signIn = useCabinetSessionStore((s) => s.signIn)
+  const setProfile = useCabinetSessionStore((s) => s.setProfile)
   const requestCode = useRequestEmailCodeMutation()
   const confirmCode = useConfirmEmailCodeMutation()
 
@@ -87,7 +98,10 @@ const CabinetLogin = (props: ICabinetLoginProps) => {
     }
     setEmailError(null)
     try {
-      const result = await requestCode.mutateAsync({ email: nextEmail })
+      const result = await requestCode.mutateAsync({
+        email: nextEmail,
+        purpose: 'login',
+      })
       setEmail(nextEmail)
       setVerificationId(result.verificationId)
       setSecondsLeft(result.resendAfterSeconds)
@@ -118,6 +132,23 @@ const CabinetLogin = (props: ICabinetLoginProps) => {
         )
         return
       }
+      if (error instanceof ApiError) {
+        const wait = readResendAfter(error)
+        if (
+          wait != null &&
+          (error.code === 'RESEND_TOO_SOON' || error.code === 'CODE_LOCKED')
+        ) {
+          setSecondsLeft(wait)
+        }
+        setNote(
+          <Note tone="peach" icon="cross" heading={error.message} alert>
+            {error.code === 'CODE_NOT_SENT'
+              ? t('booking.sendFailedBody')
+              : error.message}
+          </Note>,
+        )
+        return
+      }
       setNote(
         <Note
           tone="peach"
@@ -140,19 +171,38 @@ const CabinetLogin = (props: ICabinetLoginProps) => {
     }
     setCodeError(null)
     try {
-      await confirmCode.mutateAsync({
+      const confirmed = await confirmCode.mutateAsync({
         verificationId,
         email,
         code,
       })
-      signIn({ email, name: null })
-      const session = { email, name: null }
-      onSuccess?.(session)
+      if (!confirmed.session) {
+        setCodeError(t('booking.otpInvalidGeneric'))
+        return
+      }
+      signIn({
+        token: confirmed.session.token,
+        tokenType: confirmed.session.tokenType,
+        expiresAt: confirmed.session.expiresAt,
+        email,
+        name: null,
+      })
+      let name: string | null = null
+      try {
+        const me = await getCustomerMe()
+        name = me.name
+        setProfile({ email: me.email, name: me.name })
+      } catch {
+        setProfile({ email })
+      }
+      onSuccess?.({ email, name })
     } catch (error) {
       if (error instanceof ApiError) {
         if (error.code === 'OTP_EXHAUSTED') {
           setExhausted(true)
           setCodeError(null)
+          const wait = readResendAfter(error)
+          if (wait != null) setSecondsLeft(wait)
           setNote(
             <Note tone="butter" icon="warn" alert>
               {t('booking.otpExhaustedBody')}
@@ -161,8 +211,7 @@ const CabinetLogin = (props: ICabinetLoginProps) => {
           return
         }
         if (error.code === 'OTP_INVALID') {
-          const match = /Attempts left: (\d+)/.exec(error.message)
-          const left = match ? Number(match[1]) : null
+          const left = readAttemptsLeft(error)
           setCodeError(
             left != null
               ? t('booking.otpInvalid', { count: left })
@@ -178,7 +227,10 @@ const CabinetLogin = (props: ICabinetLoginProps) => {
   const onResend = async () => {
     if (secondsLeft > 0 || busy) return
     try {
-      const result = await requestCode.mutateAsync({ email })
+      const result = await requestCode.mutateAsync({
+        email,
+        purpose: 'login',
+      })
       setVerificationId(result.verificationId)
       setSecondsLeft(result.resendAfterSeconds)
       setCode('')
@@ -189,7 +241,17 @@ const CabinetLogin = (props: ICabinetLoginProps) => {
           {t('cabinet.loginResent', { email })}
         </Note>,
       )
-    } catch {
+    } catch (error) {
+      if (error instanceof ApiError) {
+        const wait = readResendAfter(error)
+        if (wait != null) setSecondsLeft(wait)
+        setNote(
+          <Note tone="butter" icon="warn" alert>
+            {error.message}
+          </Note>,
+        )
+        return
+      }
       setNote(
         <Note tone="butter" icon="warn" alert>
           {t('booking.sendFailedBody')}

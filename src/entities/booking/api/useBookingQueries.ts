@@ -1,8 +1,5 @@
-import { useMutation, useQuery } from '@tanstack/react-query'
+import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query'
 
-import { ApiError } from '@/shared/api'
-
-import type { ICustomerBooking } from '../model/customerTypes'
 import type {
   IAvailabilityQuery,
   ICreateBookingPayload,
@@ -12,16 +9,10 @@ import {
   createBooking,
   createCustomerBooking,
   getAvailability,
+  getCustomerBooking,
+  getCustomerBookings,
 } from './bookingsApi'
 import { bookingQueryKeys } from './queryKeys'
-
-function notImplementedCustomerApi(): never {
-  throw new ApiError(
-    501,
-    'NOT_IMPLEMENTED',
-    'Customer bookings API is not wired yet',
-  )
-}
 
 export function useAvailabilityQuery(
   query: IAvailabilityQuery | null,
@@ -35,45 +26,65 @@ export function useAvailabilityQuery(
           query.endsAt,
         )
       : [...bookingQueryKeys.all, 'availability', 'idle'],
-    queryFn: () => getAvailability(query as IAvailabilityQuery),
+    queryFn: ({ signal }) =>
+      getAvailability(query as IAvailabilityQuery, signal),
     enabled: Boolean(query) && enabled,
   })
 }
 
+async function invalidateAfterCreate(
+  queryClient: ReturnType<typeof useQueryClient>,
+) {
+  await Promise.all([
+    queryClient.invalidateQueries({
+      queryKey: bookingQueryKeys.customer(),
+    }),
+    queryClient.invalidateQueries({
+      queryKey: [...bookingQueryKeys.all, 'availability'],
+    }),
+  ])
+}
+
 export function useCreateBookingMutation() {
+  const queryClient = useQueryClient()
   return useMutation({
     mutationFn: (payload: ICreateBookingPayload) => createBooking(payload),
+    onSuccess: async () => {
+      await invalidateAfterCreate(queryClient)
+    },
   })
 }
 
 export function useCreateCustomerBookingMutation() {
+  const queryClient = useQueryClient()
   return useMutation({
     mutationFn: (payload: ICreateCustomerBookingPayload) =>
       createCustomerBooking(payload),
+    onSuccess: async () => {
+      await invalidateAfterCreate(queryClient)
+    },
   })
 }
 
-export function useCustomerBookingsQuery(email: string | null) {
+/** `enabled` comes from the cabinet session (pages/features), not a cross-entity import. */
+export function useCustomerBookingsQuery(enabled = true) {
   return useQuery({
-    queryKey: email
-      ? bookingQueryKeys.customer(email)
-      : [...bookingQueryKeys.all, 'customer', 'idle'],
-    queryFn: async (): Promise<ICustomerBooking[]> =>
-      notImplementedCustomerApi(),
-    enabled: Boolean(email),
+    queryKey: bookingQueryKeys.customer(),
+    queryFn: ({ signal }) => getCustomerBookings(signal),
+    enabled,
   })
 }
 
 export function useCustomerBookingQuery(
-  email: string | null,
   bookingNumber: string | undefined,
+  enabled = true,
 ) {
   return useQuery({
-    queryKey:
-      email && bookingNumber
-        ? bookingQueryKeys.customerDetail(email, bookingNumber)
-        : [...bookingQueryKeys.all, 'customer', 'detail', 'idle'],
-    queryFn: async (): Promise<ICustomerBooking> => notImplementedCustomerApi(),
-    enabled: Boolean(email && bookingNumber),
+    queryKey: bookingNumber
+      ? bookingQueryKeys.customerDetail(bookingNumber)
+      : [...bookingQueryKeys.customer(), 'detail', 'idle'],
+    queryFn: ({ signal }) =>
+      getCustomerBooking(bookingNumber as string, signal),
+    enabled: Boolean(bookingNumber) && enabled,
   })
 }

@@ -17,6 +17,7 @@ Client landing for a dragon rental MVP: React, TypeScript, Vite, Feature-Sliced 
 | `yarn lint:fsd`     | Steiger (FSD)                                       |
 | `yarn format`       | Prettier                                            |
 | `yarn typecheck`    | TypeScript check                                    |
+| `yarn api:types`    | Generate API types from `openapi.json`              |
 | `yarn check`        | lint + lint:fsd + typecheck                         |
 | `yarn test`         | Unit tests (Vitest)                                 |
 | `yarn test:watch`   | Unit tests in watch mode                            |
@@ -29,7 +30,7 @@ Copy `.env.example` to `.env` and set variables as needed:
 
 | Variable            | Purpose                                     |
 | ------------------- | ------------------------------------------- |
-| `VITE_API_BASE_URL` | API base URL (default localhost:8080)       |
+| `VITE_API_BASE_URL` | API base URL (default localhost:8000)       |
 | `VITE_SITE_URL`     | Absolute site origin without trailing slash |
 
 For production set a real `VITE_SITE_URL` in `.env` (`.env.example` currently has `https://drakonsk.ru`). It drives `canonical` / `og:url` and generation of `public/robots.txt` + `public/sitemap.xml`.

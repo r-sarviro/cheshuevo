@@ -2,14 +2,10 @@ import { useState, type ReactNode } from 'react'
 import { useTranslation } from 'react-i18next'
 
 import type { TBookingStatus, TPaymentStatus } from '@/entities/booking'
-import { ApiError } from '@/shared/api'
-import { formatRentalContacts } from '@/shared/config'
 import { Button, ButtonText } from '@/shared/ui/button'
 import { Dialog } from '@/shared/ui/dialog'
-import { Note } from '@/shared/ui/note'
 import { Num, Typography } from '@/shared/ui/typography'
 
-import { useCancelBookingMutation } from '../api/useCancelBooking'
 import { canCancel } from '../lib/canCancel'
 
 export interface ICancelBookingControlProps {
@@ -23,7 +19,10 @@ export interface ICancelBookingControlProps {
   className?: string
 }
 
-/** Cancel action + confirm dialog for an LK booking card (CAB-040…043). */
+/**
+ * Cancel action + confirm dialog for an LK booking card (CAB-040…043).
+ * TODO(api): mount in cabinet detail when customer cancel endpoint exists.
+ */
 const CancelBookingControl = (props: ICancelBookingControlProps) => {
   const {
     bookingNumber,
@@ -32,14 +31,10 @@ const CancelBookingControl = (props: ICancelBookingControlProps) => {
     startsAt,
     status,
     paymentStatus,
-    onCancelled,
     className,
   } = props
   const { t } = useTranslation()
-  const cancelMutation = useCancelBookingMutation()
   const [open, setOpen] = useState(false)
-  const [errorNote, setErrorNote] = useState<ReactNode>(null)
-  const [locked, setLocked] = useState(false)
 
   if (
     !canCancel({
@@ -52,36 +47,13 @@ const CancelBookingControl = (props: ICancelBookingControlProps) => {
   }
 
   const close = () => {
-    if (cancelMutation.isPending) return
     setOpen(false)
-    setErrorNote(null)
-    setLocked(false)
   }
 
-  const onConfirm = async () => {
-    setErrorNote(null)
-    try {
-      await cancelMutation.mutateAsync({ bookingNumber, startsAt })
-      setOpen(false)
-      onCancelled?.(bookingNumber)
-    } catch (error) {
-      if (error instanceof ApiError && error.code === 'RENTAL_STARTED') {
-        setLocked(true)
-        setErrorNote(
-          <Note tone="peach" icon="cross" alert>
-            {t('cabinet.cancelStarted', {
-              contacts: formatRentalContacts(),
-            })}
-          </Note>,
-        )
-        return
-      }
-      setErrorNote(
-        <Note tone="peach" icon="cross" alert>
-          {t('cabinet.cancelFailed')}
-        </Note>,
-      )
-    }
+  const onConfirm = () => {
+    // TODO(api): call customer cancel endpoint when contract is known.
+    // Handle RENTAL_STARTED → cabinet.cancelStarted; other errors → cancelFailed.
+    close()
   }
 
   return (
@@ -89,11 +61,7 @@ const CancelBookingControl = (props: ICancelBookingControlProps) => {
       <ButtonText
         type="button"
         className={className}
-        onClick={() => {
-          setErrorNote(null)
-          setLocked(false)
-          setOpen(true)
-        }}
+        onClick={() => setOpen(true)}
       >
         {t('cabinet.cancelAction')}
       </ButtonText>
@@ -103,23 +71,10 @@ const CancelBookingControl = (props: ICancelBookingControlProps) => {
         title={t('cabinet.cancelTitle')}
         actions={
           <>
-            <Button
-              type="button"
-              variant="danger"
-              loading={cancelMutation.isPending}
-              disabled={locked || cancelMutation.isPending}
-              onClick={() => {
-                void onConfirm()
-              }}
-            >
+            <Button type="button" variant="danger" onClick={onConfirm}>
               {t('cabinet.cancelConfirm')}
             </Button>
-            <Button
-              type="button"
-              variant="ghost"
-              disabled={cancelMutation.isPending}
-              onClick={close}
-            >
+            <Button type="button" variant="ghost" onClick={close}>
               {t('cabinet.cancelKeep')}
             </Button>
           </>
@@ -129,7 +84,6 @@ const CancelBookingControl = (props: ICancelBookingControlProps) => {
           {bookingNumber}, {dragonName}, <Num>{periodText}</Num>.{' '}
           {t('cabinet.cancelBody')}
         </Typography>
-        {errorNote}
       </Dialog>
     </>
   )

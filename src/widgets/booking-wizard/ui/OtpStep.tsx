@@ -3,14 +3,18 @@ import { useForm } from 'react-hook-form'
 import { useTranslation } from 'react-i18next'
 
 import { periodToInterval, useCreateBookingMutation } from '@/entities/booking'
-import { useCabinetSessionStore } from '@/entities/customer'
-import { getDragonCopy, type IDragon } from '@/entities/dragon'
+import {
+  getCustomerMe,
+  useCabinetSessionStore,
+} from '@/entities/customer'
+import { resolveDragonLocale, type IDragon } from '@/entities/dragon'
 import {
   useConfirmEmailCodeMutation,
   useRequestEmailCodeMutation,
   VerifyEmail,
 } from '@/features/verify-email'
 import { ApiError } from '@/shared/api'
+import { useUiStore } from '@/shared/model'
 import { ButtonText } from '@/shared/ui/button'
 import { Note } from '@/shared/ui/note'
 import { Typography } from '@/shared/ui/typography'
@@ -29,7 +33,8 @@ type TOtpForm = { code: string }
 const OtpStep = (props: IOtpStepProps) => {
   const { dragon } = props
   const { t } = useTranslation()
-  const copy = getDragonCopy(t, dragon)
+  const locale = useUiStore((s) => s.locale)
+  const copy = resolveDragonLocale(dragon, locale)
   const contacts = useBookingDraftStore((s) => s.contacts)
   const period = useBookingDraftStore((s) => s.period)
   const verificationId = useBookingDraftStore((s) => s.verificationId)
@@ -48,6 +53,7 @@ const OtpStep = (props: IOtpStepProps) => {
   const requestCode = useRequestEmailCodeMutation()
   const createBooking = useCreateBookingMutation()
   const signIn = useCabinetSessionStore((s) => s.signIn)
+  const setProfile = useCabinetSessionStore((s) => s.setProfile)
 
   const [secondsLeft, setSecondsLeft] = useState(resendAfterSeconds)
 
@@ -113,7 +119,21 @@ const OtpStep = (props: IOtpStepProps) => {
         customerEmail: contacts.email,
         verificationToken: confirmed.verificationToken,
       })
-      signIn({ email: contacts.email, name: contacts.name })
+      if (booking.session) {
+        signIn({
+          token: booking.session.token,
+          tokenType: booking.session.tokenType,
+          expiresAt: booking.session.expiresAt,
+          email: contacts.email,
+          name: contacts.name,
+        })
+        try {
+          const me = await getCustomerMe()
+          setProfile({ email: me.email, name: me.name })
+        } catch {
+          setProfile({ email: contacts.email, name: contacts.name })
+        }
+      }
       setCreatedBooking(booking)
     } catch (error) {
       if (error instanceof ApiError && error.code === 'BOOKING_CONFLICT') {
@@ -129,8 +149,10 @@ const OtpStep = (props: IOtpStepProps) => {
         return
       }
       if (error instanceof ApiError && error.code === 'OTP_INVALID') {
-        const match = /Attempts left: (\d+)/.exec(error.message)
-        const left = match ? Number(match[1]) : null
+        const left =
+          typeof error.details?.attempts_left === 'number'
+            ? error.details.attempts_left
+            : null
         setOtpFeedback({ attemptsLeft: left, exhausted: false })
         setError('code', {
           type: 'invalid',
@@ -151,7 +173,10 @@ const OtpStep = (props: IOtpStepProps) => {
   const onResend = async () => {
     if (!contacts || secondsLeft > 0) return
     try {
-      const result = await requestCode.mutateAsync({ email: contacts.email })
+      const result = await requestCode.mutateAsync({
+        email: contacts.email,
+        purpose: 'booking',
+      })
       setVerification({
         verificationId: result.verificationId,
         resendAfterSeconds: result.resendAfterSeconds,

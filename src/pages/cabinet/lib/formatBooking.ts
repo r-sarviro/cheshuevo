@@ -1,7 +1,8 @@
 import { billableHours, type ICustomerBooking } from '@/entities/booking'
+import { formatMoney as formatMoneyShared } from '@/shared/lib/money'
 
 export function formatMoney(amount: number, currency: string): string {
-  return `${amount}\u00a0${currency}`
+  return formatMoneyShared(amount, currency)
 }
 
 export function formatPeriodLabel(
@@ -44,17 +45,18 @@ export function bookingHours(booking: ICustomerBooking): number {
   )
 }
 
-/** CAB-028: overdue when still in rent past planned end. */
+/** CAB-028: overdue when API marks it or still in rent past planned end. */
 export function isBookingOverdue(
   booking: ICustomerBooking,
   now: Date = new Date(),
 ): boolean {
+  if (booking.isOverdue) return true
   if (booking.status !== 'IN_RENT') return false
   const end = Date.parse(booking.endsAt)
   return !Number.isNaN(end) && end < now.getTime()
 }
 
-/** CAB-029: confirmed unpaid and start already passed. */
+/** CAB-029: confirmed and start already passed. */
 export function isStartMissed(
   booking: ICustomerBooking,
   now: Date = new Date(),
