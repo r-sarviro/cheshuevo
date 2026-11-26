@@ -212,6 +212,11 @@
   /* Сетка */
   --page-max: 1240px;
   --page-gutter: clamp(16px, 4vw, 48px);
+  /* Align full-bleed chrome (header/hero) with Wrap content edge. */
+  --page-inline: max(
+    var(--page-gutter),
+    calc((100% - var(--page-max)) / 2 + var(--page-gutter))
+  );
   --measure: 66ch; /* предел ширины абзаца */
 
   /* Движение: кадры, а не плавность */

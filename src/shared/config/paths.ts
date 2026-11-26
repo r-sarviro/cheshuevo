@@ -7,6 +7,17 @@ export const CATALOG_HASH = 'catalog'
 /** In-page catalog anchor on the home page. */
 export const CATALOG_PATH = `${HOME_PATH}#${CATALOG_HASH}`
 
+/** About / trust page (indexable). */
+export const ABOUT_PATH = '/about'
+
+export const HOW_HASH = 'how'
+
+export const TRUST_HASH = 'trust'
+
+export const PLACE_HASH = 'place'
+
+export const CONTACTS_HASH = 'contacts'
+
 export const PLAY_PATH = '/test-flight'
 
 export const NOT_FOUND_PATH = '/404'

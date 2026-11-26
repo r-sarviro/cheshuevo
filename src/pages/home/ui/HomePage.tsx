@@ -1,27 +1,27 @@
-import { useEffect } from 'react'
 import { useTranslation } from 'react-i18next'
-import { useLocation } from 'react-router-dom'
+import { useNavigate } from 'react-router-dom'
 
 import { DragonCard, useDragonsQuery } from '@/entities/dragon'
 import { CATALOG_HASH, HOME_PATH, dragonPath } from '@/shared/config'
-import { scrollToHashId } from '@/shared/lib'
 import { useDocumentMeta } from '@/shared/lib/document-meta'
 import { Button } from '@/shared/ui/button'
+import { Divider } from '@/shared/ui/divider'
 import { EmptyState } from '@/shared/ui/empty-state'
 import { Icon } from '@/shared/ui/icon'
 import { Section, SectionHead, Wrap } from '@/shared/ui/layout'
 import { Typography } from '@/shared/ui/typography'
 import { DragonCatalog, DragonCatalogItem } from '@/widgets/dragon-catalog'
 import { Hero } from '@/widgets/hero'
+import { LandingBridge } from '@/widgets/landing-info'
 import { useSiteChrome } from '@/widgets/site-chrome'
 import { SiteFooter } from '@/widgets/site-footer'
 
 import styles from './HomePage.module.css'
 
-/** Product landing: hero + public catalog (stub data). */
+/** Product landing: hero, catalog, then about bridge for undecided visitors. */
 const HomePage = () => {
   const { t } = useTranslation()
-  const location = useLocation()
+  const navigate = useNavigate()
   const chrome = useSiteChrome()
   const dragonsQuery = useDragonsQuery()
 
@@ -30,16 +30,6 @@ const HomePage = () => {
     description: t('seo.home.description'),
     canonicalPath: HOME_PATH,
   })
-
-  // Arrive from another route with /#catalog (RR often skips native hash scroll).
-  useEffect(() => {
-    const id = location.hash.replace(/^#/, '')
-    if (!id) {
-      return
-    }
-    const timer = window.setTimeout(() => scrollToHashId(id), 0)
-    return () => window.clearTimeout(timer)
-  }, [location.hash, location.key, location.pathname])
 
   return (
     <div className={styles.page}>
@@ -63,7 +53,7 @@ const HomePage = () => {
             <Button
               type="button"
               onClick={() => {
-                scrollToHashId(CATALOG_HASH)
+                void navigate({ pathname: HOME_PATH, hash: CATALOG_HASH })
               }}
             >
               {t('landing.heroCta')}
@@ -71,7 +61,7 @@ const HomePage = () => {
           }
         />
 
-        <Section id={CATALOG_HASH} className={styles.catalogSection}>
+        <Section id={CATALOG_HASH}>
           <Wrap>
             <SectionHead>
               <Typography as="h2" variant="h2">
@@ -154,6 +144,12 @@ const HomePage = () => {
             ) : null}
           </Wrap>
         </Section>
+
+        <Wrap>
+          <Divider />
+        </Wrap>
+
+        <LandingBridge />
       </div>
 
       <SiteFooter
@@ -167,6 +163,11 @@ const HomePage = () => {
         onThemeToggle={chrome.onThemeToggle}
         themeLabel={chrome.themeLabel}
         themeAriaLabel={chrome.themeAriaLabel}
+        phone={chrome.rentalPhone}
+        phoneHref={chrome.rentalPhoneHref}
+        email={chrome.rentalEmail}
+        emailHref={chrome.rentalEmailHref}
+        copy={chrome.footerCopy}
       />
     </div>
   )

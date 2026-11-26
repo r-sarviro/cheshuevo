@@ -6,7 +6,11 @@ import { useCabinetSessionStore } from '@/entities/customer'
 import { getDragonFixture } from '@/entities/dragon'
 import { CancelBookingControl } from '@/features/cancel-booking'
 import { ApiError } from '@/shared/api'
-import { CABINET_BOOKINGS_PATH, dragonPath } from '@/shared/config'
+import {
+  CABINET_BOOKINGS_PATH,
+  dragonPath,
+  formatRentalContacts,
+} from '@/shared/config'
 import { useDocumentMeta } from '@/shared/lib/document-meta'
 import buttonStyles from '@/shared/ui/button/Button.module.css'
 import { EmptyState } from '@/shared/ui/empty-state'
@@ -171,7 +175,7 @@ const CabinetBookingDetailPage = () => {
       {booking.paymentStatus === 'PAID' && booking.status === 'CONFIRMED' ? (
         <Note tone="sky" icon="info">
           {t('cabinet.notePaidNoCancel', {
-            contacts: t('cabinet.rentalContacts'),
+            contacts: formatRentalContacts(),
           })}
         </Note>
       ) : null}
@@ -190,14 +194,14 @@ const CabinetBookingDetailPage = () => {
       {startMissed ? (
         <Note tone="butter" icon="clock" alert>
           {t('cabinet.noteStartMissed', {
-            contacts: t('cabinet.rentalContacts'),
+            contacts: formatRentalContacts(),
           })}
         </Note>
       ) : null}
       {booking.status === 'NO_SHOW' ? (
         <Note tone="sky" icon="info">
           {t('cabinet.noteNoShow', {
-            contacts: t('cabinet.rentalContacts'),
+            contacts: formatRentalContacts(),
           })}
         </Note>
       ) : null}
