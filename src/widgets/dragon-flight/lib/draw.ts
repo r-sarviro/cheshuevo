@@ -4,6 +4,9 @@ const ROCK_SRC = 48
 const ROCK_SRC_X = 8
 const ROCK_SRC_Y = 8
 
+/** Native flap frame size from `.docs/dragon_flap_4frames`. */
+const DRAGON_FRAME_ASPECT = 57 / 40
+
 export interface IFlightAssets {
   dragonFrames: HTMLImageElement[]
   rocks: HTMLImageElement
@@ -156,15 +159,15 @@ function drawBird(
     return
   }
 
-  const drawW = bird.radius * 3.4
-  const drawH = bird.radius * 2.45
+  const drawH = bird.radius * 2.2
+  const drawW = drawH * DRAGON_FRAME_ASPECT
   const angle = Math.atan2(bird.vy, 420)
   const clamped = Math.max(-0.55, Math.min(0.75, angle))
 
   ctx.save()
   ctx.translate(bird.x, bird.y)
   ctx.rotate(clamped)
-  ctx.imageSmoothingEnabled = true
-  ctx.drawImage(frame, -drawW * 0.45, -drawH * 0.55, drawW, drawH)
+  ctx.imageSmoothingEnabled = false
+  ctx.drawImage(frame, -drawW * 0.45, -drawH * 0.5, drawW, drawH)
   ctx.restore()
 }
