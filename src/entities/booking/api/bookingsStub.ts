@@ -10,7 +10,10 @@ import type {
   IAvailabilityResult,
   IBooking,
   ICreateBookingPayload,
+  ICreateCustomerBookingPayload,
 } from '../model/types'
+
+import { rememberCreatedBooking } from './customerBookingsStub'
 
 let bookingSeq = 1025
 
@@ -24,6 +27,38 @@ export type TCreateBookingStubPayload = ICreateBookingPayload & {
   hourlyRate: number
   currency: string
   dragonName: string
+}
+
+export type TCreateCustomerBookingStubPayload = ICreateCustomerBookingPayload & {
+  hourlyRate: number
+  currency: string
+  dragonName: string
+}
+
+function buildConfirmedBooking(
+  payload: {
+    dragonId: number
+    startsAt: string
+    endsAt: string
+    hourlyRate: number
+    currency: string
+    dragonName: string
+  },
+): IBooking {
+  const hours = billableHours(payload.startsAt, payload.endsAt)
+  const number = `DR-${String(bookingSeq++).padStart(6, '0')}`
+  return {
+    bookingNumber: number,
+    status: 'CONFIRMED',
+    paymentStatus: 'UNPAID',
+    totalAmount: hours * payload.hourlyRate,
+    currency: payload.currency,
+    startsAt: payload.startsAt,
+    endsAt: payload.endsAt,
+    billableHours: hours,
+    dragonId: payload.dragonId,
+    dragonName: payload.dragonName,
+  }
 }
 
 /** Stub: availability + quote for a dragon interval. */
@@ -79,19 +114,40 @@ export async function createBookingStub(
     )
   }
 
-  const hours = billableHours(payload.startsAt, payload.endsAt)
-  const number = `DR-${String(bookingSeq++).padStart(6, '0')}`
+  const booking = buildConfirmedBooking(payload)
+  rememberCreatedBooking(
+    booking,
+    payload.customerEmail,
+    payload.customerName,
+  )
+  return booking
+}
 
-  return {
-    bookingNumber: number,
-    status: 'CONFIRMED',
-    paymentStatus: 'UNPAID',
-    totalAmount: hours * payload.hourlyRate,
-    currency: payload.currency,
-    startsAt: payload.startsAt,
-    endsAt: payload.endsAt,
-    billableHours: hours,
-    dragonId: payload.dragonId,
-    dragonName: payload.dragonName,
+/** Stub: create booking for an authenticated cabinet session (no OTP). */
+export async function createCustomerBookingStub(
+  payload: TCreateCustomerBookingStubPayload,
+): Promise<IBooking> {
+  await stubDelay(500)
+
+  const email = payload.customerEmail.trim().toLowerCase()
+  const name = payload.customerName.trim()
+  if (!email || !name) {
+    throw new ApiError(401, 'UNAUTHORIZED', 'Not signed in')
   }
+
+  if (!isMinDurationOk(payload.startsAt, payload.endsAt)) {
+    throw new ApiError(400, 'INVALID_PERIOD', 'Invalid booking period')
+  }
+
+  if (overlapsBusyWindow(payload.dragonId, payload.startsAt, payload.endsAt)) {
+    throw new ApiError(
+      409,
+      'BOOKING_CONFLICT',
+      'This time slot is no longer available',
+    )
+  }
+
+  const booking = buildConfirmedBooking(payload)
+  rememberCreatedBooking(booking, email, name)
+  return booking
 }

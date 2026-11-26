@@ -1,7 +1,6 @@
 import type { ReactNode } from 'react'
 import { useTranslation } from 'react-i18next'
 
-import { Loader } from '@/shared/ui/loader'
 import { Typography } from '@/shared/ui/typography'
 
 import { BookingRowGhost } from './BookingRow'
@@ -51,23 +50,21 @@ const BookingList = (props: IBookingListProps) => {
       {flash}
 
       {loading ? (
-        <>
-          <p className={styles.loading} role="status">
-            <Loader />
-            {t('cabinet.loading')}
-          </p>
-          <ul className={styles.list} aria-busy="true">
-            <li>
-              <BookingRowGhost />
-            </li>
-            <li>
-              <BookingRowGhost />
-            </li>
-            <li>
-              <BookingRowGhost />
-            </li>
-          </ul>
-        </>
+        <ul
+          className={styles.list}
+          aria-busy="true"
+          aria-label={t('cabinet.loading')}
+        >
+          <li>
+            <BookingRowGhost />
+          </li>
+          <li>
+            <BookingRowGhost />
+          </li>
+          <li>
+            <BookingRowGhost />
+          </li>
+        </ul>
       ) : null}
 
       {!loading && error ? error : null}

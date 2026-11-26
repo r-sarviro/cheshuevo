@@ -108,7 +108,8 @@
   margin-block: var(--px);
 }
 
-@media (min-width: 640px) {
+/* <768: мобильная шапка (2 строки, кнопка локали, без текста темы). */
+@media (min-width: 768px) {
   .header {
     padding-block: 16px;
     gap: 18px;

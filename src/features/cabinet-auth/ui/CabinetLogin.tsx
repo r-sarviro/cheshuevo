@@ -1,13 +1,20 @@
 import { useEffect, useId, useState, type FormEvent, type ReactNode } from 'react'
 import { useTranslation } from 'react-i18next'
+import { Link } from 'react-router-dom'
 
+import {
+  assertCustomerCanRequestLoginStub,
+  getCustomerNameStub,
+} from '@/entities/booking'
 import { useCabinetSessionStore } from '@/entities/customer'
 import {
   ApiError,
   useConfirmEmailCodeMutation,
   useRequestEmailCodeMutation,
 } from '@/shared/api'
+import { CATALOG_PATH } from '@/shared/config'
 import { Button, ButtonText } from '@/shared/ui/button'
+import buttonStyles from '@/shared/ui/button/Button.module.css'
 import { Field, Input } from '@/shared/ui/field'
 import fieldStyles from '@/shared/ui/field/Field.module.css'
 import { Icon } from '@/shared/ui/icon'
@@ -78,6 +85,7 @@ const CabinetLogin = (props: ICabinetLoginProps) => {
     }
     setEmailError(null)
     try {
+      assertCustomerCanRequestLoginStub(nextEmail)
       const result = await requestCode.mutateAsync({ email: nextEmail })
       setEmail(nextEmail)
       setVerificationId(result.verificationId)
@@ -87,7 +95,28 @@ const CabinetLogin = (props: ICabinetLoginProps) => {
       setExhausted(false)
       setNote(null)
       setStep('code')
-    } catch {
+    } catch (error) {
+      if (error instanceof ApiError && error.code === 'NO_BOOKINGS') {
+        setNote(
+          <Note
+            tone="butter"
+            icon="warn"
+            heading={t('cabinet.loginNoBookingsTitle')}
+            alert
+            actions={
+              <Link
+                className={[buttonStyles.btn, buttonStyles.ghost].join(' ')}
+                to={CATALOG_PATH}
+              >
+                {t('cabinet.emptyCta')}
+              </Link>
+            }
+          >
+            {t('cabinet.loginNoBookingsBody')}
+          </Note>,
+        )
+        return
+      }
       setNote(
         <Note tone="peach" icon="cross" heading={t('booking.sendFailedTitle')} alert>
           {t('booking.sendFailedBody')}
@@ -110,8 +139,9 @@ const CabinetLogin = (props: ICabinetLoginProps) => {
         email,
         code,
       })
-      signIn({ email })
-      const session = { email, name: null as string | null }
+      const name = getCustomerNameStub(email)
+      signIn({ email, name })
+      const session = { email, name }
       onSuccess?.(session)
     } catch (error) {
       if (error instanceof ApiError) {
@@ -248,7 +278,7 @@ const CabinetLogin = (props: ICabinetLoginProps) => {
           disabled={busy || exhausted}
           aria-label={t('booking.otpLabel')}
           aria-describedby={codeError ? otpErrId : undefined}
-          digitLabel={(index) => t('booking.otpDigit', { n: index + 1 })}
+          digitLabel={(index) => t('booking.otpDigit', { n: index })}
         />
         {codeError ? (
           <p className={fieldStyles.error} role="alert" id={otpErrId}>

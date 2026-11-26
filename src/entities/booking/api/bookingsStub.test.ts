@@ -2,7 +2,12 @@ import { beforeEach, describe, expect, it, vi } from 'vitest'
 
 import { ApiError, STUB_CONFLICT_TOKEN_PREFIX } from '@/shared/api'
 
-import { createBookingStub, getAvailabilityStub } from './bookingsStub'
+import {
+  createBookingStub,
+  createCustomerBookingStub,
+  getAvailabilityStub,
+} from './bookingsStub'
+import { resetCustomerBookingsStub } from './customerBookingsStub'
 
 vi.mock('@/shared/api', async (importOriginal) => {
   const actual = await importOriginal<typeof import('@/shared/api')>()
@@ -163,6 +168,66 @@ describe('createBookingStub', () => {
       dragonId: 2,
       dragonName: 'Кристаллион',
       currency: 'RUB',
+    })
+  })
+})
+
+describe('createCustomerBookingStub', () => {
+  beforeEach(() => {
+    vi.clearAllMocks()
+    resetCustomerBookingsStub()
+  })
+
+  it('rejects empty session identity with 401', async () => {
+    await expect(
+      createCustomerBookingStub({
+        dragonId: 2,
+        ...FREE_SLOT,
+        customerName: '',
+        customerEmail: 'anna@example.com',
+        hourlyRate: 170,
+        currency: 'RUB',
+        dragonName: 'Кристаллион',
+      }),
+    ).rejects.toMatchObject({
+      status: 401,
+      code: 'UNAUTHORIZED',
+    })
+  })
+
+  it('creates a confirmed unpaid booking without OTP token', async () => {
+    const booking = await createCustomerBookingStub({
+      dragonId: 2,
+      ...FREE_SLOT,
+      customerName: 'Анна',
+      customerEmail: 'anna@example.com',
+      hourlyRate: 170,
+      currency: 'RUB',
+      dragonName: 'Кристаллион',
+    })
+
+    expect(booking.bookingNumber).toMatch(/^DR-\d{6}$/)
+    expect(booking).toMatchObject({
+      status: 'CONFIRMED',
+      paymentStatus: 'UNPAID',
+      dragonId: 2,
+    })
+  })
+
+  it('returns 409 when Sakurka slot is busy', async () => {
+    await expect(
+      createCustomerBookingStub({
+        dragonId: 1,
+        ...BUSY_SLOT,
+        customerName: 'Анна',
+        customerEmail: 'anna@example.com',
+        hourlyRate: 150,
+        currency: 'RUB',
+        dragonName: 'Сакурка',
+      }),
+    ).rejects.toMatchObject({
+      status: 409,
+      code: 'BOOKING_CONFLICT',
     })
   })
 })

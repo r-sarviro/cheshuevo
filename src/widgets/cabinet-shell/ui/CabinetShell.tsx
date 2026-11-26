@@ -10,8 +10,6 @@ import styles from './CabinetShell.module.css'
 
 export interface ICabinetShellTabHrefs {
   broni: string
-  pasport: string
-  koiny: string
   profil: string
 }
 
@@ -30,8 +28,6 @@ const TABS: Array<{
   icon: TIconName
 }> = [
   { id: 'broni', labelKey: 'cabinet.tabBroni', icon: 'list' },
-  { id: 'pasport', labelKey: 'cabinet.tabPasport', icon: 'book' },
-  { id: 'koiny', labelKey: 'cabinet.tabKoiny', icon: 'drako' },
   { id: 'profil', labelKey: 'cabinet.tabProfil', icon: 'user' },
 ]
 
