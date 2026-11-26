@@ -1,29 +1,21 @@
 import { useMutation, useQueryClient } from '@tanstack/react-query'
 
-import {
-  bookingQueryKeys,
-  markCustomerBookingCancelled,
-} from '@/entities/booking'
+import { bookingQueryKeys } from '@/entities/booking'
 import { useCabinetSessionStore } from '@/entities/customer'
 
 import {
-  cancelBookingStub,
+  cancelBooking,
   type ICancelBookingPayload,
-} from './cancelBookingStub'
+} from './cancelBookingApi'
 
 export function useCancelBookingMutation() {
   const queryClient = useQueryClient()
   const email = useCabinetSessionStore((s) => s.email)
 
   return useMutation({
-    mutationFn: (payload: ICancelBookingPayload) => cancelBookingStub(payload),
-    onSuccess: (result) => {
+    mutationFn: (payload: ICancelBookingPayload) => cancelBooking(payload),
+    onSuccess: () => {
       if (!email) return
-      markCustomerBookingCancelled(
-        email,
-        result.bookingNumber,
-        result.cancelledAt,
-      )
       void queryClient.invalidateQueries({
         queryKey: bookingQueryKeys.customer(email),
       })

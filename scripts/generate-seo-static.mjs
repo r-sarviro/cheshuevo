@@ -6,7 +6,7 @@ const __dirname = dirname(fileURLToPath(import.meta.url))
 const root = join(__dirname, '..')
 const publicDir = join(root, 'public')
 
-/** Stub catalog ids from src/entities/dragon/model/fixtures.ts (1..20). */
+/** Catalog ids from src/entities/dragon/model/fixtures.ts (1..20). */
 const DRAGON_IDS = Array.from({ length: 20 }, (_, i) => i + 1)
 
 function loadEnvFile(filePath) {

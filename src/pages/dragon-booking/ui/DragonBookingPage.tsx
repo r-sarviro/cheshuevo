@@ -28,7 +28,7 @@ import { SiteHeader } from '@/widgets/site-header'
 
 import styles from './DragonBookingPage.module.css'
 
-/** Dragon detail + booking wizard (stub API). */
+/** Dragon detail + booking wizard. */
 const DragonBookingPage = () => {
   const { t } = useTranslation()
   const chrome = useSiteChrome()

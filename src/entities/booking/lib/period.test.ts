@@ -1,6 +1,6 @@
 import { describe, expect, it } from 'vitest'
 
-import { billableHours, isMinDurationOk, overlapsBusyWindow } from './period'
+import { billableHours, isMinDurationOk } from './period'
 
 describe('billableHours', () => {
   it('counts an exact hour as 1', () => {
@@ -31,31 +31,5 @@ describe('isMinDurationOk', () => {
     expect(isMinDurationOk('2026-11-25T14:00:00', '2026-11-25T13:00:00')).toBe(
       false,
     )
-  })
-})
-
-describe('overlapsBusyWindow', () => {
-  it('ignores dragons other than Sakurka (id 1)', () => {
-    expect(
-      overlapsBusyWindow(2, '2026-11-25T10:00:00', '2026-11-25T12:00:00'),
-    ).toBe(false)
-  })
-
-  it('detects overlap with Sakurka 10:00–12:00', () => {
-    expect(
-      overlapsBusyWindow(1, '2026-11-25T09:00:00', '2026-11-25T11:00:00'),
-    ).toBe(true)
-    expect(
-      overlapsBusyWindow(1, '2026-11-25T10:00:00', '2026-11-25T12:00:00'),
-    ).toBe(true)
-  })
-
-  it('treats touching busy edges as free', () => {
-    expect(
-      overlapsBusyWindow(1, '2026-11-25T09:00:00', '2026-11-25T10:00:00'),
-    ).toBe(false)
-    expect(
-      overlapsBusyWindow(1, '2026-11-25T12:00:00', '2026-11-25T14:00:00'),
-    ).toBe(false)
   })
 })

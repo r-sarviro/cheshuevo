@@ -5,8 +5,6 @@ import { useCabinetSessionStore } from '@/entities/customer'
 import { ButtonText } from '@/shared/ui/button'
 import { Icon } from '@/shared/ui/icon'
 
-import { logoutStub } from '../api/logoutStub'
-
 export interface ILogoutButtonProps {
   className?: string
   children?: ReactNode
@@ -19,12 +17,7 @@ const LogoutButton = (props: ILogoutButtonProps) => {
   const { t } = useTranslation()
   const signOut = useCabinetSessionStore((s) => s.signOut)
 
-  const handleClick = async () => {
-    try {
-      await logoutStub()
-    } catch {
-      /* stub always resolves; clear session anyway */
-    }
+  const handleClick = () => {
     signOut()
     onLogout?.()
   }
@@ -34,9 +27,7 @@ const LogoutButton = (props: ILogoutButtonProps) => {
       type="button"
       className={className}
       aria-label={t('cabinet.logout')}
-      onClick={() => {
-        void handleClick()
-      }}
+      onClick={handleClick}
     >
       <Icon name="exit" />
       {children ?? <span>{t('cabinet.logout')}</span>}

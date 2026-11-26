@@ -4,8 +4,6 @@
 
 Client landing for a dragon rental MVP: React, TypeScript, Vite, Feature-Sliced Design.
 
-Manual stub check: see [DEMO.md](DEMO.md).
-
 ## Scripts
 
 | Command             | Purpose                                             |
@@ -44,7 +42,7 @@ src/
   pages/      # home (landing), dragon-booking, not-found
   widgets/    # hero, site-header/footer, catalog, booking-wizard
   features/   # select-period, booking-contacts, verify-email
-  entities/   # dragon, booking (+ stubs)
+  entities/   # dragon, booking
   shared/     # api, config/i18n, model, ui-kit
 ```
 

@@ -1,11 +1,10 @@
-import { ApiError, stubDelay } from '@/shared/api'
+import { ApiError } from '@/shared/api'
 
 import { DRAGON_FIXTURES, getDragonFixture } from '../model/fixtures'
 import type { IDragon, IDragonListItem } from '../model/types'
 
-/** Stub: list active dragons (no network). */
+/** Local catalog from fixtures (no network until public dragons API is wired). */
 export async function getDragonsStub(): Promise<{ items: IDragonListItem[] }> {
-  await stubDelay()
   const items = DRAGON_FIXTURES.filter(
     (dragon) => dragon.operationalStatus === 'ACTIVE',
   ).map(
@@ -34,9 +33,8 @@ export async function getDragonsStub(): Promise<{ items: IDragonListItem[] }> {
   return { items }
 }
 
-/** Stub: dragon detail by id. */
+/** Local dragon detail by id from fixtures. */
 export async function getDragonStub(id: number): Promise<IDragon> {
-  await stubDelay()
   const dragon = getDragonFixture(id)
   if (!dragon || dragon.operationalStatus !== 'ACTIVE') {
     throw new ApiError(404, 'DRAGON_NOT_FOUND', 'Dragon not found')

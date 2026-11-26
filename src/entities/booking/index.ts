@@ -20,26 +20,6 @@ export {
   createCustomerBooking,
   getAvailability,
 } from './api/bookingsApi'
-export {
-  createBookingStub,
-  createCustomerBookingStub,
-  getAvailabilityStub,
-  type TAvailabilityStubQuery,
-  type TCreateBookingStubPayload,
-  type TCreateCustomerBookingStubPayload,
-} from './api/bookingsStub'
-export {
-  assertCustomerCanRequestLoginStub,
-  CABINET_DEMO_EMAIL,
-  customerHasBookingsStub,
-  getCustomerBookingStub,
-  getCustomerNameStub,
-  listCustomerBookingsStub,
-  markCustomerBookingCancelled,
-  rememberCreatedBooking,
-  rememberCustomerName,
-  resetCustomerBookingsStub,
-} from './api/customerBookingsStub'
 export { bookingQueryKeys } from './api/queryKeys'
 export {
   useAvailabilityQuery,
@@ -51,7 +31,6 @@ export {
 export {
   billableHours,
   isMinDurationOk,
-  overlapsBusyWindow,
   periodToInterval,
   periodToIso,
   type TBookingPeriodValue,

@@ -20,7 +20,7 @@
     "perHour": "per hour",
     "textAction": "Change time",
     "noteTitle": "This time is already taken",
-    "noteBody": "{{name}} is busy from 10:00 to 12:00. Pick another time or another dragon."
+    "noteBody": "{{name}} is already booked for this time. Pick another time or another dragon."
   },
   "landing": {
     "heroTitle": "Dragon rental",
@@ -142,7 +142,7 @@
     "openBooking": "Open booking",
     "toCatalog": "To catalog",
     "otherDragon": "Another dragon",
-    "conflictBody": "{{name}} is busy from 10:00 to 12:00. Pick another time or another dragon."
+    "conflictBody": "{{name}} is already booked for this time. Pick another time or another dragon."
   },
   "notFound": {
     "title": "Page not found",

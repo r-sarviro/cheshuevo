@@ -1,21 +1,30 @@
 import { useMutation, useQuery } from '@tanstack/react-query'
 
+import { ApiError } from '@/shared/api'
+
+import type { ICustomerBooking } from '../model/customerTypes'
+import type {
+  IAvailabilityQuery,
+  ICreateBookingPayload,
+  ICreateCustomerBookingPayload,
+} from '../model/types'
 import {
-  createBookingStub,
-  createCustomerBookingStub,
-  getAvailabilityStub,
-  type TAvailabilityStubQuery,
-  type TCreateBookingStubPayload,
-  type TCreateCustomerBookingStubPayload,
-} from './bookingsStub'
-import {
-  getCustomerBookingStub,
-  listCustomerBookingsStub,
-} from './customerBookingsStub'
+  createBooking,
+  createCustomerBooking,
+  getAvailability,
+} from './bookingsApi'
 import { bookingQueryKeys } from './queryKeys'
 
+function notImplementedCustomerApi(): never {
+  throw new ApiError(
+    501,
+    'NOT_IMPLEMENTED',
+    'Customer bookings API is not wired yet',
+  )
+}
+
 export function useAvailabilityQuery(
-  query: TAvailabilityStubQuery | null,
+  query: IAvailabilityQuery | null,
   enabled: boolean,
 ) {
   return useQuery({
@@ -26,22 +35,21 @@ export function useAvailabilityQuery(
           query.endsAt,
         )
       : [...bookingQueryKeys.all, 'availability', 'idle'],
-    queryFn: () => getAvailabilityStub(query as TAvailabilityStubQuery),
+    queryFn: () => getAvailability(query as IAvailabilityQuery),
     enabled: Boolean(query) && enabled,
   })
 }
 
 export function useCreateBookingMutation() {
   return useMutation({
-    mutationFn: (payload: TCreateBookingStubPayload) =>
-      createBookingStub(payload),
+    mutationFn: (payload: ICreateBookingPayload) => createBooking(payload),
   })
 }
 
 export function useCreateCustomerBookingMutation() {
   return useMutation({
-    mutationFn: (payload: TCreateCustomerBookingStubPayload) =>
-      createCustomerBookingStub(payload),
+    mutationFn: (payload: ICreateCustomerBookingPayload) =>
+      createCustomerBooking(payload),
   })
 }
 
@@ -50,7 +58,8 @@ export function useCustomerBookingsQuery(email: string | null) {
     queryKey: email
       ? bookingQueryKeys.customer(email)
       : [...bookingQueryKeys.all, 'customer', 'idle'],
-    queryFn: () => listCustomerBookingsStub(email as string),
+    queryFn: async (): Promise<ICustomerBooking[]> =>
+      notImplementedCustomerApi(),
     enabled: Boolean(email),
   })
 }
@@ -64,8 +73,7 @@ export function useCustomerBookingQuery(
       email && bookingNumber
         ? bookingQueryKeys.customerDetail(email, bookingNumber)
         : [...bookingQueryKeys.all, 'customer', 'detail', 'idle'],
-    queryFn: () =>
-      getCustomerBookingStub(email as string, bookingNumber as string),
+    queryFn: async (): Promise<ICustomerBooking> => notImplementedCustomerApi(),
     enabled: Boolean(email && bookingNumber),
   })
 }
