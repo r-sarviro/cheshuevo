@@ -55,10 +55,7 @@ export const appRouter = createBrowserRouter(
             path={CABINET_BOOKING_ROUTE}
             element={<CabinetBookingDetailPage />}
           />
-          <Route
-            path={CABINET_PROFILE_PATH}
-            element={<CabinetProfilePage />}
-          />
+          <Route path={CABINET_PROFILE_PATH} element={<CabinetProfilePage />} />
         </Route>
       </Route>
       <Route path={NOT_FOUND_PATH} element={<NotFoundPage />} />

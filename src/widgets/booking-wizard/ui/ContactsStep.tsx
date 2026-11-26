@@ -1,10 +1,11 @@
-import { useEffect, type FormEvent } from 'react'
+import { zodResolver } from '@hookform/resolvers/zod'
 import { useForm } from 'react-hook-form'
 import { useTranslation } from 'react-i18next'
 
 import {
   BookingContacts,
-  type IBookingContactsValue,
+  bookingContactsSchema,
+  type TBookingContactsValue,
 } from '@/features/booking-contacts'
 import { useRequestEmailCodeMutation } from '@/features/verify-email'
 import { Button, ButtonText } from '@/shared/ui/button'
@@ -15,8 +16,6 @@ import { useBookingDraftStore } from '../model/bookingDraftStore'
 
 import styles from './BookingWizard.module.css'
 
-const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]+$/
-
 /** Contacts step: name + email, then request OTP. */
 const ContactsStep = () => {
   const { t } = useTranslation()
@@ -26,44 +25,23 @@ const ContactsStep = () => {
   const setStep = useBookingDraftStore((s) => s.setStep)
   const requestCode = useRequestEmailCodeMutation()
 
-  const {
-    register,
-    watch,
-    setValue,
-    getValues,
-    setError,
-    clearErrors,
-    formState,
-  } = useForm<IBookingContactsValue>({
-    defaultValues: contacts ?? { name: '', email: '' },
-    mode: 'onSubmit',
-    shouldUnregister: false,
-  })
-
-  useEffect(() => {
-    register('name')
-    register('email')
-  }, [register])
+  const { watch, setValue, setError, clearErrors, formState, handleSubmit } =
+    useForm<TBookingContactsValue>({
+      resolver: zodResolver(bookingContactsSchema),
+      defaultValues: contacts ?? { name: '', email: '' },
+      mode: 'onSubmit',
+      shouldUnregister: false,
+    })
 
   const value = watch()
 
-  const onSubmit = async (event: FormEvent<HTMLFormElement>) => {
-    event.preventDefault()
-    const data = getValues()
-    const name = data.name.trim()
-    const email = data.email.trim()
-    if (!name) {
-      setError('name', { type: 'required' })
-      return
-    }
-    if (!EMAIL_RE.test(email)) {
-      setError('email', { type: 'pattern' })
-      return
-    }
-
+  const onValid = async (data: TBookingContactsValue) => {
     try {
-      const result = await requestCode.mutateAsync({ email })
-      setContacts({ name, email })
+      const result = await requestCode.mutateAsync({
+        email: data.email,
+        purpose: 'booking',
+      })
+      setContacts(data)
       setVerification({
         verificationId: result.verificationId,
         resendAfterSeconds: result.resendAfterSeconds,
@@ -98,11 +76,13 @@ const ContactsStep = () => {
         }}
         hints={{ email: t('booking.emailHint') }}
         errors={{
-          name: formState.errors.name ? t('booking.nameRequired') : undefined,
+          name: formState.errors.name?.message
+            ? t(formState.errors.name.message)
+            : undefined,
           email: formState.errors.email
             ? formState.errors.email.type === 'server'
               ? formState.errors.email.message
-              : t('ds.emailError')
+              : t(formState.errors.email.message ?? 'ds.emailError')
             : undefined,
         }}
         alert={
@@ -127,7 +107,7 @@ const ContactsStep = () => {
             </ButtonText>
           </>
         }
-        onSubmit={onSubmit}
+        onSubmit={handleSubmit(onValid)}
       />
     </div>
   )

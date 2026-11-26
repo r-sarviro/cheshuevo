@@ -6,7 +6,6 @@ import {
   useCustomerBookingsQuery,
 } from '@/entities/booking'
 import { useCabinetSessionStore } from '@/entities/customer'
-import { getDragonFixture } from '@/entities/dragon'
 import { CATALOG_PATH, cabinetBookingPath } from '@/shared/config'
 import { useDocumentMeta } from '@/shared/lib/document-meta'
 import { Button } from '@/shared/ui/button'
@@ -31,8 +30,8 @@ import {
 /** Cabinet bookings list: current / past sections. */
 const CabinetBookingsPage = () => {
   const { t, i18n } = useTranslation()
-  const email = useCabinetSessionStore((s) => s.email)
-  const query = useCustomerBookingsQuery(email)
+  const isAuthenticated = useCabinetSessionStore((s) => s.isAuthenticated)
+  const query = useCustomerBookingsQuery(isAuthenticated())
 
   useDocumentMeta({
     title: t('seo.cabinet.bookings.title'),
@@ -101,15 +100,12 @@ const CabinetBookingsPage = () => {
       current={
         split.current.length > 0
           ? split.current.map((booking) => {
-              const dragon = booking.dragonId
-                ? getDragonFixture(booking.dragonId)
-                : undefined
               const hours = bookingHours(booking)
               return (
                 <BookingListItem key={booking.bookingNumber}>
                   <BookingRow
                     to={cabinetBookingPath(booking.bookingNumber)}
-                    dragonName={booking.dragonName ?? booking.dragonId}
+                    dragonName={booking.dragon.name}
                     bookingNumber={booking.bookingNumber}
                     periodText={
                       <Num>
@@ -121,20 +117,14 @@ const CabinetBookingsPage = () => {
                       </Num>
                     }
                     sumText={t('booking.totalHours', {
-                      total: formatMoney(
-                        booking.totalAmount,
-                        booking.currency,
-                      ),
+                      total: formatMoney(booking.totalAmount, booking.currency),
                       hours,
                     })}
                     badges={bookingStatusBadges(booking, t)}
-                    tile={dragon?.tileToken}
+                    tile={booking.dragon.tileToken ?? undefined}
                     picture={
-                      dragon?.spriteKey ? (
-                        <DragonAvatar
-                          name={dragon.spriteKey}
-                          alt=""
-                        />
+                      booking.dragon.spriteKey ? (
+                        <DragonAvatar name={booking.dragon.spriteKey} alt="" />
                       ) : null
                     }
                   />
@@ -146,15 +136,12 @@ const CabinetBookingsPage = () => {
       past={
         split.past.length > 0
           ? split.past.map((booking) => {
-              const dragon = booking.dragonId
-                ? getDragonFixture(booking.dragonId)
-                : undefined
               const hours = bookingHours(booking)
               return (
                 <BookingListItem key={booking.bookingNumber}>
                   <BookingRow
                     to={cabinetBookingPath(booking.bookingNumber)}
-                    dragonName={booking.dragonName ?? booking.dragonId}
+                    dragonName={booking.dragon.name}
                     bookingNumber={booking.bookingNumber}
                     periodText={
                       <Num>
@@ -166,20 +153,14 @@ const CabinetBookingsPage = () => {
                       </Num>
                     }
                     sumText={t('booking.totalHours', {
-                      total: formatMoney(
-                        booking.totalAmount,
-                        booking.currency,
-                      ),
+                      total: formatMoney(booking.totalAmount, booking.currency),
                       hours,
                     })}
                     badges={bookingStatusBadges(booking, t)}
-                    tile={dragon?.tileToken}
+                    tile={booking.dragon.tileToken ?? undefined}
                     picture={
-                      dragon?.spriteKey ? (
-                        <DragonAvatar
-                          name={dragon.spriteKey}
-                          alt=""
-                        />
+                      booking.dragon.spriteKey ? (
+                        <DragonAvatar name={booking.dragon.spriteKey} alt="" />
                       ) : null
                     }
                   />

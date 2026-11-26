@@ -5,7 +5,7 @@ export type TBookingPeriodValue = {
   endTime: string
 }
 
-/** Build local datetime string for stub interval math. */
+/** Build local datetime string for interval math. */
 export function periodToIso(date: string, time: string): string {
   return `${date}T${time}:00`
 }
@@ -36,19 +36,4 @@ export function isMinDurationOk(startsAt: string, endsAt: string): boolean {
     parsePeriodDateTime(endsAt).getTime() >
       parsePeriodDateTime(startsAt).getTime()
   )
-}
-
-/** Sakurka (id 1) demo busy window: 10:00–12:00 on the start date. */
-export function overlapsBusyWindow(
-  dragonId: number,
-  startsAt: string,
-  endsAt: string,
-): boolean {
-  if (dragonId !== 1) return false
-  const start = parsePeriodDateTime(startsAt)
-  const end = parsePeriodDateTime(endsAt)
-  const day = startsAt.slice(0, 10)
-  const busyStart = parsePeriodDateTime(`${day}T10:00:00`)
-  const busyEnd = parsePeriodDateTime(`${day}T12:00:00`)
-  return start < busyEnd && end > busyStart
 }

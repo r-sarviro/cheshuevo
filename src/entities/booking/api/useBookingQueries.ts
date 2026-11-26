@@ -1,21 +1,21 @@
-import { useMutation, useQuery } from '@tanstack/react-query'
+import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query'
 
+import type {
+  IAvailabilityQuery,
+  ICreateBookingPayload,
+  ICreateCustomerBookingPayload,
+} from '../model/types'
 import {
-  createBookingStub,
-  createCustomerBookingStub,
-  getAvailabilityStub,
-  type TAvailabilityStubQuery,
-  type TCreateBookingStubPayload,
-  type TCreateCustomerBookingStubPayload,
-} from './bookingsStub'
-import {
-  getCustomerBookingStub,
-  listCustomerBookingsStub,
-} from './customerBookingsStub'
+  createBooking,
+  createCustomerBooking,
+  getAvailability,
+  getCustomerBooking,
+  getCustomerBookings,
+} from './bookingsApi'
 import { bookingQueryKeys } from './queryKeys'
 
 export function useAvailabilityQuery(
-  query: TAvailabilityStubQuery | null,
+  query: IAvailabilityQuery | null,
   enabled: boolean,
 ) {
   return useQuery({
@@ -26,46 +26,65 @@ export function useAvailabilityQuery(
           query.endsAt,
         )
       : [...bookingQueryKeys.all, 'availability', 'idle'],
-    queryFn: () => getAvailabilityStub(query as TAvailabilityStubQuery),
+    queryFn: ({ signal }) =>
+      getAvailability(query as IAvailabilityQuery, signal),
     enabled: Boolean(query) && enabled,
   })
 }
 
+async function invalidateAfterCreate(
+  queryClient: ReturnType<typeof useQueryClient>,
+) {
+  await Promise.all([
+    queryClient.invalidateQueries({
+      queryKey: bookingQueryKeys.customer(),
+    }),
+    queryClient.invalidateQueries({
+      queryKey: [...bookingQueryKeys.all, 'availability'],
+    }),
+  ])
+}
+
 export function useCreateBookingMutation() {
+  const queryClient = useQueryClient()
   return useMutation({
-    mutationFn: (payload: TCreateBookingStubPayload) =>
-      createBookingStub(payload),
+    mutationFn: (payload: ICreateBookingPayload) => createBooking(payload),
+    onSuccess: async () => {
+      await invalidateAfterCreate(queryClient)
+    },
   })
 }
 
 export function useCreateCustomerBookingMutation() {
+  const queryClient = useQueryClient()
   return useMutation({
-    mutationFn: (payload: TCreateCustomerBookingStubPayload) =>
-      createCustomerBookingStub(payload),
+    mutationFn: (payload: ICreateCustomerBookingPayload) =>
+      createCustomerBooking(payload),
+    onSuccess: async () => {
+      await invalidateAfterCreate(queryClient)
+    },
   })
 }
 
-export function useCustomerBookingsQuery(email: string | null) {
+/** `enabled` comes from the cabinet session (pages/features), not a cross-entity import. */
+export function useCustomerBookingsQuery(enabled = true) {
   return useQuery({
-    queryKey: email
-      ? bookingQueryKeys.customer(email)
-      : [...bookingQueryKeys.all, 'customer', 'idle'],
-    queryFn: () => listCustomerBookingsStub(email as string),
-    enabled: Boolean(email),
+    queryKey: bookingQueryKeys.customer(),
+    queryFn: ({ signal }) => getCustomerBookings(signal),
+    enabled,
   })
 }
 
 export function useCustomerBookingQuery(
-  email: string | null,
   bookingNumber: string | undefined,
+  enabled = true,
 ) {
   return useQuery({
-    queryKey:
-      email && bookingNumber
-        ? bookingQueryKeys.customerDetail(email, bookingNumber)
-        : [...bookingQueryKeys.all, 'customer', 'detail', 'idle'],
-    queryFn: () =>
-      getCustomerBookingStub(email as string, bookingNumber as string),
-    enabled: Boolean(email && bookingNumber),
+    queryKey: bookingNumber
+      ? bookingQueryKeys.customerDetail(bookingNumber)
+      : [...bookingQueryKeys.customer(), 'detail', 'idle'],
+    queryFn: ({ signal }) =>
+      getCustomerBooking(bookingNumber as string, signal),
+    enabled: Boolean(bookingNumber) && enabled,
   })
 }

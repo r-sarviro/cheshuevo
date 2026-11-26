@@ -1,7 +1,7 @@
 import { render, screen } from '@testing-library/react'
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
 import { MemoryRouter } from 'react-router-dom'
-import { describe, expect, it } from 'vitest'
+import { afterEach, describe, expect, it, vi } from 'vitest'
 
 import HomePage from './HomePage'
 
@@ -19,7 +19,20 @@ function renderHome() {
 }
 
 describe('HomePage', () => {
+  afterEach(() => {
+    vi.unstubAllGlobals()
+  })
+
   it('renders the landing hero title', async () => {
+    vi.stubGlobal(
+      'fetch',
+      vi.fn().mockResolvedValue({
+        ok: true,
+        status: 200,
+        text: async () => JSON.stringify({ data: [] }),
+      }),
+    )
+
     renderHome()
 
     expect(

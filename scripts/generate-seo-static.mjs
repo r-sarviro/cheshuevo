@@ -6,9 +6,6 @@ const __dirname = dirname(fileURLToPath(import.meta.url))
 const root = join(__dirname, '..')
 const publicDir = join(root, 'public')
 
-/** Stub catalog ids from src/entities/dragon/model/fixtures.ts (1..20). */
-const DRAGON_IDS = Array.from({ length: 20 }, (_, i) => i + 1)
-
 function loadEnvFile(filePath) {
   if (!existsSync(filePath)) return
   const text = readFileSync(filePath, 'utf8')
@@ -27,6 +24,7 @@ loadEnvFile(join(root, '.env'))
 loadEnvFile(join(root, '.env.example'))
 
 const siteUrl = (process.env.VITE_SITE_URL ?? '').replace(/\/+$/, '')
+const apiBaseUrl = (process.env.VITE_API_BASE_URL ?? '').replace(/\/+$/, '')
 
 if (!siteUrl) {
   console.error(
@@ -34,6 +32,35 @@ if (!siteUrl) {
   )
   process.exit(1)
 }
+
+if (!apiBaseUrl) {
+  console.error(
+    '[seo:generate] VITE_API_BASE_URL is required to load catalog ids.',
+  )
+  process.exit(1)
+}
+
+async function fetchDragonIds() {
+  const response = await fetch(`${apiBaseUrl}/public/dragons`, {
+    headers: { Accept: 'application/json' },
+  })
+  if (!response.ok) {
+    throw new Error(
+      `GET ${apiBaseUrl}/public/dragons failed with ${response.status}`,
+    )
+  }
+  const body = await response.json()
+  const list = Array.isArray(body?.data) ? body.data : []
+  const ids = list
+    .map((item) => Number(item?.id))
+    .filter((id) => Number.isFinite(id) && id > 0)
+  return [...new Set(ids)].sort((a, b) => a - b)
+}
+
+const dragonIds = await fetchDragonIds().catch((error) => {
+  console.error(`[seo:generate] ${error.message}`)
+  process.exit(1)
+})
 
 const robots = `User-agent: *
 Allow: /
@@ -45,7 +72,7 @@ const urls = [
   '/',
   '/about',
   '/test-flight',
-  ...DRAGON_IDS.map((id) => `/dragons/${id}`),
+  ...dragonIds.map((id) => `/dragons/${id}`),
 ]
 const urlEntries = urls
   .map(
@@ -66,5 +93,5 @@ writeFileSync(join(publicDir, 'robots.txt'), robots, 'utf8')
 writeFileSync(join(publicDir, 'sitemap.xml'), sitemap, 'utf8')
 
 console.log(
-  `[seo:generate] Wrote robots.txt and sitemap.xml for ${siteUrl} (${urls.length} urls).`,
+  `[seo:generate] Wrote robots.txt and sitemap.xml for ${siteUrl} (${urls.length} urls, ${dragonIds.length} dragons).`,
 )

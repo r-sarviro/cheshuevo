@@ -57,8 +57,7 @@ const BookingWizard = (props: IBookingWizardProps) => {
   const sessionEmail = useCabinetSessionStore((s) => s.email)
   const sessionName = useCabinetSessionStore((s) => s.name)
   const isAuthenticated = useCabinetSessionStore((s) => s.isAuthenticated)
-  const sessionFlow =
-    isAuthenticated() && Boolean(sessionEmail && sessionName)
+  const sessionFlow = isAuthenticated() && Boolean(sessionEmail && sessionName)
 
   const doneLabel =
     step === 'conflict' ? t('booking.stepError') : t('booking.stepDone')

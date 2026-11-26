@@ -1,16 +1,19 @@
-import { useEffect, useState, type FormEvent } from 'react'
+import { zodResolver } from '@hookform/resolvers/zod'
+import { useEffect, useState } from 'react'
 import { useForm } from 'react-hook-form'
 import { useTranslation } from 'react-i18next'
 
 import { periodToInterval, useCreateBookingMutation } from '@/entities/booking'
-import { useCabinetSessionStore } from '@/entities/customer'
-import { getDragonCopy, type IDragon } from '@/entities/dragon'
+import { getCustomerMe, useCabinetSessionStore } from '@/entities/customer'
+import { resolveDragonLocale, type IDragon } from '@/entities/dragon'
 import {
   useConfirmEmailCodeMutation,
   useRequestEmailCodeMutation,
   VerifyEmail,
 } from '@/features/verify-email'
 import { ApiError } from '@/shared/api'
+import { otpFormSchema, type TOtpFormValues } from '@/shared/lib'
+import { useUiStore } from '@/shared/model'
 import { ButtonText } from '@/shared/ui/button'
 import { Note } from '@/shared/ui/note'
 import { Typography } from '@/shared/ui/typography'
@@ -23,13 +26,12 @@ export interface IOtpStepProps {
   dragon: IDragon
 }
 
-type TOtpForm = { code: string }
-
 /** OTP confirm + create booking. */
 const OtpStep = (props: IOtpStepProps) => {
   const { dragon } = props
   const { t } = useTranslation()
-  const copy = getDragonCopy(t, dragon)
+  const locale = useUiStore((s) => s.locale)
+  const copy = resolveDragonLocale(dragon, locale)
   const contacts = useBookingDraftStore((s) => s.contacts)
   const period = useBookingDraftStore((s) => s.period)
   const verificationId = useBookingDraftStore((s) => s.verificationId)
@@ -48,6 +50,7 @@ const OtpStep = (props: IOtpStepProps) => {
   const requestCode = useRequestEmailCodeMutation()
   const createBooking = useCreateBookingMutation()
   const signIn = useCabinetSessionStore((s) => s.signIn)
+  const setProfile = useCabinetSessionStore((s) => s.setProfile)
 
   const [secondsLeft, setSecondsLeft] = useState(resendAfterSeconds)
 
@@ -63,37 +66,18 @@ const OtpStep = (props: IOtpStepProps) => {
     return () => window.clearInterval(id)
   }, [secondsLeft, verificationId])
 
-  const {
-    register,
-    watch,
-    setValue,
-    getValues,
-    setError,
-    clearErrors,
-    formState,
-  } = useForm<TOtpForm>({
-    defaultValues: { code: '' },
-    mode: 'onSubmit',
-    shouldUnregister: false,
-  })
-
-  useEffect(() => {
-    register('code')
-  }, [register])
+  const { watch, setValue, setError, clearErrors, formState, handleSubmit } =
+    useForm<TOtpFormValues>({
+      resolver: zodResolver(otpFormSchema),
+      defaultValues: { code: '' },
+      mode: 'onSubmit',
+      shouldUnregister: false,
+    })
 
   const code = watch('code')
 
-  const onSubmit = async (event: FormEvent<HTMLFormElement>) => {
-    event.preventDefault()
+  const onValid = async (data: TOtpFormValues) => {
     if (!contacts || !period || !verificationId) return
-    const data = getValues()
-    if (!/^\d{6}$/.test(data.code)) {
-      setError('code', {
-        type: 'pattern',
-        message: t('booking.otpInvalidGeneric'),
-      })
-      return
-    }
 
     try {
       const confirmed = await confirmCode.mutateAsync({
@@ -112,11 +96,22 @@ const OtpStep = (props: IOtpStepProps) => {
         customerName: contacts.name,
         customerEmail: contacts.email,
         verificationToken: confirmed.verificationToken,
-        hourlyRate: dragon.hourlyRate,
-        currency: dragon.currency,
-        dragonName: copy.name,
       })
-      signIn({ email: contacts.email, name: contacts.name })
+      if (booking.session) {
+        signIn({
+          token: booking.session.token,
+          tokenType: booking.session.tokenType,
+          expiresAt: booking.session.expiresAt,
+          email: contacts.email,
+          name: contacts.name,
+        })
+        try {
+          const me = await getCustomerMe()
+          setProfile({ email: me.email, name: me.name })
+        } catch {
+          setProfile({ email: contacts.email, name: contacts.name })
+        }
+      }
       setCreatedBooking(booking)
     } catch (error) {
       if (error instanceof ApiError && error.code === 'BOOKING_CONFLICT') {
@@ -132,8 +127,10 @@ const OtpStep = (props: IOtpStepProps) => {
         return
       }
       if (error instanceof ApiError && error.code === 'OTP_INVALID') {
-        const match = /Attempts left: (\d+)/.exec(error.message)
-        const left = match ? Number(match[1]) : null
+        const left =
+          typeof error.details?.attempts_left === 'number'
+            ? error.details.attempts_left
+            : null
         setOtpFeedback({ attemptsLeft: left, exhausted: false })
         setError('code', {
           type: 'invalid',
@@ -154,7 +151,10 @@ const OtpStep = (props: IOtpStepProps) => {
   const onResend = async () => {
     if (!contacts || secondsLeft > 0) return
     try {
-      const result = await requestCode.mutateAsync({ email: contacts.email })
+      const result = await requestCode.mutateAsync({
+        email: contacts.email,
+        purpose: 'booking',
+      })
       setVerification({
         verificationId: result.verificationId,
         resendAfterSeconds: result.resendAfterSeconds,
@@ -171,6 +171,15 @@ const OtpStep = (props: IOtpStepProps) => {
   }
 
   if (!contacts) return null
+
+  const codeError = formState.errors.code
+  const codeErrorText = codeError?.message
+    ? codeError.type === 'server' ||
+      codeError.type === 'invalid' ||
+      codeError.type === 'exhausted'
+      ? codeError.message
+      : t(codeError.message)
+    : undefined
 
   return (
     <div className={styles.stack}>
@@ -206,11 +215,7 @@ const OtpStep = (props: IOtpStepProps) => {
         }}
         codeLabel={t('booking.otpLabel')}
         digitLabel={(index) => t('booking.otpDigit', { n: index })}
-        error={
-          formState.errors.code
-            ? formState.errors.code.message || t('booking.otpInvalidGeneric')
-            : undefined
-        }
+        error={codeErrorText}
         disabled={otpExhausted}
         resendLabel={t('booking.otpResend')}
         resendWaitingLabel={t('booking.otpResendWait')}
@@ -228,7 +233,7 @@ const OtpStep = (props: IOtpStepProps) => {
           confirmCode.isPending ||
           createBooking.isPending
         }
-        onSubmit={onSubmit}
+        onSubmit={handleSubmit(onValid)}
       />
     </div>
   )

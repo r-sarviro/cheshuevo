@@ -1,0 +1,21 @@
+---
+description: Schemas, validation, parsing, or inferred types — use Zod docs
+alwaysApply: false
+---
+
+# Zod docs
+
+When adding or changing Zod schemas, parsing/validation, refinements, or types inferred from schemas.
+
+## Version source of truth
+
+1. Read `zod` from `@package.json` before relying on API details.
+2. Use official docs: `https://zod.dev/` (and linked API/guide pages) for the installed major (baseline hint: **4**).
+3. Before non-trivial schema design, transforms, or upgrades: open the docs — do not invent patterns from older majors (e.g. Zod 3).
+4. Cite concrete doc page URLs when recommending APIs, schema shapes, or validation strategies.
+
+## Preferences
+
+- Prefer current Zod APIs documented for this project's version; do not suggest deprecated APIs from older majors without verifying they still apply.
+- Follow existing schema conventions in this project when present; extend them instead of introducing a parallel validation library.
+- When docs and training knowledge conflict, the official Zod docs for this major win.

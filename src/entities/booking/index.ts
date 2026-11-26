@@ -3,12 +3,17 @@ export type {
   IAvailabilityResult,
   IBooking,
   IBookingInterval,
+  ICabinetApiSession,
   ICreateBookingPayload,
   ICreateCustomerBookingPayload,
   TBookingStatus,
   TPaymentStatus,
 } from './model/types'
-export type { ICustomerBooking } from './model/customerTypes'
+export type {
+  ICustomerBooking,
+  ICustomerBookingDragon,
+  ICustomerBookingPayment,
+} from './model/customerTypes'
 export {
   BOOKING_STATUSES,
   BOOKING_STATUS_TO_BADGE,
@@ -19,27 +24,9 @@ export {
   createBooking,
   createCustomerBooking,
   getAvailability,
+  getCustomerBooking,
+  getCustomerBookings,
 } from './api/bookingsApi'
-export {
-  createBookingStub,
-  createCustomerBookingStub,
-  getAvailabilityStub,
-  type TAvailabilityStubQuery,
-  type TCreateBookingStubPayload,
-  type TCreateCustomerBookingStubPayload,
-} from './api/bookingsStub'
-export {
-  assertCustomerCanRequestLoginStub,
-  CABINET_DEMO_EMAIL,
-  customerHasBookingsStub,
-  getCustomerBookingStub,
-  getCustomerNameStub,
-  listCustomerBookingsStub,
-  markCustomerBookingCancelled,
-  rememberCreatedBooking,
-  rememberCustomerName,
-  resetCustomerBookingsStub,
-} from './api/customerBookingsStub'
 export { bookingQueryKeys } from './api/queryKeys'
 export {
   useAvailabilityQuery,
@@ -51,7 +38,6 @@ export {
 export {
   billableHours,
   isMinDurationOk,
-  overlapsBusyWindow,
   periodToInterval,
   periodToIso,
   type TBookingPeriodValue,

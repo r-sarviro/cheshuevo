@@ -3,8 +3,10 @@ import type { ImgHTMLAttributes } from 'react'
 import styles from './DragonAvatar.module.css'
 import { dragonAvatarUrl } from './dragonAvatarUrl'
 
-export interface IDragonAvatarProps
-  extends Omit<ImgHTMLAttributes<HTMLImageElement>, 'src' | 'width' | 'height'> {
+export interface IDragonAvatarProps extends Omit<
+  ImgHTMLAttributes<HTMLImageElement>,
+  'src' | 'width' | 'height'
+> {
   /** Catalog slug (`spriteKey`), maps to `/sprites/dragons/avatars/<slug>.png`. */
   name: string
   size?: number

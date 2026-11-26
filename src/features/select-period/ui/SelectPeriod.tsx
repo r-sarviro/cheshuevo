@@ -6,20 +6,15 @@ import { Icon } from '@/shared/ui/icon'
 import { Loader } from '@/shared/ui/loader'
 import { Typography } from '@/shared/ui/typography'
 
-import styles from './SelectPeriod.module.css'
+import type { TSelectPeriodValue } from '../model/selectPeriodSchema'
 
-export interface ISelectPeriodValue {
-  startDate: string
-  startTime: string
-  endDate: string
-  endTime: string
-}
+import styles from './SelectPeriod.module.css'
 
 export type TSelectPeriodAvailability = 'idle' | 'loading' | 'free' | 'busy'
 
 export interface ISelectPeriodProps {
-  value: ISelectPeriodValue
-  onChange: (value: ISelectPeriodValue) => void
+  value: TSelectPeriodValue
+  onChange: (value: TSelectPeriodValue) => void
   labels: {
     start: ReactNode
     end: ReactNode
@@ -56,7 +51,7 @@ const SelectPeriod = (props: ISelectPeriodProps) => {
     className,
   } = props
 
-  const patch = (partial: Partial<ISelectPeriodValue>) => {
+  const patch = (partial: Partial<TSelectPeriodValue>) => {
     onChange({ ...value, ...partial })
   }
 

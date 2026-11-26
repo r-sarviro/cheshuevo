@@ -1,7 +1,4 @@
-import {
-  CABINET_BOOKINGS_PATH,
-  CABINET_LOGIN_PATH,
-} from '@/shared/config'
+import { CABINET_BOOKINGS_PATH, CABINET_LOGIN_PATH } from '@/shared/config'
 
 /** Same-app path only; blocks open redirects via absolute URLs. */
 export function safeReturnPath(

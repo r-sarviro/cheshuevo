@@ -1,20 +1,61 @@
-export { ApiError, apiRequest, type ApiErrorBody } from './client'
-export { queryClient } from './queryClient'
-export { stubDelay } from './stubDelay'
+export type { components, operations, paths } from './generated'
+export type {
+  TAvailabilitySchema,
+  TBookingStatus,
+  TConfirmEmailCodeRequest,
+  TCustomerBookingRequest,
+  TCustomerBookingResource,
+  TCustomerMeSchema,
+  TCustomerSessionSchema,
+  TDragonResource,
+  TDragonResourceWire,
+  TEmailVerificationConfirmed,
+  TEmailVerificationCreated,
+  TPaymentMethod,
+  TPaymentStatus,
+  TPublicBookingCreated,
+  TPublicBookingRequest,
+  TRequestEmailCodeRequest,
+} from './generated'
 export {
-  STUB_CONFLICT_TOKEN_PREFIX,
-  STUB_OTP_CODE,
-  STUB_OTP_CONFLICT_CODE,
-} from './stubDemo'
+  ApiError,
+  apiRequest,
+  createIdempotencyKey,
+  type ApiErrorBody,
+} from './client'
+export {
+  notifyUnauthorized,
+  readCustomerToken,
+  registerCustomerTokenGetter,
+  registerUnauthorizedHandler,
+} from './authBridge'
+export { queryClient } from './queryClient'
+export {
+  mapCustomerSession,
+  type ICabinetApiSession,
+} from './mapCustomerSession'
+export {
+  parseWire,
+  availabilitySchema,
+  customerBookingDetailSchema,
+  customerBookingResourceSchema,
+  customerBookingsListSchema,
+  customerMeSchema,
+  dragonDetailSchema,
+  dragonResourceSchema,
+  dragonsListSchema,
+  emailVerificationConfirmedSchema,
+  emailVerificationCreatedSchema,
+  publicBookingCreatedSchema,
+} from './wire'
 export {
   confirmEmailCode,
-  confirmEmailCodeStub,
   requestEmailCode,
-  requestEmailCodeStub,
   useConfirmEmailCodeMutation,
   useRequestEmailCodeMutation,
   type IConfirmEmailCodePayload,
   type IConfirmEmailCodeResult,
   type IRequestEmailCodePayload,
   type IRequestEmailCodeResult,
+  type TEmailVerificationPurpose,
 } from './email-verification'

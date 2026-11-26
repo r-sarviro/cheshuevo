@@ -10,11 +10,7 @@ import {
 import { useDocumentMeta } from '@/shared/lib/document-meta'
 import { Divider } from '@/shared/ui/divider'
 import { Wrap } from '@/shared/ui/layout'
-import {
-  LandingAbout,
-  LandingHow,
-  LandingTrust,
-} from '@/widgets/landing-info'
+import { LandingAbout, LandingHow, LandingTrust } from '@/widgets/landing-info'
 import { useSiteChrome } from '@/widgets/site-chrome'
 import { SiteFooter } from '@/widgets/site-footer'
 import { SiteHeader } from '@/widgets/site-header'

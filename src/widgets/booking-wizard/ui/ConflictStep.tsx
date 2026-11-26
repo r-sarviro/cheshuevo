@@ -1,8 +1,9 @@
 import { useTranslation } from 'react-i18next'
 import { useNavigate } from 'react-router-dom'
 
-import { getDragonCopy, type IDragon } from '@/entities/dragon'
+import { resolveDragonLocale, type IDragon } from '@/entities/dragon'
 import { HOME_PATH } from '@/shared/config'
+import { useUiStore } from '@/shared/model'
 import { ButtonText } from '@/shared/ui/button'
 import { Note } from '@/shared/ui/note'
 
@@ -18,7 +19,8 @@ export interface IConflictStepProps {
 const ConflictStep = (props: IConflictStepProps) => {
   const { dragon } = props
   const { t } = useTranslation()
-  const copy = getDragonCopy(t, dragon)
+  const locale = useUiStore((s) => s.locale)
+  const copy = resolveDragonLocale(dragon, locale)
   const navigate = useNavigate()
   const conflictMessage = useBookingDraftStore((s) => s.conflictMessage)
   const setStep = useBookingDraftStore((s) => s.setStep)

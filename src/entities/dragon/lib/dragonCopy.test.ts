@@ -1,67 +1,49 @@
-import { afterEach, describe, expect, it } from 'vitest'
+import { describe, expect, it } from 'vitest'
 
-import { defaultLocale, i18n } from '@/shared/config'
+import { resolveDragonLocale } from './dragonCopy'
 
-import { getDragonCopy } from './dragonCopy'
-
-const SAKURKA = {
-  name: 'Сакурка',
-  shortDescription: 'Весной цветёт и сразу просит её сфотографировать.',
-  description: 'Весной цветёт и сразу просит её сфотографировать.',
-  spriteKey: 'sakurka',
-  tags: [
-    { label: 'Восточный дракон' },
-    { key: 'Стихия', label: 'Ветер' },
-    { label: 'Мечтательная' },
-  ],
-  fit: 'Фотосессии',
+const BRIZ = {
+  name: 'Бриз',
+  shortDescription: 'Лёгкий',
+  description: 'Полное описание',
+  nameEn: 'Breeze',
+  shortDescriptionEn: 'Light',
+  descriptionEn: 'Full description',
+  tags: [{ label: 'Ветреный дракон' }, { key: 'Стихия', label: 'Ветер' }],
+  fit: 'Полёты над морем',
 }
 
-afterEach(async () => {
-  await i18n.changeLanguage(defaultLocale)
-})
-
-describe('getDragonCopy', () => {
-  it('returns fixture text when spriteKey is missing', () => {
-    const copy = getDragonCopy(i18n.t.bind(i18n), {
-      name: 'Stub',
-      shortDescription: 'Short',
-      description: 'Long',
+describe('resolveDragonLocale', () => {
+  it('uses Russian fields for ru and dr', () => {
+    expect(resolveDragonLocale(BRIZ, 'ru')).toMatchObject({
+      name: 'Бриз',
+      shortDescription: 'Лёгкий',
+      description: 'Полное описание',
+      fit: 'Полёты над морем',
     })
-
-    expect(copy).toEqual({
-      name: 'Stub',
-      shortDescription: 'Short',
-      description: 'Long',
-      tags: [],
-      fit: '',
-    })
+    expect(resolveDragonLocale(BRIZ, 'dr').name).toBe('Бриз')
   })
 
-  it('reads ru keys by spriteKey', () => {
-    const copy = getDragonCopy(i18n.t.bind(i18n), SAKURKA)
-
-    expect(copy.name).toBe('Сакурка')
-    expect(copy.shortDescription).toContain('сфотографировать')
-    expect(copy.fit).toBe('Фотосессии')
-    expect(copy.tags).toEqual([
-      { label: 'Восточный дракон' },
-      { key: 'Стихия', label: 'Ветер' },
-      { label: 'Мечтательная' },
-    ])
+  it('uses English fields for en with RU fallback', () => {
+    expect(resolveDragonLocale(BRIZ, 'en')).toMatchObject({
+      name: 'Breeze',
+      shortDescription: 'Light',
+      description: 'Full description',
+    })
+    expect(
+      resolveDragonLocale(
+        { name: 'Бриз', shortDescription: 'Лёгкий', nameEn: '  ' },
+        'en',
+      ).name,
+    ).toBe('Бриз')
   })
 
-  it('reads en keys by spriteKey', async () => {
-    await i18n.changeLanguage('en')
-    const copy = getDragonCopy(i18n.t.bind(i18n), SAKURKA)
-
-    expect(copy.name).toBe('Sakurka')
-    expect(copy.shortDescription).toContain('photographed')
-    expect(copy.fit).toBe('Photo shoots')
-    expect(copy.tags).toEqual([
-      { label: 'Eastern dragon' },
-      { key: 'Element', label: 'Wind' },
-      { label: 'Dreamy' },
-    ])
+  it('passes through empty tags/fit when missing', () => {
+    const copy = resolveDragonLocale(
+      { name: 'Бриз', shortDescription: 'Лёгкий' },
+      'ru',
+    )
+    expect(copy.tags).toEqual([])
+    expect(copy.fit).toBe('')
   })
 })

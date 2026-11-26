@@ -1,10 +1,6 @@
 import { describe, expect, it } from 'vitest'
 
-import {
-  RENTAL_EMAIL,
-  RENTAL_PHONE,
-  formatRentalContacts,
-} from './rental'
+import { RENTAL_EMAIL, RENTAL_PHONE, formatRentalContacts } from './rental'
 
 describe('formatRentalContacts', () => {
   it('joins default phone and email', () => {

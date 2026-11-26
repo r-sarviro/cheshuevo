@@ -1,6 +1,7 @@
 import { Outlet, useNavigate } from 'react-router-dom'
 
-import { logoutStub, useCabinetSessionStore } from '@/features/cabinet-auth'
+import { logoutCustomer } from '@/entities/customer'
+import { useCabinetSessionStore } from '@/features/cabinet-auth'
 import {
   CABINET_BOOKINGS_PATH,
   CABINET_LOGIN_PATH,
@@ -21,19 +22,17 @@ const CabinetShellLayout = () => {
   const name = useCabinetSessionStore((s) => s.name)
   const signOut = useCabinetSessionStore((s) => s.signOut)
 
-  const onLogout = () => {
-    void (async () => {
-      try {
-        await logoutStub()
-      } catch {
-        /* clear session anyway */
-      }
-      signOut()
-      void navigate(CABINET_LOGIN_PATH, {
-        replace: true,
-        state: { flash: 'loggedOut' },
-      })
-    })()
+  const onLogout = async () => {
+    try {
+      await logoutCustomer()
+    } catch {
+      // Local sign-out still required.
+    }
+    signOut()
+    void navigate(CABINET_LOGIN_PATH, {
+      replace: true,
+      state: { flash: 'loggedOut' },
+    })
   }
 
   return (
@@ -60,7 +59,9 @@ const CabinetShellLayout = () => {
             broni: CABINET_BOOKINGS_PATH,
             profil: CABINET_PROFILE_PATH,
           }}
-          onLogout={onLogout}
+          onLogout={() => {
+            void onLogout()
+          }}
         >
           <Outlet />
         </CabinetShell>

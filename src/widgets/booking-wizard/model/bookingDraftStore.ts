@@ -1,16 +1,16 @@
 import { create } from 'zustand'
 
 import type { IBooking } from '@/entities/booking'
-import type { IBookingContactsValue } from '@/features/booking-contacts'
-import type { ISelectPeriodValue } from '@/features/select-period'
+import type { TBookingContactsValue } from '@/features/booking-contacts'
+import type { TSelectPeriodValue } from '@/features/select-period'
 
 export type TBookingStep = 'period' | 'contacts' | 'otp' | 'result' | 'conflict'
 
 export type TBookingDraftState = {
   dragonId: number | null
   step: TBookingStep
-  period: ISelectPeriodValue | null
-  contacts: IBookingContactsValue | null
+  period: TSelectPeriodValue | null
+  contacts: TBookingContactsValue | null
   verificationId: string | null
   verificationToken: string | null
   resendAfterSeconds: number
@@ -18,10 +18,10 @@ export type TBookingDraftState = {
   otpExhausted: boolean
   createdBooking: IBooking | null
   conflictMessage: string | null
-  resetForDragon: (dragonId: number, period: ISelectPeriodValue) => void
+  resetForDragon: (dragonId: number, period: TSelectPeriodValue) => void
   setStep: (step: TBookingStep) => void
-  setPeriod: (period: ISelectPeriodValue) => void
-  setContacts: (contacts: IBookingContactsValue) => void
+  setPeriod: (period: TSelectPeriodValue) => void
+  setContacts: (contacts: TBookingContactsValue) => void
   setVerification: (payload: {
     verificationId: string
     resendAfterSeconds: number
@@ -39,8 +39,8 @@ export type TBookingDraftState = {
 const empty = {
   dragonId: null as number | null,
   step: 'period' as TBookingStep,
-  period: null as ISelectPeriodValue | null,
-  contacts: null as IBookingContactsValue | null,
+  period: null as TSelectPeriodValue | null,
+  contacts: null as TBookingContactsValue | null,
   verificationId: null as string | null,
   verificationToken: null as string | null,
   resendAfterSeconds: 0,

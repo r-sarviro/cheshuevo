@@ -1,4 +1,5 @@
-import { useEffect, useState, type FormEvent } from 'react'
+import { zodResolver } from '@hookform/resolvers/zod'
+import { useEffect, useState } from 'react'
 import { useForm } from 'react-hook-form'
 import { useTranslation } from 'react-i18next'
 
@@ -9,9 +10,14 @@ import {
   useCreateCustomerBookingMutation,
 } from '@/entities/booking'
 import { useCabinetSessionStore } from '@/entities/customer'
-import { getDragonCopy, type IDragon } from '@/entities/dragon'
-import { SelectPeriod, type ISelectPeriodValue } from '@/features/select-period'
+import { resolveDragonLocale, type IDragon } from '@/entities/dragon'
+import {
+  SelectPeriod,
+  selectPeriodSchema,
+  type TSelectPeriodValue,
+} from '@/features/select-period'
 import { ApiError } from '@/shared/api'
+import { useUiStore } from '@/shared/model'
 import { Button } from '@/shared/ui/button'
 import { Typography } from '@/shared/ui/typography'
 
@@ -24,11 +30,12 @@ export interface IPeriodStepProps {
   dragon: IDragon
 }
 
-/** Period + availability step with RHF validation. */
+/** Period + availability step with RHF + Zod validation. */
 const PeriodStep = (props: IPeriodStepProps) => {
   const { dragon } = props
   const { t } = useTranslation()
-  const copy = getDragonCopy(t, dragon)
+  const locale = useUiStore((s) => s.locale)
+  const copy = resolveDragonLocale(dragon, locale)
   const period = useBookingDraftStore((s) => s.period)
   const setPeriod = useBookingDraftStore((s) => s.setPeriod)
   const setContacts = useBookingDraftStore((s) => s.setContacts)
@@ -41,33 +48,20 @@ const PeriodStep = (props: IPeriodStepProps) => {
   const createCustomerBooking = useCreateCustomerBookingMutation()
   const [submitError, setSubmitError] = useState<string | null>(null)
 
-  const authed = isAuthenticated() && Boolean(sessionEmail && sessionName)
+  const authed = isAuthenticated()
 
-  const {
-    register,
-    watch,
-    setValue,
-    getValues,
-    formState,
-    setError,
-    clearErrors,
-  } = useForm<ISelectPeriodValue>({
-    defaultValues: period ?? {
-      startDate: '',
-      startTime: '',
-      endDate: '',
-      endTime: '',
-    },
-    mode: 'onSubmit',
-    shouldUnregister: false,
-  })
-
-  useEffect(() => {
-    register('startDate')
-    register('startTime')
-    register('endDate')
-    register('endTime')
-  }, [register])
+  const { watch, setValue, formState, setError, clearErrors, handleSubmit } =
+    useForm<TSelectPeriodValue>({
+      resolver: zodResolver(selectPeriodSchema),
+      defaultValues: period ?? {
+        startDate: '',
+        startTime: '',
+        endDate: '',
+        endTime: '',
+      },
+      mode: 'onSubmit',
+      shouldUnregister: false,
+    })
 
   const value = watch()
   const interval =
@@ -85,8 +79,6 @@ const PeriodStep = (props: IPeriodStepProps) => {
           dragonId: dragon.id,
           startsAt: interval.startsAt,
           endsAt: interval.endsAt,
-          hourlyRate: dragon.hourlyRate,
-          currency: dragon.currency,
         }
       : null,
     Boolean(interval && rangeOk),
@@ -100,14 +92,8 @@ const PeriodStep = (props: IPeriodStepProps) => {
     setValue('endTime', period.endTime, { shouldDirty: false })
   }, [period, setValue])
 
-  const onSubmit = async (event: FormEvent<HTMLFormElement>) => {
-    event.preventDefault()
-    const data = getValues()
+  const onValid = async (data: TSelectPeriodValue) => {
     const next = periodToInterval(data)
-    if (!isMinDurationOk(next.startsAt, next.endsAt)) {
-      setError('endTime', { type: 'validate' })
-      return
-    }
     if (!availabilityQuery.data?.available) {
       setError('endTime', { type: 'busy' })
       return
@@ -116,18 +102,16 @@ const PeriodStep = (props: IPeriodStepProps) => {
     setSubmitError(null)
     setPeriod(data)
 
-    if (authed && sessionEmail && sessionName) {
-      setContacts({ name: sessionName, email: sessionEmail })
+    if (authed) {
+      setContacts({
+        name: sessionName?.trim() || sessionEmail || '',
+        email: sessionEmail || '',
+      })
       try {
         const booking = await createCustomerBooking.mutateAsync({
           dragonId: dragon.id,
           startsAt: next.startsAt,
           endsAt: next.endsAt,
-          customerName: sessionName,
-          customerEmail: sessionEmail,
-          hourlyRate: dragon.hourlyRate,
-          currency: dragon.currency,
-          dragonName: copy.name,
         })
         setCreatedBooking(booking)
       } catch (error) {
@@ -160,9 +144,7 @@ const PeriodStep = (props: IPeriodStepProps) => {
   return (
     <form
       className={styles.stack}
-      onSubmit={(event) => {
-        void onSubmit(event)
-      }}
+      onSubmit={handleSubmit(onValid)}
       noValidate
     >
       <Typography className={styles.heading} variant="h2">
@@ -223,9 +205,11 @@ const PeriodStep = (props: IPeriodStepProps) => {
             ? submitError
             : formState.errors.endTime?.type === 'busy'
               ? t('booking.periodBusy', { name: copy.name })
-              : formState.errors.endTime
-                ? t('booking.periodError')
-                : undefined
+              : formState.errors.endTime?.message
+                ? t(formState.errors.endTime.message)
+                : formState.errors.endTime
+                  ? t('booking.periodError')
+                  : undefined
         }
         actions={
           <Button
