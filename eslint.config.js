@@ -16,6 +16,8 @@ export default tseslint.config(
       '.yarn',
       // Ported vitrina generator; linted as opaque browser script.
       'src/shared/ui/sprite/engine/pixelSprites.js',
+      // OpenAPI codegen output.
+      'src/shared/api/generated/schema.d.ts',
     ],
   },
   js.configs.recommended,

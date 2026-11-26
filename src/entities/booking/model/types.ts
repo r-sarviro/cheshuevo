@@ -1,3 +1,7 @@
+import type { ICabinetApiSession } from '@/shared/api'
+
+export type { ICabinetApiSession }
+
 export const BOOKING_STATUSES = [
   'CONFIRMED',
   'IN_RENT',
@@ -27,6 +31,7 @@ export interface IAvailabilityResult {
   hourlyRate?: number
   totalAmount?: number
   currency?: string
+  reason?: string
 }
 
 export interface ICreateBookingPayload extends IBookingInterval {
@@ -39,8 +44,6 @@ export interface ICreateBookingPayload extends IBookingInterval {
 /** Session booking: identity comes from cabinet session (no OTP token). */
 export interface ICreateCustomerBookingPayload extends IBookingInterval {
   dragonId: number
-  customerName: string
-  customerEmail: string
 }
 
 export interface IBooking {
@@ -54,6 +57,8 @@ export interface IBooking {
   billableHours?: number
   dragonId?: number
   dragonName?: string
+  confirmationEmailQueued?: boolean
+  session?: ICabinetApiSession | null
 }
 
 /** Maps TZ booking status to foundation badge data-status keys. */

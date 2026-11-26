@@ -2,6 +2,7 @@ import type { ReactNode } from 'react'
 import { useTranslation } from 'react-i18next'
 import { Link } from 'react-router-dom'
 
+import { useUiStore } from '@/shared/model'
 import { Button } from '@/shared/ui/button'
 import buttonStyles from '@/shared/ui/button/Button.module.css'
 import { Card, CardBody, CardPic } from '@/shared/ui/card'
@@ -14,7 +15,7 @@ import {
 } from '@/shared/ui/sprite'
 import { Tag, Tags } from '@/shared/ui/tag'
 
-import { getDragonCopy } from '../lib/dragonCopy'
+import { resolveDragonLocale } from '../lib/dragonCopy'
 import type { IDragonListItem } from '../model/types'
 import styles from './DragonCard.module.css'
 
@@ -48,7 +49,8 @@ const DragonCard = (props: IDragonCardProps) => {
     className,
   } = props
   const { t } = useTranslation()
-  const copy = dragon ? getDragonCopy(t, dragon) : null
+  const locale = useUiStore((s) => s.locale)
+  const copy = dragon ? resolveDragonLocale(dragon, locale) : null
 
   const rootClass = [styles.root, loading ? styles.loading : '', className]
     .filter(Boolean)
@@ -193,7 +195,8 @@ const DragonCard = (props: IDragonCardProps) => {
         <div className={styles.foot}>
           <p className={styles.price}>
             <b className={styles.priceStrong}>
-              {dragon.hourlyRate}&nbsp;{dragon.currency}
+              {dragon.hourlyRate}&nbsp;
+              {dragon.currency === 'RUB' ? '₽' : dragon.currency}
             </b>{' '}
             {priceLabel}
           </p>

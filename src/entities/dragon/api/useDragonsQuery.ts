@@ -1,19 +1,19 @@
 import { useQuery } from '@tanstack/react-query'
 
-import { getDragonStub, getDragonsStub } from './dragonsStub'
+import { getDragon, getDragons } from './dragonsApi'
 import { dragonQueryKeys } from './queryKeys'
 
 export function useDragonsQuery() {
   return useQuery({
     queryKey: dragonQueryKeys.lists(),
-    queryFn: getDragonsStub,
+    queryFn: ({ signal }) => getDragons(signal),
   })
 }
 
-export function useDragonQuery(id: number | undefined) {
+export function useDragonQuery(id: number | null | undefined) {
   return useQuery({
-    queryKey: dragonQueryKeys.detail(id ?? 0),
-    queryFn: () => getDragonStub(id as number),
-    enabled: typeof id === 'number' && Number.isFinite(id) && id > 0,
+    queryKey: id != null ? dragonQueryKeys.detail(id) : dragonQueryKeys.all,
+    queryFn: ({ signal }) => getDragon(id as number, signal),
+    enabled: id != null,
   })
 }

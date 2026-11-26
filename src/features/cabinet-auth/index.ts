@@ -9,7 +9,6 @@ export { default as RequireCabinetAuth } from './ui/RequireCabinetAuth'
 export { safeReturnPath } from './lib/safeReturnPath'
 export {
   useCabinetSessionStore,
-  SESSION_TTL_MS,
   type ICabinetSession,
   type TCabinetSessionState,
 } from '@/entities/customer'

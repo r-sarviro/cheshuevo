@@ -3,12 +3,17 @@ export type {
   IAvailabilityResult,
   IBooking,
   IBookingInterval,
+  ICabinetApiSession,
   ICreateBookingPayload,
   ICreateCustomerBookingPayload,
   TBookingStatus,
   TPaymentStatus,
 } from './model/types'
-export type { ICustomerBooking } from './model/customerTypes'
+export type {
+  ICustomerBooking,
+  ICustomerBookingDragon,
+  ICustomerBookingPayment,
+} from './model/customerTypes'
 export {
   BOOKING_STATUSES,
   BOOKING_STATUS_TO_BADGE,
@@ -19,6 +24,8 @@ export {
   createBooking,
   createCustomerBooking,
   getAvailability,
+  getCustomerBooking,
+  getCustomerBookings,
 } from './api/bookingsApi'
 export { bookingQueryKeys } from './api/queryKeys'
 export {

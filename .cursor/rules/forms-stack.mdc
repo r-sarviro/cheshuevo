@@ -1,0 +1,25 @@
+---
+description: New or changed forms — use React Hook Form; validate with Zod (not Formik/Yup/manual-only)
+alwaysApply: false
+---
+
+# Forms stack policy
+
+When adding or changing user-facing forms, field state, submit handling, or form-field validation.
+
+## Stack (required)
+
+- **Forms:** React Hook Form only (`react-hook-form`). Do not introduce Formik, Final Form, or ad-hoc form state libraries.
+- **Validation:** Zod schemas only, wired into RHF via `@hookform/resolvers` (`zodResolver`). Do not use Yup, Joi, or “validate only in `onSubmit`” as the primary form validation path.
+- Prefer schema-inferred types (`z.infer<...>`) for form values when practical; keep schema as the source of truth for field rules.
+
+## Docs (do not restate APIs here)
+
+- For React Hook Form APIs and patterns, follow `@react-hook-form-docs.mdc` and `https://react-hook-form.com/`.
+- For Zod schemas and parsing, follow `@zod-docs.mdc` and `https://zod.dev/`.
+- For resolvers wiring, use `@hookform/resolvers` as already in `@package.json`; check its docs when the resolver API is non-trivial.
+
+## Preferences
+
+- Extend existing form/schema conventions in this project; do not add a second forms or validation stack.
+- Zod outside forms (API response parsing, shared domain schemas) remains fine — this rule only mandates Zod **for form validation**.

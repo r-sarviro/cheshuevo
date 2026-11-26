@@ -2,7 +2,7 @@ import { useEffect } from 'react'
 import { useTranslation } from 'react-i18next'
 import { useNavigate, useParams } from 'react-router-dom'
 
-import { getDragonCopy, useDragonQuery } from '@/entities/dragon'
+import { resolveDragonLocale, useDragonQuery } from '@/entities/dragon'
 import {
   BookingWizard,
   createDefaultPeriod,
@@ -15,6 +15,7 @@ import {
   dragonPath,
 } from '@/shared/config'
 import { useDocumentMeta } from '@/shared/lib/document-meta'
+import { useUiStore } from '@/shared/model'
 import { Button, ButtonText } from '@/shared/ui/button'
 import { EmptyState } from '@/shared/ui/empty-state'
 import { Icon } from '@/shared/ui/icon'
@@ -53,7 +54,8 @@ const DragonBookingPage = () => {
   )
   const isCenteredStage = dragonQuery.isPending || dragonQuery.isError
   const dragon = dragonQuery.data
-  const copy = dragon ? getDragonCopy(t, dragon) : null
+  const locale = useUiStore((s) => s.locale)
+  const copy = dragon ? resolveDragonLocale(dragon, locale) : null
   const hasValidDragonId = Number.isFinite(dragonId) && dragonId > 0
 
   useDocumentMeta(
@@ -169,7 +171,7 @@ const DragonBookingPage = () => {
               tagsLabel={t('catalog.tagsLabel')}
               about={copy.description}
               fit={copy.fit ? t('catalog.fit', { fit: copy.fit }) : undefined}
-              rateAmount={`${dragon.hourlyRate}\u00a0${dragon.currency}`}
+              rateAmount={`${dragon.hourlyRate}\u00a0${dragon.currency === 'RUB' ? '₽' : dragon.currency}`}
               rateUnit={t('ds.perHour')}
               rateHint={t('booking.rateHint')}
             >

@@ -19,6 +19,9 @@ export interface IDragon {
   name: string
   shortDescription: string
   description?: string
+  nameEn?: string
+  shortDescriptionEn?: string
+  descriptionEn?: string
   imageUrl?: string | null
   tileToken?: string
   /** Sheet sprite slug from the nursery catalog (sakurka, snezhok, …). */
@@ -37,6 +40,8 @@ export type IDragonListItem = Pick<
   | 'id'
   | 'name'
   | 'shortDescription'
+  | 'nameEn'
+  | 'shortDescriptionEn'
   | 'imageUrl'
   | 'tileToken'
   | 'spriteKey'

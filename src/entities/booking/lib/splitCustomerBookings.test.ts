@@ -9,23 +9,27 @@ function booking(
     Pick<ICustomerBooking, 'bookingNumber' | 'status' | 'startsAt'>,
 ): ICustomerBooking {
   return {
-    customerEmail: 'anna@example.com',
     paymentStatus: 'UNPAID',
+    isOverdue: false,
     totalAmount: 300,
-    currency: '₽',
+    currency: 'RUB',
     endsAt: partial.startsAt,
+    billableHours: 2,
+    hourlyRate: 150,
+    dragon: {
+      id: 1,
+      name: 'Бриз',
+      spriteKey: 'briz',
+      tileToken: '#E0F3EF',
+    },
+    payment: null,
     ...partial,
   }
 }
 
 describe('splitCustomerBookings', () => {
-  it('splits active vs past and sorts', () => {
+  it('splits active vs past and keeps server order', () => {
     const list = [
-      booking({
-        bookingNumber: 'A',
-        status: 'COMPLETED',
-        startsAt: '2026-01-10T10:00:00.000Z',
-      }),
       booking({
         bookingNumber: 'B',
         status: 'CONFIRMED',
@@ -41,10 +45,15 @@ describe('splitCustomerBookings', () => {
         status: 'CANCELLED',
         startsAt: '2026-02-01T10:00:00.000Z',
       }),
+      booking({
+        bookingNumber: 'A',
+        status: 'COMPLETED',
+        startsAt: '2026-01-10T10:00:00.000Z',
+      }),
     ]
 
     const { current, past } = splitCustomerBookings(list)
-    expect(current.map((b) => b.bookingNumber)).toEqual(['C', 'B'])
+    expect(current.map((b) => b.bookingNumber)).toEqual(['B', 'C'])
     expect(past.map((b) => b.bookingNumber)).toEqual(['D', 'A'])
   })
 })

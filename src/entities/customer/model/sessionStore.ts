@@ -1,24 +1,31 @@
 import { create } from 'zustand'
 
-import type { ICabinetSession } from './types'
+import type { ICabinetSession, ICabinetSessionToken } from './types'
 
-const STORAGE_KEY = 'drakonsk.cabinet.session'
-const SESSION_TTL_MS = 30 * 24 * 60 * 60 * 1000
+export const STORAGE_KEY = 'drakonsk.cabinet.session.v2'
 
 export type TCabinetSessionState = {
+  token: string | null
+  tokenType: string | null
+  expiresAt: string | null
   email: string | null
   name: string | null
-  phone: string
-  authedAt: number | null
-  signIn: (payload: {
-    email: string
-    name?: string | null
-    phone?: string
-  }) => void
-  setProfile: (payload: { name?: string | null; phone?: string }) => void
+  signIn: (
+    session: ICabinetSessionToken & {
+      email?: string | null
+      name?: string | null
+    },
+  ) => void
+  setProfile: (payload: { email?: string | null; name?: string | null }) => void
   signOut: () => void
   isAuthenticated: () => boolean
   hydrate: () => void
+}
+
+function isExpired(expiresAt: string): boolean {
+  const ms = Date.parse(expiresAt)
+  if (Number.isNaN(ms)) return true
+  return ms <= Date.now()
 }
 
 function readStored(): ICabinetSession | null {
@@ -27,8 +34,8 @@ function readStored(): ICabinetSession | null {
     const raw = window.localStorage.getItem(STORAGE_KEY)
     if (!raw) return null
     const parsed = JSON.parse(raw) as ICabinetSession
-    if (!parsed?.email || !parsed?.authedAt) return null
-    if (Date.now() - parsed.authedAt > SESSION_TTL_MS) {
+    if (!parsed?.token || !parsed?.expiresAt) return null
+    if (isExpired(parsed.expiresAt)) {
       window.localStorage.removeItem(STORAGE_KEY)
       return null
     }
@@ -51,45 +58,60 @@ const initial = readStored()
 
 export const useCabinetSessionStore = create<TCabinetSessionState>(
   (set, get) => ({
+    token: initial?.token ?? null,
+    tokenType: initial?.tokenType ?? null,
+    expiresAt: initial?.expiresAt ?? null,
     email: initial?.email ?? null,
     name: initial?.name ?? null,
-    phone: initial?.phone ?? '',
-    authedAt: initial?.authedAt ?? null,
-    signIn: ({ email, name = null, phone = '' }) => {
+    signIn: ({ token, tokenType, expiresAt, email = null, name = null }) => {
       const next: ICabinetSession = {
-        email: email.trim().toLowerCase(),
+        token,
+        tokenType,
+        expiresAt,
+        email: email ? email.trim().toLowerCase() : null,
         name,
-        phone,
-        authedAt: Date.now(),
       }
       writeStored(next)
       set({
+        token: next.token,
+        tokenType: next.tokenType,
+        expiresAt: next.expiresAt,
         email: next.email,
         name: next.name,
-        phone: next.phone,
-        authedAt: next.authedAt,
       })
     },
-    setProfile: ({ name, phone }) => {
+    setProfile: ({ email, name }) => {
       const state = get()
-      if (!state.email || !state.authedAt) return
+      if (!state.token || !state.expiresAt) return
       const next: ICabinetSession = {
-        email: state.email,
+        token: state.token,
+        tokenType: state.tokenType ?? 'Bearer',
+        expiresAt: state.expiresAt,
+        email:
+          email !== undefined
+            ? email
+              ? email.trim().toLowerCase()
+              : null
+            : state.email,
         name: name !== undefined ? name : state.name,
-        phone: phone !== undefined ? phone : state.phone,
-        authedAt: state.authedAt,
       }
       writeStored(next)
-      set({ name: next.name, phone: next.phone })
+      set({ email: next.email, name: next.name })
     },
     signOut: () => {
       writeStored(null)
-      set({ email: null, name: null, phone: '', authedAt: null })
+      set({
+        token: null,
+        tokenType: null,
+        expiresAt: null,
+        email: null,
+        name: null,
+      })
     },
     isAuthenticated: () => {
-      const { email, authedAt } = get()
-      if (!email || !authedAt) return false
-      if (Date.now() - authedAt > SESSION_TTL_MS) {
+      const { token, expiresAt } = get()
+      if (!token || !expiresAt) return false
+      if (isExpired(expiresAt)) {
         get().signOut()
         return false
       }
@@ -98,17 +120,22 @@ export const useCabinetSessionStore = create<TCabinetSessionState>(
     hydrate: () => {
       const stored = readStored()
       if (!stored) {
-        set({ email: null, name: null, phone: '', authedAt: null })
+        set({
+          token: null,
+          tokenType: null,
+          expiresAt: null,
+          email: null,
+          name: null,
+        })
         return
       }
       set({
+        token: stored.token,
+        tokenType: stored.tokenType,
+        expiresAt: stored.expiresAt,
         email: stored.email,
         name: stored.name,
-        phone: stored.phone,
-        authedAt: stored.authedAt,
       })
     },
   }),
 )
-
-export { SESSION_TTL_MS, STORAGE_KEY }

@@ -3,8 +3,6 @@ import { Link, useParams } from 'react-router-dom'
 
 import { useCustomerBookingQuery } from '@/entities/booking'
 import { useCabinetSessionStore } from '@/entities/customer'
-import { getDragonFixture } from '@/entities/dragon'
-import { CancelBookingControl } from '@/features/cancel-booking'
 import { ApiError } from '@/shared/api'
 import {
   CABINET_BOOKINGS_PATH,
@@ -31,23 +29,20 @@ import {
 } from '../lib/formatBooking'
 import styles from './CabinetPage.module.css'
 
-/** Single booking card with cancel / rebook actions. */
+/** Single booking card (cancel UI awaits API; rebook for inactive). */
 const CabinetBookingDetailPage = () => {
   const { t, i18n } = useTranslation()
   const { bookingNumber } = useParams<{ bookingNumber: string }>()
-  const email = useCabinetSessionStore((s) => s.email)
-  const query = useCustomerBookingQuery(email, bookingNumber)
+  const isAuthenticated = useCabinetSessionStore((s) => s.isAuthenticated)
+  const query = useCustomerBookingQuery(bookingNumber, isAuthenticated())
 
   const booking = query.data
-  const dragon = booking?.dragonId
-    ? getDragonFixture(booking.dragonId)
-    : undefined
 
   useDocumentMeta({
     title: booking
       ? t('seo.cabinet.detail.title', {
           number: booking.bookingNumber,
-          name: booking.dragonName ?? booking.dragonId,
+          name: booking.dragon.name,
         })
       : t('seo.cabinet.detail.fallbackTitle'),
     description: t('seo.cabinet.detail.description'),
@@ -89,7 +84,8 @@ const CabinetBookingDetailPage = () => {
 
   if (query.isError || !booking) {
     const notFound =
-      query.error instanceof ApiError && query.error.status === 404
+      query.error instanceof ApiError &&
+      (query.error.status === 404 || query.error.code === 'BOOKING_NOT_FOUND')
     return (
       <>
         {backLink}
@@ -124,6 +120,17 @@ const CabinetBookingDetailPage = () => {
     booking.status,
   )
 
+  const paymentLabel =
+    booking.paymentStatus === 'PAID'
+      ? booking.payment
+        ? t('cabinet.paymentPaidManager')
+        : t('cabinet.statusPaid')
+      : booking.status === 'IN_RENT'
+        ? t('cabinet.paymentUnpaidInRent')
+        : inactive
+          ? t('cabinet.paymentNone')
+          : t('cabinet.paymentUnpaidManager')
+
   const facts = [
     {
       label: t('cabinet.factPeriod'),
@@ -135,10 +142,7 @@ const CabinetBookingDetailPage = () => {
     },
     {
       label: t('cabinet.factPayment'),
-      value:
-        booking.paymentStatus === 'PAID'
-          ? t('cabinet.paymentPaidManager')
-          : t('cabinet.paymentUnpaidManager'),
+      value: paymentLabel,
     },
   ]
 
@@ -212,39 +216,26 @@ const CabinetBookingDetailPage = () => {
     <>
       {backLink}
       <CabinetBookingCard
-        title={booking.dragonName ?? booking.dragonId}
+        title={booking.dragon.name}
         bookingNumber={booking.bookingNumber}
-        tile={dragon?.tileToken}
+        tile={booking.dragon.tileToken ?? undefined}
         picture={
-          dragon?.spriteKey ? (
+          booking.dragon.spriteKey ? (
             <DragonSheetSprite
-              name={dragon.spriteKey}
-              label={booking.dragonName ?? dragon.name}
+              name={booking.dragon.spriteKey}
+              label={booking.dragon.name}
             />
           ) : null
         }
         badges={bookingStatusBadges(booking, t)}
         facts={facts}
         notes={notes}
-        actions={
-          <CancelBookingControl
-            bookingNumber={booking.bookingNumber}
-            dragonName={booking.dragonName ?? booking.dragonId}
-            periodText={periodText}
-            startsAt={booking.startsAt}
-            status={booking.status}
-            paymentStatus={booking.paymentStatus}
-            onCancelled={() => {
-              void query.refetch()
-            }}
-          />
-        }
       />
-      {inactive && booking.dragonId ? (
+      {inactive ? (
         <p className={styles.rebook}>
           <Link
             className={[buttonStyles.btn, buttonStyles.ghost].join(' ')}
-            to={dragonPath(booking.dragonId)}
+            to={dragonPath(booking.dragon.id)}
           >
             {t('cabinet.rebook')}
           </Link>

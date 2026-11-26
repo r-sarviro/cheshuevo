@@ -1,24 +1,25 @@
-import { useState, type ReactNode } from 'react'
+import { useEffect } from 'react'
 import { useTranslation } from 'react-i18next'
 import { useNavigate } from 'react-router-dom'
 
-import { useCabinetSessionStore } from '@/features/cabinet-auth'
-import { useUpdateProfileMutation } from '@/features/update-profile'
+import {
+  logoutCustomer,
+  useCabinetSessionStore,
+  useCustomerMeQuery,
+} from '@/entities/customer'
 import { CABINET_LOGIN_PATH } from '@/shared/config'
 import { useDocumentMeta } from '@/shared/lib/document-meta'
-import { Note } from '@/shared/ui/note'
-import { ProfileForm, type IProfileFormValues } from '@/widgets/profile-form'
+import { ProfileForm } from '@/widgets/profile-form'
 
-/** Cabinet profile editor with save flash and logout. */
+/** Read-only cabinet profile from GET customer/me. */
 const CabinetProfilePage = () => {
   const { t } = useTranslation()
   const navigate = useNavigate()
   const email = useCabinetSessionStore((s) => s.email) ?? ''
   const name = useCabinetSessionStore((s) => s.name)
-  const phone = useCabinetSessionStore((s) => s.phone)
+  const setProfile = useCabinetSessionStore((s) => s.setProfile)
   const signOut = useCabinetSessionStore((s) => s.signOut)
-  const updateProfile = useUpdateProfileMutation()
-  const [alert, setAlert] = useState<ReactNode>(null)
+  const meQuery = useCustomerMeQuery()
 
   useDocumentMeta({
     title: t('seo.cabinet.profile.title'),
@@ -26,28 +27,17 @@ const CabinetProfilePage = () => {
     noIndex: true,
   })
 
-  const onSubmit = async (values: IProfileFormValues) => {
-    setAlert(null)
-    try {
-      await updateProfile.mutateAsync({
-        name: values.name,
-        phone: values.phone,
-      })
-      setAlert(
-        <Note tone="jade" icon="check">
-          {t('cabinet.saveSuccess')}
-        </Note>,
-      )
-    } catch {
-      setAlert(
-        <Note tone="peach" icon="cross" alert>
-          {t('cabinet.saveFailed')}
-        </Note>,
-      )
-    }
-  }
+  useEffect(() => {
+    if (!meQuery.data) return
+    setProfile({ email: meQuery.data.email, name: meQuery.data.name })
+  }, [meQuery.data, setProfile])
 
-  const onLogout = () => {
+  const onLogout = async () => {
+    try {
+      await logoutCustomer()
+    } catch {
+      // Clear local session anyway.
+    }
     signOut()
     void navigate(CABINET_LOGIN_PATH, {
       replace: true,
@@ -57,15 +47,11 @@ const CabinetProfilePage = () => {
 
   return (
     <ProfileForm
-      email={email}
-      defaultValues={{
-        name: name ?? '',
-        phone: phone ?? '',
+      email={meQuery.data?.email ?? email}
+      name={meQuery.data?.name ?? name}
+      onLogout={() => {
+        void onLogout()
       }}
-      onSubmit={onSubmit}
-      onLogout={onLogout}
-      loading={updateProfile.isPending}
-      alert={alert}
     />
   )
 }

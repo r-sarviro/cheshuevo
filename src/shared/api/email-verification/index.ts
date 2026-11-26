@@ -5,6 +5,7 @@ export {
   type IConfirmEmailCodeResult,
   type IRequestEmailCodePayload,
   type IRequestEmailCodeResult,
+  type TEmailVerificationPurpose,
 } from './emailVerificationApi'
 export {
   useConfirmEmailCodeMutation,
