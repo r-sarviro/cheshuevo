@@ -14,6 +14,7 @@
     "nameLabel": "Name",
     "emailLabel": "Email",
     "emailError": "Check the address: after @ there should be a mailbox name, e.g. mail.ru",
+    "otpError": "Wrong code. Try again",
     "statusConfirmed": "Confirmed",
     "statusUnpaid": "Unpaid",
     "statusPaid": "Paid",

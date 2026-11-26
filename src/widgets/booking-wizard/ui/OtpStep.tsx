@@ -1,12 +1,10 @@
-import { useEffect, useState, type FormEvent } from 'react'
+import { zodResolver } from '@hookform/resolvers/zod'
+import { useEffect, useState } from 'react'
 import { useForm } from 'react-hook-form'
 import { useTranslation } from 'react-i18next'
 
 import { periodToInterval, useCreateBookingMutation } from '@/entities/booking'
-import {
-  getCustomerMe,
-  useCabinetSessionStore,
-} from '@/entities/customer'
+import { getCustomerMe, useCabinetSessionStore } from '@/entities/customer'
 import { resolveDragonLocale, type IDragon } from '@/entities/dragon'
 import {
   useConfirmEmailCodeMutation,
@@ -14,6 +12,7 @@ import {
   VerifyEmail,
 } from '@/features/verify-email'
 import { ApiError } from '@/shared/api'
+import { otpFormSchema, type TOtpFormValues } from '@/shared/lib'
 import { useUiStore } from '@/shared/model'
 import { ButtonText } from '@/shared/ui/button'
 import { Note } from '@/shared/ui/note'
@@ -26,8 +25,6 @@ import styles from './BookingWizard.module.css'
 export interface IOtpStepProps {
   dragon: IDragon
 }
-
-type TOtpForm = { code: string }
 
 /** OTP confirm + create booking. */
 const OtpStep = (props: IOtpStepProps) => {
@@ -69,37 +66,18 @@ const OtpStep = (props: IOtpStepProps) => {
     return () => window.clearInterval(id)
   }, [secondsLeft, verificationId])
 
-  const {
-    register,
-    watch,
-    setValue,
-    getValues,
-    setError,
-    clearErrors,
-    formState,
-  } = useForm<TOtpForm>({
-    defaultValues: { code: '' },
-    mode: 'onSubmit',
-    shouldUnregister: false,
-  })
-
-  useEffect(() => {
-    register('code')
-  }, [register])
+  const { watch, setValue, setError, clearErrors, formState, handleSubmit } =
+    useForm<TOtpFormValues>({
+      resolver: zodResolver(otpFormSchema),
+      defaultValues: { code: '' },
+      mode: 'onSubmit',
+      shouldUnregister: false,
+    })
 
   const code = watch('code')
 
-  const onSubmit = async (event: FormEvent<HTMLFormElement>) => {
-    event.preventDefault()
+  const onValid = async (data: TOtpFormValues) => {
     if (!contacts || !period || !verificationId) return
-    const data = getValues()
-    if (!/^\d{6}$/.test(data.code)) {
-      setError('code', {
-        type: 'pattern',
-        message: t('booking.otpInvalidGeneric'),
-      })
-      return
-    }
 
     try {
       const confirmed = await confirmCode.mutateAsync({
@@ -194,6 +172,15 @@ const OtpStep = (props: IOtpStepProps) => {
 
   if (!contacts) return null
 
+  const codeError = formState.errors.code
+  const codeErrorText = codeError?.message
+    ? codeError.type === 'server' ||
+      codeError.type === 'invalid' ||
+      codeError.type === 'exhausted'
+      ? codeError.message
+      : t(codeError.message)
+    : undefined
+
   return (
     <div className={styles.stack}>
       <Typography className={styles.heading} variant="h2">
@@ -228,11 +215,7 @@ const OtpStep = (props: IOtpStepProps) => {
         }}
         codeLabel={t('booking.otpLabel')}
         digitLabel={(index) => t('booking.otpDigit', { n: index })}
-        error={
-          formState.errors.code
-            ? formState.errors.code.message || t('booking.otpInvalidGeneric')
-            : undefined
-        }
+        error={codeErrorText}
         disabled={otpExhausted}
         resendLabel={t('booking.otpResend')}
         resendWaitingLabel={t('booking.otpResendWait')}
@@ -250,7 +233,7 @@ const OtpStep = (props: IOtpStepProps) => {
           confirmCode.isPending ||
           createBooking.isPending
         }
-        onSubmit={onSubmit}
+        onSubmit={handleSubmit(onValid)}
       />
     </div>
   )
