@@ -19,6 +19,7 @@ export {
 export { Badge, type IBadgeProps } from './badge'
 export { Tag, Tags, type ITagProps, type ITagsProps } from './tag'
 export { Note, type INoteProps } from './note'
+export { Divider, type IDividerProps } from './divider'
 export { Frame, type IFrameProps } from './frame'
 export {
   Card,

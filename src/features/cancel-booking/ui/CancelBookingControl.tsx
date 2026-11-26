@@ -3,6 +3,7 @@ import { useTranslation } from 'react-i18next'
 
 import type { TBookingStatus, TPaymentStatus } from '@/entities/booking'
 import { ApiError } from '@/shared/api'
+import { formatRentalContacts } from '@/shared/config'
 import { Button, ButtonText } from '@/shared/ui/button'
 import { Dialog } from '@/shared/ui/dialog'
 import { Note } from '@/shared/ui/note'
@@ -69,7 +70,7 @@ const CancelBookingControl = (props: ICancelBookingControlProps) => {
         setErrorNote(
           <Note tone="peach" icon="cross" alert>
             {t('cabinet.cancelStarted', {
-              contacts: t('cabinet.rentalContacts'),
+              contacts: formatRentalContacts(),
             })}
           </Note>,
         )

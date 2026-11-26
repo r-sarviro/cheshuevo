@@ -13,13 +13,3 @@
 .catalog {
   margin-top: 0;
 }
-
-.catalogSection {
-  padding-bottom: var(--s-8);
-}
-
-.loadingGrid {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(min(100%, 260px), 1fr));
-  gap: 22px 26px;
-}

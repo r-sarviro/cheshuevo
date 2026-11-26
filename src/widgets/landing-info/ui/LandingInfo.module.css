@@ -1,0 +1,351 @@
+.steps {
+  display: grid;
+  gap: 18px 22px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.step {
+  display: grid;
+  grid-template-columns: auto 1fr;
+  gap: 12px 14px;
+  align-items: start;
+}
+
+.stepIndex {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 36px;
+  height: 36px;
+  color: var(--c-ink-strong);
+  font: 700 var(--fs-label) / 1 var(--font-display);
+  letter-spacing: 0.04em;
+  background: var(--c-tile-butter);
+  box-shadow:
+    inset 0 0 0 var(--px) var(--c-line),
+    var(--px) var(--px) 0 0 var(--c-line);
+}
+
+.stepTitle {
+  margin: 0 0 6px;
+}
+
+.stepBody {
+  margin: 0;
+  color: var(--c-ink-muted);
+}
+
+.howActions {
+  margin-top: var(--s-5);
+}
+
+.bridgeActions {
+  margin-top: var(--s-4);
+}
+
+.bridgeLead {
+  margin: 12px 0 0;
+  color: var(--c-ink-muted);
+}
+
+/* Equal vertical padding so gap above/below matches neighboring blocks. */
+.bridge {
+  padding-block: var(--s-6);
+}
+
+/* Narrow: flame on top, centered. From 768px: copy + flame row. */
+.bridgeInner {
+  display: grid;
+  justify-items: center;
+  gap: 12px;
+  max-width: 40rem;
+  margin-inline: auto;
+  text-align: center;
+}
+
+.bridgeInner .bridgeCopy {
+  width: 100%;
+}
+
+.bridgeInner .bridgeCopy h2 {
+  margin: 0;
+}
+
+.bridgeInner .bridgeLead {
+  max-width: 36ch;
+  margin-inline: auto;
+}
+
+.bridgeInner .bridgeActions {
+  display: flex;
+  justify-content: center;
+}
+
+.bridgeInner .bridgeFlameSlot {
+  order: -1;
+}
+
+.bridgeFlameSlot {
+  display: grid;
+  width: 140px;
+  height: 140px;
+}
+
+.bridgeFlameSprite {
+  display: block;
+  width: 100%;
+  height: 100%;
+}
+
+@media (min-width: 768px) {
+  .bridge {
+    padding-block: var(--s-7);
+  }
+
+  .bridgeInner {
+    grid-template-columns: minmax(0, 1fr) auto;
+    align-items: center;
+    justify-items: stretch;
+    gap: var(--s-6);
+    max-width: none;
+    margin-inline: 0;
+    text-align: start;
+  }
+
+  .bridgeInner .bridgeLead {
+    max-width: none;
+    margin-inline: 0;
+  }
+
+  .bridgeInner .bridgeActions {
+    justify-content: flex-start;
+  }
+
+  .bridgeInner .bridgeFlameSlot {
+    order: 0;
+    justify-self: end;
+  }
+}
+
+.trustList {
+  display: grid;
+  gap: 16px 28px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.trustItem {
+  display: grid;
+  gap: 8px;
+  justify-items: start;
+}
+
+.trustIcon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 36px;
+  height: 36px;
+  color: var(--c-ink-strong);
+  background: var(--c-tile-butter);
+  box-shadow:
+    inset 0 0 0 var(--px) var(--c-line),
+    var(--px) var(--px) 0 0 var(--c-line);
+}
+
+.trustItemTitle {
+  margin: 0 0 6px;
+}
+
+.trustItemBody {
+  margin: 0;
+  color: var(--c-ink-muted);
+}
+
+/* Story + flame: mobile flame centered, copy left; desktop row. */
+.aboutStory {
+  display: grid;
+  justify-items: stretch;
+  gap: 12px;
+  text-align: start;
+}
+
+.aboutStoryCopy {
+  width: 100%;
+}
+
+.aboutTitle {
+  margin: 0;
+}
+
+.aboutLead {
+  margin: 12px 0 0;
+  color: var(--c-ink-muted);
+}
+
+.aboutBody {
+  margin: 12px 0 0;
+  color: var(--c-ink-muted);
+}
+
+.aboutFlameSlot {
+  display: none;
+}
+
+.aboutFlameSprite {
+  display: block;
+  width: 100%;
+  height: 100%;
+}
+
+@media (min-width: 768px) {
+  .aboutStory {
+    grid-template-columns: minmax(0, 1fr) auto;
+    align-items: center;
+    justify-items: stretch;
+    gap: var(--s-6);
+    max-width: none;
+    margin-inline: 0;
+    text-align: start;
+  }
+
+  .aboutFlameSlot {
+    display: grid;
+    order: 0;
+    justify-self: end;
+    width: 140px;
+    height: 140px;
+  }
+}
+
+.aboutGrid {
+  display: grid;
+  gap: var(--s-5);
+}
+
+/* Half of section-to-section gap on each side of the rule. */
+.blockDivider {
+  margin-block: var(--s-6);
+}
+
+@media (min-width: 640px) {
+  .blockDivider {
+    margin-block: var(--s-7);
+  }
+}
+
+.aboutCopy p {
+  margin: 0 0 12px;
+  color: var(--c-ink-muted);
+}
+
+.aboutCopy p:last-child {
+  margin-bottom: 0;
+}
+
+.placeTitle {
+  margin: 0 0 8px;
+}
+
+.placeAddress {
+  margin: 0 0 8px;
+  color: var(--c-ink);
+  font-weight: 600;
+}
+
+.placeHow {
+  margin: 0;
+  color: var(--c-ink-muted);
+}
+
+.mapFrame {
+  overflow: hidden;
+}
+
+.map {
+  display: block;
+  width: 100%;
+  height: auto;
+  image-rendering: pixelated;
+  image-rendering: crisp-edges;
+}
+
+.contacts {
+  margin-top: var(--s-6);
+}
+
+.contactsSolo {
+  margin-top: 0;
+}
+
+.contactsList {
+  display: flex;
+  flex-direction: column;
+  gap: var(--s-4);
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.contactsItem {
+  display: grid;
+  grid-template-columns: auto 1fr;
+  gap: 2px 12px;
+  align-items: center;
+}
+
+.contactsIcon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 36px;
+  height: 36px;
+  color: var(--c-ink-strong);
+  background: var(--c-tile-peach);
+  box-shadow:
+    inset 0 0 0 var(--px) var(--c-line),
+    var(--px) var(--px) 0 0 var(--c-line);
+}
+
+.contactsLabel {
+  display: block;
+  color: var(--c-ink-muted);
+  font-size: var(--fs-small);
+}
+
+.contactsValue {
+  margin: 0;
+  font-weight: 600;
+}
+
+@media (min-width: 640px) {
+  .steps {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .trustList {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+
+  .contactsList {
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+    gap: var(--s-5);
+  }
+}
+
+@media (min-width: 960px) {
+  .steps {
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+  }
+
+  .aboutGrid {
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1.1fr);
+    align-items: center;
+    gap: var(--s-6);
+  }
+}

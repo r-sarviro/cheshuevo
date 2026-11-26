@@ -7,7 +7,7 @@
   flex-wrap: wrap;
   align-items: center;
   gap: 8px 12px;
-  padding: 12px var(--page-gutter);
+  padding: 12px var(--page-inline);
   background: var(--c-bg);
   box-shadow: 0 var(--px) 0 0 var(--c-line);
 }
