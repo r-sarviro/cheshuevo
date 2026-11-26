@@ -19,7 +19,7 @@ import { Button, ButtonText } from '@/shared/ui/button'
 import { EmptyState } from '@/shared/ui/empty-state'
 import { Icon } from '@/shared/ui/icon'
 import { Wrap } from '@/shared/ui/layout'
-import { DragonSheetSprite, DragonSprite } from '@/shared/ui/sprite'
+import { DragonSheetSprite, PixelSprite } from '@/shared/ui/sprite'
 import { Typography } from '@/shared/ui/typography'
 import { DragonPage } from '@/widgets/dragon-page'
 import { useSiteChrome } from '@/widgets/site-chrome'
@@ -104,7 +104,7 @@ const DragonBookingPage = () => {
               role="status"
               pictureBare
               picture={
-                <DragonSprite
+                <PixelSprite
                   name="loader"
                   width={48}
                   height={48}

@@ -1,7 +1,7 @@
 export {
-  default as DragonSprite,
-  type IDragonSpriteProps,
-} from './DragonSprite'
+  default as PixelSprite,
+  type IPixelSpriteProps,
+} from './PixelSprite'
 export {
   default as DragonAvatar,
   type IDragonAvatarProps,

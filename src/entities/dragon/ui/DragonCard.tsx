@@ -9,7 +9,7 @@ import { Icon } from '@/shared/ui/icon'
 import skeletonStyles from '@/shared/ui/skeleton/Skeleton.module.css'
 import {
   DragonSheetSprite,
-  DragonSprite,
+  PixelSprite,
   hasDragonSheet,
 } from '@/shared/ui/sprite'
 import { Tag, Tags } from '@/shared/ui/tag'
@@ -155,7 +155,7 @@ const DragonCard = (props: IDragonCardProps) => {
     ) : dragon.spriteKey && hasDragonSheet(dragon.spriteKey) ? (
       <DragonSheetSprite name={dragon.spriteKey} label={copy.name} />
     ) : dragon.spriteKey ? (
-      <DragonSprite name={dragon.spriteKey} fit label={copy.name} />
+      <PixelSprite name={dragon.spriteKey} fit label={copy.name} />
     ) : dragon.imageUrl ? (
       <img src={dragon.imageUrl} alt="" />
     ) : null)

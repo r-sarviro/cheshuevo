@@ -70,7 +70,7 @@ export {
   type TStepsItemStatus,
 } from './steps'
 export {
-  DragonSprite,
+  PixelSprite,
   DragonAvatar,
   dragonAvatarUrl,
   DragonSheetSprite,
@@ -81,7 +81,7 @@ export {
   hasDragonSheet,
   getDragonSheetSpec,
   DRAGON_SHEET_CATALOG,
-  type IDragonSpriteProps,
+  type IPixelSpriteProps,
   type IDragonAvatarProps,
   type IDragonSheetSpriteProps,
   type IDragonSheetSpec,

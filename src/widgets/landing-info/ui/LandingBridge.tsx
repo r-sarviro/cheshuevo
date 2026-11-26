@@ -4,7 +4,7 @@ import { Link } from 'react-router-dom'
 import { ABOUT_PATH } from '@/shared/config'
 import buttonStyles from '@/shared/ui/button/Button.module.css'
 import { Section, Wrap } from '@/shared/ui/layout'
-import { DragonSprite } from '@/shared/ui/sprite'
+import { PixelSprite } from '@/shared/ui/sprite'
 import { Typography } from '@/shared/ui/typography'
 
 import styles from './LandingInfo.module.css'
@@ -36,7 +36,7 @@ const LandingBridge = (props: ILandingBridgeProps) => {
             </div>
           </div>
           <div className={styles.bridgeFlameSlot}>
-            <DragonSprite
+            <PixelSprite
               className={styles.bridgeFlameSprite}
               name="flame"
               label={t('landing.bridgeSpriteAltFlame')}

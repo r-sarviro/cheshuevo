@@ -16,7 +16,7 @@ import buttonStyles from '@/shared/ui/button/Button.module.css'
 import { EmptyState } from '@/shared/ui/empty-state'
 import { Icon } from '@/shared/ui/icon'
 import { Note } from '@/shared/ui/note'
-import { DragonSheetSprite, DragonSprite } from '@/shared/ui/sprite'
+import { DragonSheetSprite, PixelSprite } from '@/shared/ui/sprite'
 import { Num, Typography } from '@/shared/ui/typography'
 import { CabinetBookingCard } from '@/widgets/cabinet-booking-card'
 
@@ -69,7 +69,7 @@ const CabinetBookingDetailPage = () => {
         role="status"
         pictureBare
         picture={
-          <DragonSprite
+          <PixelSprite
             name="loader"
             width={48}
             height={48}
