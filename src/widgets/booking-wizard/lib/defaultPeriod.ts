@@ -1,7 +1,7 @@
-import type { ISelectPeriodValue } from '@/features/select-period'
+import type { TSelectPeriodValue } from '@/features/select-period'
 
 /** Tomorrow 13:00–15:00 as a sensible default booking window. */
-export function createDefaultPeriod(now = new Date()): ISelectPeriodValue {
+export function createDefaultPeriod(now = new Date()): TSelectPeriodValue {
   const day = new Date(now)
   day.setDate(day.getDate() + 1)
   const date = [

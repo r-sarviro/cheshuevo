@@ -1,12 +1,9 @@
-import {
-  useEffect,
-  useId,
-  useState,
-  type FormEvent,
-  type ReactNode,
-} from 'react'
+import { zodResolver } from '@hookform/resolvers/zod'
+import { useEffect, useId, useState, type ReactNode } from 'react'
+import { useForm } from 'react-hook-form'
 import { useTranslation } from 'react-i18next'
 import { Link } from 'react-router-dom'
+import { z } from 'zod'
 
 import { getCustomerMe, useCabinetSessionStore } from '@/entities/customer'
 import {
@@ -15,6 +12,11 @@ import {
   useRequestEmailCodeMutation,
 } from '@/shared/api'
 import { CATALOG_PATH } from '@/shared/config'
+import {
+  emailSchema,
+  otpFormSchema,
+  type TOtpFormValues,
+} from '@/shared/lib'
 import { Button, ButtonText } from '@/shared/ui/button'
 import buttonStyles from '@/shared/ui/button/Button.module.css'
 import { Field, Input } from '@/shared/ui/field'
@@ -26,7 +28,11 @@ import { Typography } from '@/shared/ui/typography'
 
 import styles from './CabinetLogin.module.css'
 
-const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]+$/
+const loginEmailSchema = z.object({
+  email: emailSchema,
+})
+
+type TLoginEmailValues = z.infer<typeof loginEmailSchema>
 
 export interface ICabinetLoginSession {
   email: string
@@ -66,14 +72,27 @@ const CabinetLogin = (props: ICabinetLoginProps) => {
   const otpErrId = useId()
 
   const [step, setStep] = useState<TStep>('email')
-  const [email, setEmail] = useState('')
-  const [emailError, setEmailError] = useState<string | null>(null)
-  const [code, setCode] = useState('')
-  const [codeError, setCodeError] = useState<string | null>(null)
   const [verificationId, setVerificationId] = useState<string | null>(null)
   const [secondsLeft, setSecondsLeft] = useState(0)
   const [exhausted, setExhausted] = useState(false)
   const [note, setNote] = useState<ReactNode>(redirectHint ?? null)
+
+  const emailForm = useForm<TLoginEmailValues>({
+    resolver: zodResolver(loginEmailSchema),
+    defaultValues: { email: '' },
+    mode: 'onSubmit',
+    shouldUnregister: false,
+  })
+
+  const codeForm = useForm<TOtpFormValues>({
+    resolver: zodResolver(otpFormSchema),
+    defaultValues: { code: '' },
+    mode: 'onSubmit',
+    shouldUnregister: false,
+  })
+
+  const email = emailForm.watch('email')
+  const code = codeForm.watch('code')
 
   useEffect(() => {
     if (redirectHint) setNote(redirectHint)
@@ -89,24 +108,17 @@ const CabinetLogin = (props: ICabinetLoginProps) => {
 
   const busy = requestCode.isPending || confirmCode.isPending
 
-  const onRequestCode = async (event: FormEvent<HTMLFormElement>) => {
-    event.preventDefault()
-    const nextEmail = email.trim().toLowerCase()
-    if (!EMAIL_RE.test(nextEmail)) {
-      setEmailError(t('ds.emailError'))
-      return
-    }
-    setEmailError(null)
+  const onRequestCode = async (data: TLoginEmailValues) => {
     try {
       const result = await requestCode.mutateAsync({
-        email: nextEmail,
+        email: data.email,
         purpose: 'login',
       })
-      setEmail(nextEmail)
+      emailForm.setValue('email', data.email, { shouldDirty: false })
       setVerificationId(result.verificationId)
       setSecondsLeft(result.resendAfterSeconds)
-      setCode('')
-      setCodeError(null)
+      codeForm.setValue('code', '', { shouldDirty: false })
+      codeForm.clearErrors('code')
       setExhausted(false)
       setNote(null)
       setStep('code')
@@ -162,29 +174,27 @@ const CabinetLogin = (props: ICabinetLoginProps) => {
     }
   }
 
-  const onConfirm = async (event: FormEvent<HTMLFormElement>) => {
-    event.preventDefault()
+  const onConfirm = async (data: TOtpFormValues) => {
     if (!verificationId) return
-    if (!/^\d{6}$/.test(code)) {
-      setCodeError(t('booking.otpInvalidGeneric'))
-      return
-    }
-    setCodeError(null)
+    const sessionEmail = emailForm.getValues('email')
     try {
       const confirmed = await confirmCode.mutateAsync({
         verificationId,
-        email,
-        code,
+        email: sessionEmail,
+        code: data.code,
       })
       if (!confirmed.session) {
-        setCodeError(t('booking.otpInvalidGeneric'))
+        codeForm.setError('code', {
+          type: 'server',
+          message: t('booking.otpInvalidGeneric'),
+        })
         return
       }
       signIn({
         token: confirmed.session.token,
         tokenType: confirmed.session.tokenType,
         expiresAt: confirmed.session.expiresAt,
-        email,
+        email: sessionEmail,
         name: null,
       })
       let name: string | null = null
@@ -193,14 +203,14 @@ const CabinetLogin = (props: ICabinetLoginProps) => {
         name = me.name
         setProfile({ email: me.email, name: me.name })
       } catch {
-        setProfile({ email })
+        setProfile({ email: sessionEmail })
       }
-      onSuccess?.({ email, name })
+      onSuccess?.({ email: sessionEmail, name })
     } catch (error) {
       if (error instanceof ApiError) {
         if (error.code === 'OTP_EXHAUSTED') {
           setExhausted(true)
-          setCodeError(null)
+          codeForm.clearErrors('code')
           const wait = readResendAfter(error)
           if (wait != null) setSecondsLeft(wait)
           setNote(
@@ -212,33 +222,39 @@ const CabinetLogin = (props: ICabinetLoginProps) => {
         }
         if (error.code === 'OTP_INVALID') {
           const left = readAttemptsLeft(error)
-          setCodeError(
-            left != null
-              ? t('booking.otpInvalid', { count: left })
-              : t('booking.otpInvalidGeneric'),
-          )
+          codeForm.setError('code', {
+            type: 'invalid',
+            message:
+              left != null
+                ? t('booking.otpInvalid', { count: left })
+                : t('booking.otpInvalidGeneric'),
+          })
           return
         }
       }
-      setCodeError(t('booking.otpInvalidGeneric'))
+      codeForm.setError('code', {
+        type: 'server',
+        message: t('booking.otpInvalidGeneric'),
+      })
     }
   }
 
   const onResend = async () => {
     if (secondsLeft > 0 || busy) return
+    const sessionEmail = emailForm.getValues('email')
     try {
       const result = await requestCode.mutateAsync({
-        email,
+        email: sessionEmail,
         purpose: 'login',
       })
       setVerificationId(result.verificationId)
       setSecondsLeft(result.resendAfterSeconds)
-      setCode('')
-      setCodeError(null)
+      codeForm.setValue('code', '', { shouldDirty: true, shouldTouch: true })
+      codeForm.clearErrors('code')
       setExhausted(false)
       setNote(
         <Note tone="jade" icon="mail">
-          {t('cabinet.loginResent', { email })}
+          {t('cabinet.loginResent', { email: sessionEmail })}
         </Note>,
       )
     } catch (error) {
@@ -266,6 +282,18 @@ const CabinetLogin = (props: ICabinetLoginProps) => {
       ? `${Math.floor(secondsLeft / 60)}:${String(secondsLeft % 60).padStart(2, '0')}`
       : null
 
+  const emailError = emailForm.formState.errors.email
+  const emailErrorText = emailError?.message
+    ? t(emailError.message)
+    : undefined
+
+  const codeError = codeForm.formState.errors.code
+  const codeErrorText = codeError?.message
+    ? codeError.type === 'server' || codeError.type === 'invalid'
+      ? codeError.message
+      : t(codeError.message)
+    : undefined
+
   if (step === 'email') {
     return (
       <div className={rootClass}>
@@ -276,7 +304,7 @@ const CabinetLogin = (props: ICabinetLoginProps) => {
         <form
           className={styles.form}
           noValidate
-          onSubmit={(e) => void onRequestCode(e)}
+          onSubmit={emailForm.handleSubmit(onRequestCode)}
         >
           {note}
           <Field
@@ -284,7 +312,7 @@ const CabinetLogin = (props: ICabinetLoginProps) => {
             htmlFor={emailId}
             hint={t('booking.emailHint')}
             hintId={emailHintId}
-            error={emailError}
+            error={emailErrorText}
             errorId={emailErrId}
           >
             <Input
@@ -294,15 +322,18 @@ const CabinetLogin = (props: ICabinetLoginProps) => {
               inputMode="email"
               value={email}
               disabled={busy}
-              aria-invalid={emailError ? true : undefined}
+              aria-invalid={emailErrorText ? true : undefined}
               aria-describedby={
-                [emailHintId, emailError ? emailErrId : null]
+                [emailHintId, emailErrorText ? emailErrId : null]
                   .filter(Boolean)
                   .join(' ') || undefined
               }
               onChange={(event) => {
-                setEmail(event.target.value)
-                setEmailError(null)
+                emailForm.setValue('email', event.target.value, {
+                  shouldDirty: true,
+                  shouldTouch: true,
+                })
+                emailForm.clearErrors('email')
               }}
             />
           </Field>
@@ -328,8 +359,8 @@ const CabinetLogin = (props: ICabinetLoginProps) => {
           className={styles.inlineChange}
           onClick={() => {
             setStep('email')
-            setCode('')
-            setCodeError(null)
+            codeForm.setValue('code', '')
+            codeForm.clearErrors('code')
             setExhausted(false)
             setNote(null)
           }}
@@ -340,25 +371,28 @@ const CabinetLogin = (props: ICabinetLoginProps) => {
       <form
         className={styles.form}
         noValidate
-        onSubmit={(e) => void onConfirm(e)}
+        onSubmit={codeForm.handleSubmit(onConfirm)}
       >
         {note}
         <OtpInput
           value={code}
           onChange={(next) => {
-            setCode(next)
-            setCodeError(null)
+            codeForm.setValue('code', next, {
+              shouldDirty: true,
+              shouldTouch: true,
+            })
+            codeForm.clearErrors('code')
           }}
-          invalid={Boolean(codeError)}
+          invalid={Boolean(codeErrorText)}
           disabled={busy || exhausted}
           aria-label={t('booking.otpLabel')}
-          aria-describedby={codeError ? otpErrId : undefined}
+          aria-describedby={codeErrorText ? otpErrId : undefined}
           digitLabel={(index) => t('booking.otpDigit', { n: index })}
         />
-        {codeError ? (
+        {codeErrorText ? (
           <p className={fieldStyles.error} role="alert" id={otpErrId}>
             <Icon name="cross" className={fieldStyles.errorIcon} />
-            <span>{codeError}</span>
+            <span>{codeErrorText}</span>
           </p>
         ) : null}
         <div className={styles.actions}>

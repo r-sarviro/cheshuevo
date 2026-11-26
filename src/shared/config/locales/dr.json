@@ -14,6 +14,7 @@
     "nameLabel": "Имя",
     "emailLabel": "Email",
     "emailError": "Проверьте адрес: после @ должно быть имя почты, например mail.ru",
+    "otpError": "Код не подошёл. Попробуйте ещё раз",
     "statusConfirmed": "Подтверждена",
     "statusUnpaid": "Не оплачено",
     "statusPaid": "Оплачено",

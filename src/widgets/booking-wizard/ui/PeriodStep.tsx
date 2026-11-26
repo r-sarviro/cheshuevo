@@ -1,4 +1,5 @@
-import { useEffect, useState, type FormEvent } from 'react'
+import { zodResolver } from '@hookform/resolvers/zod'
+import { useEffect, useState } from 'react'
 import { useForm } from 'react-hook-form'
 import { useTranslation } from 'react-i18next'
 
@@ -10,7 +11,11 @@ import {
 } from '@/entities/booking'
 import { useCabinetSessionStore } from '@/entities/customer'
 import { resolveDragonLocale, type IDragon } from '@/entities/dragon'
-import { SelectPeriod, type ISelectPeriodValue } from '@/features/select-period'
+import {
+  SelectPeriod,
+  selectPeriodSchema,
+  type TSelectPeriodValue,
+} from '@/features/select-period'
 import { ApiError } from '@/shared/api'
 import { useUiStore } from '@/shared/model'
 import { Button } from '@/shared/ui/button'
@@ -25,7 +30,7 @@ export interface IPeriodStepProps {
   dragon: IDragon
 }
 
-/** Period + availability step with RHF validation. */
+/** Period + availability step with RHF + Zod validation. */
 const PeriodStep = (props: IPeriodStepProps) => {
   const { dragon } = props
   const { t } = useTranslation()
@@ -45,31 +50,18 @@ const PeriodStep = (props: IPeriodStepProps) => {
 
   const authed = isAuthenticated()
 
-  const {
-    register,
-    watch,
-    setValue,
-    getValues,
-    formState,
-    setError,
-    clearErrors,
-  } = useForm<ISelectPeriodValue>({
-    defaultValues: period ?? {
-      startDate: '',
-      startTime: '',
-      endDate: '',
-      endTime: '',
-    },
-    mode: 'onSubmit',
-    shouldUnregister: false,
-  })
-
-  useEffect(() => {
-    register('startDate')
-    register('startTime')
-    register('endDate')
-    register('endTime')
-  }, [register])
+  const { watch, setValue, formState, setError, clearErrors, handleSubmit } =
+    useForm<TSelectPeriodValue>({
+      resolver: zodResolver(selectPeriodSchema),
+      defaultValues: period ?? {
+        startDate: '',
+        startTime: '',
+        endDate: '',
+        endTime: '',
+      },
+      mode: 'onSubmit',
+      shouldUnregister: false,
+    })
 
   const value = watch()
   const interval =
@@ -100,14 +92,8 @@ const PeriodStep = (props: IPeriodStepProps) => {
     setValue('endTime', period.endTime, { shouldDirty: false })
   }, [period, setValue])
 
-  const onSubmit = async (event: FormEvent<HTMLFormElement>) => {
-    event.preventDefault()
-    const data = getValues()
+  const onValid = async (data: TSelectPeriodValue) => {
     const next = periodToInterval(data)
-    if (!isMinDurationOk(next.startsAt, next.endsAt)) {
-      setError('endTime', { type: 'validate' })
-      return
-    }
     if (!availabilityQuery.data?.available) {
       setError('endTime', { type: 'busy' })
       return
@@ -158,9 +144,7 @@ const PeriodStep = (props: IPeriodStepProps) => {
   return (
     <form
       className={styles.stack}
-      onSubmit={(event) => {
-        void onSubmit(event)
-      }}
+      onSubmit={handleSubmit(onValid)}
       noValidate
     >
       <Typography className={styles.heading} variant="h2">
@@ -221,9 +205,11 @@ const PeriodStep = (props: IPeriodStepProps) => {
             ? submitError
             : formState.errors.endTime?.type === 'busy'
               ? t('booking.periodBusy', { name: copy.name })
-              : formState.errors.endTime
-                ? t('booking.periodError')
-                : undefined
+              : formState.errors.endTime?.message
+                ? t(formState.errors.endTime.message)
+                : formState.errors.endTime
+                  ? t('booking.periodError')
+                  : undefined
         }
         actions={
           <Button

@@ -2,16 +2,13 @@ import type { FormEvent, ReactNode } from 'react'
 
 import { Field, Input } from '@/shared/ui/field'
 
+import type { TBookingContactsValue } from '../model/bookingContactsSchema'
+
 import styles from './BookingContacts.module.css'
 
-export interface IBookingContactsValue {
-  name: string
-  email: string
-}
-
 export interface IBookingContactsProps {
-  value: IBookingContactsValue
-  onChange: (value: IBookingContactsValue) => void
+  value: TBookingContactsValue
+  onChange: (value: TBookingContactsValue) => void
   labels: {
     name: ReactNode
     email: ReactNode
@@ -56,7 +53,7 @@ const BookingContacts = (props: IBookingContactsProps) => {
     className,
   } = props
 
-  const patch = (partial: Partial<IBookingContactsValue>) => {
+  const patch = (partial: Partial<TBookingContactsValue>) => {
     onChange({ ...value, ...partial })
   }
 
