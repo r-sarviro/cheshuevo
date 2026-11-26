@@ -1,10 +1,10 @@
+import { ApiError } from '@/shared/api/client'
 import {
-  ApiError,
   STUB_CONFLICT_TOKEN_PREFIX,
   STUB_OTP_CODE,
   STUB_OTP_CONFLICT_CODE,
-  stubDelay,
-} from '@/shared/api'
+} from '@/shared/api/stubDemo'
+import { stubDelay } from '@/shared/api/stubDelay'
 
 import type {
   IConfirmEmailCodePayload,

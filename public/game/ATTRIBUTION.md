@@ -1,10 +1,8 @@
-# Game assets (CC0)
+# Game assets
 
 ## Dragon frames (`dragon-1.png` … `dragon-4.png`)
 
-- Source: [Flappy Dragon Sprite Sheets](https://opengameart.org/content/flappy-dragon-sprite-sheets)
-- Author: bevouliin.com
-- License: [CC0 1.0](https://creativecommons.org/publicdomain/zero/1.0/)
+AI-generated (no third-party license).
 
 ## Rock tiles (`rocks.png`)
 

@@ -3,6 +3,7 @@ import { useForm } from 'react-hook-form'
 import { useTranslation } from 'react-i18next'
 
 import { periodToInterval, useCreateBookingMutation } from '@/entities/booking'
+import { useCabinetSessionStore } from '@/entities/customer'
 import { getDragonCopy, type IDragon } from '@/entities/dragon'
 import {
   useConfirmEmailCodeMutation,
@@ -46,6 +47,7 @@ const OtpStep = (props: IOtpStepProps) => {
   const confirmCode = useConfirmEmailCodeMutation()
   const requestCode = useRequestEmailCodeMutation()
   const createBooking = useCreateBookingMutation()
+  const signIn = useCabinetSessionStore((s) => s.signIn)
 
   const [secondsLeft, setSecondsLeft] = useState(resendAfterSeconds)
 
@@ -114,6 +116,7 @@ const OtpStep = (props: IOtpStepProps) => {
         currency: dragon.currency,
         dragonName: copy.name,
       })
+      signIn({ email: contacts.email, name: contacts.name })
       setCreatedBooking(booking)
     } catch (error) {
       if (error instanceof ApiError && error.code === 'BOOKING_CONFLICT') {

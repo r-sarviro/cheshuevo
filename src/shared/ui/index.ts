@@ -60,6 +60,8 @@ export {
 export { EmptyState, type IEmptyStateProps } from './empty-state'
 export { OtpInput, type IOtpInputProps } from './otp-input'
 export { Panel, type IPanelProps } from './panel'
+export { Dialog, type IDialogProps } from './dialog'
+export { ReadonlyField, type IReadonlyFieldProps } from './readonly-field'
 export {
   Steps,
   type IStepsProps,
@@ -68,6 +70,8 @@ export {
 } from './steps'
 export {
   DragonSprite,
+  DragonAvatar,
+  dragonAvatarUrl,
   DragonSheetSprite,
   mountSprite,
   mountHero,
@@ -77,6 +81,7 @@ export {
   getDragonSheetSpec,
   DRAGON_SHEET_CATALOG,
   type IDragonSpriteProps,
+  type IDragonAvatarProps,
   type IDragonSheetSpriteProps,
   type IDragonSheetSpec,
 } from './sprite'

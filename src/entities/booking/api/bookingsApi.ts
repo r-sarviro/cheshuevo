@@ -5,6 +5,7 @@ import type {
   IAvailabilityResult,
   IBooking,
   ICreateBookingPayload,
+  ICreateCustomerBookingPayload,
 } from '../model/types'
 
 /** GET /api/v1/public/availability */
@@ -33,6 +34,22 @@ export function createBooking(
       customer_name: payload.customerName,
       customer_email: payload.customerEmail,
       verification_token: payload.verificationToken,
+    },
+    idempotencyKey,
+  })
+}
+
+/** POST /api/v1/customer/bookings — session booking, no OTP. */
+export function createCustomerBooking(
+  payload: ICreateCustomerBookingPayload,
+  idempotencyKey?: string,
+) {
+  return apiRequest<IBooking>('/customer/bookings', {
+    method: 'POST',
+    body: {
+      dragon_id: payload.dragonId,
+      starts_at: payload.startsAt,
+      ends_at: payload.endsAt,
     },
     idempotencyKey,
   })

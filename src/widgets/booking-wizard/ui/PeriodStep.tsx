@@ -1,4 +1,4 @@
-import { useEffect, type FormEvent } from 'react'
+import { useEffect, useState, type FormEvent } from 'react'
 import { useForm } from 'react-hook-form'
 import { useTranslation } from 'react-i18next'
 
@@ -6,9 +6,12 @@ import {
   isMinDurationOk,
   periodToInterval,
   useAvailabilityQuery,
+  useCreateCustomerBookingMutation,
 } from '@/entities/booking'
+import { useCabinetSessionStore } from '@/entities/customer'
 import { getDragonCopy, type IDragon } from '@/entities/dragon'
 import { SelectPeriod, type ISelectPeriodValue } from '@/features/select-period'
+import { ApiError } from '@/shared/api'
 import { Button } from '@/shared/ui/button'
 import { Typography } from '@/shared/ui/typography'
 
@@ -28,7 +31,17 @@ const PeriodStep = (props: IPeriodStepProps) => {
   const copy = getDragonCopy(t, dragon)
   const period = useBookingDraftStore((s) => s.period)
   const setPeriod = useBookingDraftStore((s) => s.setPeriod)
+  const setContacts = useBookingDraftStore((s) => s.setContacts)
+  const setCreatedBooking = useBookingDraftStore((s) => s.setCreatedBooking)
+  const setConflict = useBookingDraftStore((s) => s.setConflict)
   const setStep = useBookingDraftStore((s) => s.setStep)
+  const sessionEmail = useCabinetSessionStore((s) => s.email)
+  const sessionName = useCabinetSessionStore((s) => s.name)
+  const isAuthenticated = useCabinetSessionStore((s) => s.isAuthenticated)
+  const createCustomerBooking = useCreateCustomerBookingMutation()
+  const [submitError, setSubmitError] = useState<string | null>(null)
+
+  const authed = isAuthenticated() && Boolean(sessionEmail && sessionName)
 
   const {
     register,
@@ -87,7 +100,7 @@ const PeriodStep = (props: IPeriodStepProps) => {
     setValue('endTime', period.endTime, { shouldDirty: false })
   }, [period, setValue])
 
-  const onSubmit = (event: FormEvent<HTMLFormElement>) => {
+  const onSubmit = async (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault()
     const data = getValues()
     const next = periodToInterval(data)
@@ -100,7 +113,33 @@ const PeriodStep = (props: IPeriodStepProps) => {
       return
     }
     clearErrors()
+    setSubmitError(null)
     setPeriod(data)
+
+    if (authed && sessionEmail && sessionName) {
+      setContacts({ name: sessionName, email: sessionEmail })
+      try {
+        const booking = await createCustomerBooking.mutateAsync({
+          dragonId: dragon.id,
+          startsAt: next.startsAt,
+          endsAt: next.endsAt,
+          customerName: sessionName,
+          customerEmail: sessionEmail,
+          hourlyRate: dragon.hourlyRate,
+          currency: dragon.currency,
+          dragonName: copy.name,
+        })
+        setCreatedBooking(booking)
+      } catch (error) {
+        if (error instanceof ApiError && error.code === 'BOOKING_CONFLICT') {
+          setConflict(t('booking.conflictBody', { name: copy.name }))
+          return
+        }
+        setSubmitError(t('booking.sessionCreateFailed'))
+      }
+      return
+    }
+
     setStep('contacts')
   }
 
@@ -116,9 +155,16 @@ const PeriodStep = (props: IPeriodStepProps) => {
 
   const hours = availabilityQuery.data?.billableHours
   const total = availabilityQuery.data?.totalAmount
+  const busy = createCustomerBooking.isPending
 
   return (
-    <form className={styles.stack} onSubmit={onSubmit} noValidate>
+    <form
+      className={styles.stack}
+      onSubmit={(event) => {
+        void onSubmit(event)
+      }}
+      noValidate
+    >
       <Typography className={styles.heading} variant="h2">
         {t('booking.whenFly')}
       </Typography>
@@ -142,6 +188,7 @@ const PeriodStep = (props: IPeriodStepProps) => {
             shouldTouch: true,
           })
           clearErrors()
+          setSubmitError(null)
         }}
         labels={{
           start: t('booking.periodStart'),
@@ -170,20 +217,25 @@ const PeriodStep = (props: IPeriodStepProps) => {
           total != null ? formatMoney(total, dragon.currency) : undefined
         }
         quoteHint={t('booking.periodHint')}
-        error={Boolean(formState.errors.endTime)}
+        error={Boolean(formState.errors.endTime) || Boolean(submitError)}
         errorMessage={
-          formState.errors.endTime?.type === 'busy'
-            ? t('booking.periodBusy', { name: copy.name })
-            : formState.errors.endTime
-              ? t('booking.periodError')
-              : undefined
+          submitError
+            ? submitError
+            : formState.errors.endTime?.type === 'busy'
+              ? t('booking.periodBusy', { name: copy.name })
+              : formState.errors.endTime
+                ? t('booking.periodError')
+                : undefined
         }
         actions={
           <Button
             type="submit"
-            disabled={availability !== 'free' || availabilityQuery.isFetching}
+            loading={busy}
+            disabled={
+              availability !== 'free' || availabilityQuery.isFetching || busy
+            }
           >
-            {t('booking.continue')}
+            {authed ? t('booking.confirmBooking') : t('booking.continue')}
           </Button>
         }
       />

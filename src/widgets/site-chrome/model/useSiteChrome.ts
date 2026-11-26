@@ -1,6 +1,7 @@
 import { useTranslation } from 'react-i18next'
 
 import {
+  CABINET_BOOKINGS_PATH,
   CATALOG_PATH,
   HOME_PATH,
   PLAY_PATH,
@@ -27,6 +28,7 @@ export function useSiteChrome() {
     navItems: [
       { href: CATALOG_PATH, label: t('landing.navCatalog') },
       { href: PLAY_PATH, label: t('landing.navFlight') },
+      { href: CABINET_BOOKINGS_PATH, label: t('landing.navBookings') },
     ],
     navAriaLabel: t('landing.navPrimary'),
     locale,
