@@ -1,6 +1,6 @@
 import { Outlet, useNavigate } from 'react-router-dom'
 
-import { logoutStub, useCabinetSessionStore } from '@/features/cabinet-auth'
+import { useCabinetSessionStore } from '@/features/cabinet-auth'
 import {
   CABINET_BOOKINGS_PATH,
   CABINET_LOGIN_PATH,
@@ -22,18 +22,11 @@ const CabinetShellLayout = () => {
   const signOut = useCabinetSessionStore((s) => s.signOut)
 
   const onLogout = () => {
-    void (async () => {
-      try {
-        await logoutStub()
-      } catch {
-        /* clear session anyway */
-      }
-      signOut()
-      void navigate(CABINET_LOGIN_PATH, {
-        replace: true,
-        state: { flash: 'loggedOut' },
-      })
-    })()
+    signOut()
+    void navigate(CABINET_LOGIN_PATH, {
+      replace: true,
+      state: { flash: 'loggedOut' },
+    })
   }
 
   return (

@@ -2,7 +2,7 @@ import { useState, type ReactNode } from 'react'
 import { useTranslation } from 'react-i18next'
 import { useNavigate } from 'react-router-dom'
 
-import { logoutStub, useCabinetSessionStore } from '@/features/cabinet-auth'
+import { useCabinetSessionStore } from '@/features/cabinet-auth'
 import { useUpdateProfileMutation } from '@/features/update-profile'
 import { CABINET_LOGIN_PATH } from '@/shared/config'
 import { useDocumentMeta } from '@/shared/lib/document-meta'
@@ -48,18 +48,11 @@ const CabinetProfilePage = () => {
   }
 
   const onLogout = () => {
-    void (async () => {
-      try {
-        await logoutStub()
-      } catch {
-        /* clear anyway */
-      }
-      signOut()
-      void navigate(CABINET_LOGIN_PATH, {
-        replace: true,
-        state: { flash: 'loggedOut' },
-      })
-    })()
+    signOut()
+    void navigate(CABINET_LOGIN_PATH, {
+      replace: true,
+      state: { flash: 'loggedOut' },
+    })
   }
 
   return (

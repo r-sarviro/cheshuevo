@@ -1,24 +1,22 @@
 import { useMutation } from '@tanstack/react-query'
 
-import type {
-  IConfirmEmailCodePayload,
-  IRequestEmailCodePayload,
-} from './emailVerificationApi'
 import {
-  confirmEmailCodeStub,
-  requestEmailCodeStub,
-} from './emailVerificationStub'
+  confirmEmailCode,
+  requestEmailCode,
+  type IConfirmEmailCodePayload,
+  type IRequestEmailCodePayload,
+} from './emailVerificationApi'
 
 export function useRequestEmailCodeMutation() {
   return useMutation({
     mutationFn: (payload: IRequestEmailCodePayload) =>
-      requestEmailCodeStub(payload),
+      requestEmailCode(payload),
   })
 }
 
 export function useConfirmEmailCodeMutation() {
   return useMutation({
     mutationFn: (payload: IConfirmEmailCodePayload) =>
-      confirmEmailCodeStub(payload),
+      confirmEmailCode(payload),
   })
 }

@@ -1,6 +1,6 @@
 import type { IDragon } from './types'
 
-/** Static catalog used by stub API (no network). */
+/** Static catalog used until public dragons API is wired. */
 export const DRAGON_FIXTURES: IDragon[] = [
   {
     id: 1,

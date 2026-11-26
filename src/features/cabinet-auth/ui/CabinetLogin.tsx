@@ -8,10 +8,6 @@ import {
 import { useTranslation } from 'react-i18next'
 import { Link } from 'react-router-dom'
 
-import {
-  assertCustomerCanRequestLoginStub,
-  getCustomerNameStub,
-} from '@/entities/booking'
 import { useCabinetSessionStore } from '@/entities/customer'
 import {
   ApiError,
@@ -91,7 +87,6 @@ const CabinetLogin = (props: ICabinetLoginProps) => {
     }
     setEmailError(null)
     try {
-      assertCustomerCanRequestLoginStub(nextEmail)
       const result = await requestCode.mutateAsync({ email: nextEmail })
       setEmail(nextEmail)
       setVerificationId(result.verificationId)
@@ -150,9 +145,8 @@ const CabinetLogin = (props: ICabinetLoginProps) => {
         email,
         code,
       })
-      const name = getCustomerNameStub(email)
-      signIn({ email, name })
-      const session = { email, name }
+      signIn({ email, name: null })
+      const session = { email, name: null }
       onSuccess?.(session)
     } catch (error) {
       if (error instanceof ApiError) {

@@ -112,9 +112,6 @@ const OtpStep = (props: IOtpStepProps) => {
         customerName: contacts.name,
         customerEmail: contacts.email,
         verificationToken: confirmed.verificationToken,
-        hourlyRate: dragon.hourlyRate,
-        currency: dragon.currency,
-        dragonName: copy.name,
       })
       signIn({ email: contacts.email, name: contacts.name })
       setCreatedBooking(booking)

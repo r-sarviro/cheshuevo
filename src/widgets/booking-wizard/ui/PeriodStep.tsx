@@ -85,8 +85,6 @@ const PeriodStep = (props: IPeriodStepProps) => {
           dragonId: dragon.id,
           startsAt: interval.startsAt,
           endsAt: interval.endsAt,
-          hourlyRate: dragon.hourlyRate,
-          currency: dragon.currency,
         }
       : null,
     Boolean(interval && rangeOk),
@@ -125,9 +123,6 @@ const PeriodStep = (props: IPeriodStepProps) => {
           endsAt: next.endsAt,
           customerName: sessionName,
           customerEmail: sessionEmail,
-          hourlyRate: dragon.hourlyRate,
-          currency: dragon.currency,
-          dragonName: copy.name,
         })
         setCreatedBooking(booking)
       } catch (error) {
