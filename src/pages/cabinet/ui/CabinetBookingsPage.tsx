@@ -121,20 +121,14 @@ const CabinetBookingsPage = () => {
                       </Num>
                     }
                     sumText={t('booking.totalHours', {
-                      total: formatMoney(
-                        booking.totalAmount,
-                        booking.currency,
-                      ),
+                      total: formatMoney(booking.totalAmount, booking.currency),
                       hours,
                     })}
                     badges={bookingStatusBadges(booking, t)}
                     tile={dragon?.tileToken}
                     picture={
                       dragon?.spriteKey ? (
-                        <DragonAvatar
-                          name={dragon.spriteKey}
-                          alt=""
-                        />
+                        <DragonAvatar name={dragon.spriteKey} alt="" />
                       ) : null
                     }
                   />
@@ -166,20 +160,14 @@ const CabinetBookingsPage = () => {
                       </Num>
                     }
                     sumText={t('booking.totalHours', {
-                      total: formatMoney(
-                        booking.totalAmount,
-                        booking.currency,
-                      ),
+                      total: formatMoney(booking.totalAmount, booking.currency),
                       hours,
                     })}
                     badges={bookingStatusBadges(booking, t)}
                     tile={dragon?.tileToken}
                     picture={
                       dragon?.spriteKey ? (
-                        <DragonAvatar
-                          name={dragon.spriteKey}
-                          alt=""
-                        />
+                        <DragonAvatar name={dragon.spriteKey} alt="" />
                       ) : null
                     }
                   />

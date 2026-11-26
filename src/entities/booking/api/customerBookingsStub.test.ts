@@ -27,9 +27,7 @@ describe('customerBookingsStub', () => {
   it('lists seeded bookings for an email', async () => {
     const list = await listCustomerBookingsStub(CABINET_DEMO_EMAIL)
     expect(list.length).toBeGreaterThan(0)
-    expect(list.every((b) => b.customerEmail === CABINET_DEMO_EMAIL)).toBe(
-      true,
-    )
+    expect(list.every((b) => b.customerEmail === CABINET_DEMO_EMAIL)).toBe(true)
   })
 
   it('returns 404 for foreign booking number', async () => {

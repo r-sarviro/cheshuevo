@@ -151,7 +151,11 @@ const ProfileForm = (props: IProfileFormProps) => {
           <ReadonlyField>{email}</ReadonlyField>
         </Field>
         <div className={styles.actions}>
-          <Button type="submit" loading={loading} disabled={disabled || loading}>
+          <Button
+            type="submit"
+            loading={loading}
+            disabled={disabled || loading}
+          >
             {t('cabinet.save')}
           </Button>
           <ButtonText type="button" onClick={onLogout} disabled={loading}>

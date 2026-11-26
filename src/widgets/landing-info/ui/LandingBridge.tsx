@@ -19,9 +19,7 @@ const LandingBridge = (props: ILandingBridgeProps) => {
   const { t } = useTranslation()
 
   return (
-    <Section
-      className={[styles.bridge, className].filter(Boolean).join(' ')}
-    >
+    <Section className={[styles.bridge, className].filter(Boolean).join(' ')}>
       <Wrap>
         <div className={styles.bridgeInner}>
           <div className={styles.bridgeCopy}>

@@ -77,7 +77,9 @@ const CabinetBookingDetailPage = () => {
           />
         }
         heading={
-          <Typography variant="h3">{t('cabinet.detailLoadingTitle')}</Typography>
+          <Typography variant="h3">
+            {t('cabinet.detailLoadingTitle')}
+          </Typography>
         }
       >
         {t('cabinet.detailLoadingBody')}
@@ -143,9 +145,7 @@ const CabinetBookingDetailPage = () => {
   if (booking.issuedAt) {
     facts.push({
       label: t('cabinet.factIssued'),
-      value: (
-        <Num>{formatDateTimeLabel(booking.issuedAt, i18n.language)}</Num>
-      ),
+      value: <Num>{formatDateTimeLabel(booking.issuedAt, i18n.language)}</Num>,
     })
   }
   if (booking.returnedAt) {

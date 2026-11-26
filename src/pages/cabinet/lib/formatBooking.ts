@@ -39,7 +39,9 @@ export function formatTimeLabel(iso: string, locale: string): string {
 }
 
 export function bookingHours(booking: ICustomerBooking): number {
-  return booking.billableHours ?? billableHours(booking.startsAt, booking.endsAt)
+  return (
+    booking.billableHours ?? billableHours(booking.startsAt, booking.endsAt)
+  )
 }
 
 /** CAB-028: overdue when still in rent past planned end. */

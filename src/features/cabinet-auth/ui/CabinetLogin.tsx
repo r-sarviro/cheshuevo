@@ -1,4 +1,10 @@
-import { useEffect, useId, useState, type FormEvent, type ReactNode } from 'react'
+import {
+  useEffect,
+  useId,
+  useState,
+  type FormEvent,
+  type ReactNode,
+} from 'react'
 import { useTranslation } from 'react-i18next'
 import { Link } from 'react-router-dom'
 
@@ -118,7 +124,12 @@ const CabinetLogin = (props: ICabinetLoginProps) => {
         return
       }
       setNote(
-        <Note tone="peach" icon="cross" heading={t('booking.sendFailedTitle')} alert>
+        <Note
+          tone="peach"
+          icon="cross"
+          heading={t('booking.sendFailedTitle')}
+          alert
+        >
           {t('booking.sendFailedBody')}
         </Note>,
       )
@@ -206,7 +217,11 @@ const CabinetLogin = (props: ICabinetLoginProps) => {
           {t('cabinet.bookingsTitle')}
         </Typography>
         <p className={styles.lead}>{t('cabinet.loginLead')}</p>
-        <form className={styles.form} noValidate onSubmit={(e) => void onRequestCode(e)}>
+        <form
+          className={styles.form}
+          noValidate
+          onSubmit={(e) => void onRequestCode(e)}
+        >
           {note}
           <Field
             label={t('cabinet.emailLabel')}
@@ -266,7 +281,11 @@ const CabinetLogin = (props: ICabinetLoginProps) => {
           {t('booking.changeEmail')}
         </ButtonText>
       </p>
-      <form className={styles.form} noValidate onSubmit={(e) => void onConfirm(e)}>
+      <form
+        className={styles.form}
+        noValidate
+        onSubmit={(e) => void onConfirm(e)}
+      >
         {note}
         <OtpInput
           value={code}

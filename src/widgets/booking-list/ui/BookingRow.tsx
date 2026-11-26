@@ -33,9 +33,7 @@ const BookingRow = (props: IBookingRowProps) => {
   } = props
 
   const rootClass = [styles.row, className].filter(Boolean).join(' ')
-  const picStyle = tile
-    ? ({ ['--tile']: tile } as CSSProperties)
-    : undefined
+  const picStyle = tile ? ({ ['--tile']: tile } as CSSProperties) : undefined
 
   return (
     <Link className={rootClass} to={to}>
@@ -71,7 +69,10 @@ const BookingRowGhost = (props: IBookingRowGhostProps) => {
     <div className={rootClass} aria-hidden="true">
       <Skeleton className={styles.rowPic} />
       <span className={styles.rowMain}>
-        <Skeleton className={styles.skel} style={{ width: '55%', height: 22 }} />
+        <Skeleton
+          className={styles.skel}
+          style={{ width: '55%', height: 22 }}
+        />
         <Skeleton className={styles.skel} style={{ width: '35%' }} />
         <Skeleton className={styles.skel} style={{ width: '70%' }} />
       </span>

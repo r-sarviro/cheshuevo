@@ -2,18 +2,12 @@ import { useState, type ReactNode } from 'react'
 import { useTranslation } from 'react-i18next'
 import { useNavigate } from 'react-router-dom'
 
-import {
-  logoutStub,
-  useCabinetSessionStore,
-} from '@/features/cabinet-auth'
+import { logoutStub, useCabinetSessionStore } from '@/features/cabinet-auth'
 import { useUpdateProfileMutation } from '@/features/update-profile'
 import { CABINET_LOGIN_PATH } from '@/shared/config'
 import { useDocumentMeta } from '@/shared/lib/document-meta'
 import { Note } from '@/shared/ui/note'
-import {
-  ProfileForm,
-  type IProfileFormValues,
-} from '@/widgets/profile-form'
+import { ProfileForm, type IProfileFormValues } from '@/widgets/profile-form'
 
 /** Cabinet profile editor with save flash and logout. */
 const CabinetProfilePage = () => {

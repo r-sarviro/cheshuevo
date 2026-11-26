@@ -44,9 +44,7 @@ const CabinetLoginPage = () => {
   })
 
   const state = location.state as
-    | { from?: unknown; flash?: string }
-    | null
-    | undefined
+    { from?: unknown; flash?: string } | null | undefined
   const returnPath = safeReturnPath(state?.from, CABINET_BOOKINGS_PATH)
   const fromPathname =
     typeof state?.from === 'object' &&
